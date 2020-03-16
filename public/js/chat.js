@@ -1,4 +1,6 @@
 var socket = io();
+var username = 'unknown';
+var userID = -1;
 
 function scrollToBottom() {
   // Selectors
@@ -17,8 +19,27 @@ function scrollToBottom() {
   }
 }
 
+socket.on('playerInfo', function(data) {
+  userID = data.id;
+  username = data.username;
+  console.log('my id is ' + userID, ' my name is ' + username);
+});
+
 socket.on('connect', function() {
   console.log('Connected to server');
+
+  var params = jQuery.deparam(window.location.search);
+
+  username = params.name;
+
+  socket.emit('join', params, function(err) {
+    if (err) {
+      alert(err);
+      window.location.href = '/';
+    } else {
+      console.log('No error');
+    }
+  });
 
   setStatus('Online');
 });
@@ -42,13 +63,6 @@ socket.on('newMessage', function (message) {
   scrollToBottom();
 });
 
-socket.emit('createMessage', {
-  from: 'Frank',
-  text: 'hi'
-}, function(data) {
-  console.log('Got it', data)
-});
-
 var sendButton = jQuery('#send-button');
 sendButton.attr('disabled', 'disabled');
 var messageTextbox = jQuery('[name=message]');
@@ -61,7 +75,8 @@ jQuery('#message-form').on('submit', function(e) {
   setStatus('Sending message...');
 
   socket.emit('createMessage', {
-    from: 'User',
+    from: username,
+    fromID: userID,
     text: messageTextbox.val()
   }, function() {
     messageTextbox.val('');
