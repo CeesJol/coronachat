@@ -8,19 +8,36 @@
   </head>
 
   <body class="centered-form">
-    <div class="centered-form__form">
-      <form action='/chat.html'>
-        <div class="form-field">
-          <h3>Join a chat</h3>
+    <div class="container">
+      <div class="content">
+        <div class="centered-form__form left">
+          <div>
+            <p class="title title-1">Corona</p>
+            <p class="title title-2">Chat</p>
+            <p class="subtitle">Anonymous chatting</p>
+          </div>
         </div>
-        <div class="form-field">
-          <label>Display name</label>
-          <input type="text" name="name" autofocus />
+
+        <div class="centered-form__form right">
+          <form action='/chat.html'>
+            <div class="form-field">
+              <h3>JOIN A CHAT</h3>
+              <br>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam neque quod perferendis laborum quibusdam explicabo dicta illum fugit, labore vitae, rerum, ducimus totam accusantium optio deleniti molestias ipsum soluta libero?</p>
+              <br>
+            </div>
+            <div class="form-field">
+              <label>Display name</label>
+              <br>
+              <input type="text" name="name" placeholder="Chat name" required />
+            </div>
+            <br>
+            <div class="form-field">
+              <button id="join-button">JOIN</button>
+            </div>
+          </form>
         </div>
-        <div class="form-field">
-          <button>Join</button>
-        </div>
-      </form>
+      </div>
     </div>
   </body>
 </html>
