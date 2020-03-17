@@ -188,6 +188,59 @@ button:active {
     list-style-type: none
 }
 
+.message-container {
+  position: relative;
+  width: 100%;
+  height: auto;
+  float: left;
+}
+
+.message {
+  position: relative;
+  background-color: white;
+  width: auto;
+  max-width: calc(100% - 200px);
+  border-radius: .5rem;
+  margin: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  float: left;
+}
+
+.message-color {
+  background: rgb(80, 110, 225);
+  color: white;
+  text-align: right;
+  float: right;
+}
+
+.message__title-white h4, .message__title-white span {
+  color: rgb(130, 130, 140);
+}
+
+.message__title-color h4, .message__body-color {
+  color: white;
+}
+
+.message__title h4 {
+  font-size: 1.2rem;
+  font-weight: 400;
+  /* display: inline; */
+}
+
+.message__title span {
+  float: right;
+  margin-top: 0;
+  font-size: .7rem;
+}
+
+.message__body {
+  /* padding-top: 10px; */
+  padding-bottom: 10px;
+  padding-right: 50px;
+  padding-top: 10px;
+}
+
 @media only screen and (min-width: 800px) {
   .centered-form__form {
     float: left;

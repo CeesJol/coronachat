@@ -48,11 +48,11 @@ io.on('connection', (socket) => {
     var username = params.name;
     io.to(socket.id).emit('playerInfo', {id, username} );
 
-    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
+    socket.emit('newMessage', generateMessage('Admin', -1, 'Welcome to the chat app'));
     if (rooms.getUsers(room.id).length > 1) {
-      socket.broadcast.to(room.id).emit('newMessage', generateMessage('Admin', `${params.name} user joined`));
+      socket.broadcast.to(room.id).emit('newMessage', generateMessage('Admin', -1, `${params.name} user joined`));
     } else {
-      socket.emit('newMessage', generateMessage('Admin', 'Please wait for someone to join'));
+      socket.emit('newMessage', generateMessage('Admin', -1, 'Please wait for someone to join'));
     }
 
     callback();
@@ -64,7 +64,7 @@ io.on('connection', (socket) => {
       var room = rooms.getRoomOfUser(message.fromID);
 
       if (room && isRealString(message.text)) {
-        io.to(room.id).emit('newMessage', generateMessage(message.from, message.text));
+        io.to(room.id).emit('newMessage', generateMessage(message.from, message.fromID, message.text));
       }
       
       callback(); 
@@ -85,7 +85,7 @@ io.on('connection', (socket) => {
       // Send room info
       io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
     
-      io.to(room.id).emit('newMessage', generateMessage('Admin', `${user.name} has left the chat.`));
+      io.to(room.id).emit('newMessage', generateMessage('Admin', -1, `${user.name} has left the chat.`));
     }
   });
 });
