@@ -5,7 +5,7 @@ const socketIO = require('socket.io');
 
 const {Rooms} = require('./utils/rooms');
 const {User} = require('./utils/user');
-const {generateMessage} = require('./utils/message');
+const {generateMessage, generateAlert} = require('./utils/message');
 const {isRealString} = require('./utils/validation');
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
@@ -48,11 +48,11 @@ io.on('connection', (socket) => {
     var username = params.name;
     io.to(socket.id).emit('playerInfo', {id, username} );
 
-    socket.emit('newMessage', generateMessage('Admin', -1, 'Welcome to the chat app'));
+    socket.emit('newAlert', generateAlert('Welcome to the chat app'));
     if (rooms.getUsers(room.id).length > 1) {
-      socket.broadcast.to(room.id).emit('newMessage', generateMessage('Admin', -1, `${params.name} user joined`));
+      socket.broadcast.to(room.id).emit('newAlert', generateAlert(`${params.name} joined the chat`));
     } else {
-      socket.emit('newMessage', generateMessage('Admin', -1, 'Please wait for someone to join'));
+      socket.emit('newAlert', generateAlert('Please wait for someone to join'));
     }
 
     callback();
@@ -85,7 +85,7 @@ io.on('connection', (socket) => {
       // Send room info
       io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
     
-      io.to(room.id).emit('newMessage', generateMessage('Admin', -1, `${user.name} has left the chat.`));
+      io.to(room.id).emit('newAlert', generateAlert(`${user.name} has left the chat.`));
     }
   });
 });

@@ -9,4 +9,11 @@ var generateMessage = (from, id, text) => {
   };
 };
 
-module.exports = {generateMessage};
+var generateAlert = (text) => {
+  return {
+    text,
+    createdAt: moment().valueOf()
+  }
+}
+
+module.exports = {generateMessage, generateAlert};

@@ -68,6 +68,19 @@ socket.on('newMessage', function (message) {
   scrollToBottom();
 });
 
+socket.on('newAlert', function (message) {
+  var formattedTime = moment(message.createdAt).format('HH:mm');
+
+  var template = jQuery('#alert-template').html();
+
+  var html = Mustache.render(template, {
+    text: message.text
+  });
+
+  jQuery('#messages').append(html);
+  scrollToBottom();
+});
+
 var sendButton = jQuery('#send-button');
 sendButton.attr('disabled', 'disabled');
 var messageTextbox = jQuery('[name=message]');

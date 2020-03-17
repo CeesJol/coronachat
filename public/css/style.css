@@ -169,7 +169,7 @@ button:active {
 
 .chat__main {
   position: relative;
-  height: calc(100% - 0px);
+  height: 100vh;
   width: calc(100% - 250px);
   background-color: rgb(235, 235, 240);
 }
@@ -186,6 +186,11 @@ button:active {
 .chat__messages,
 .chat__sidebar ol  {
     list-style-type: none
+}
+
+.chat__messages {
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .message-container {
@@ -239,6 +244,20 @@ button:active {
   padding-bottom: 10px;
   padding-right: 50px;
   padding-top: 10px;
+}
+
+.alert-container {
+  position: relative;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.alert {
+  position: relative;
+  background: rgb(140, 170, 255);
+  padding: 5px 15px;
+  display: inline-block;
+  border-radius: .25rem;
 }
 
 @media only screen and (min-width: 800px) {
