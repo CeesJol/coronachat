@@ -10,10 +10,13 @@
 </head>
 
 <body class="chat">
+  <div class="container">
   <div class="chat__sidebar">
-    <h3>People</h3>
-    <p id="status">Loading...</p>
-    <div id="users"></div>
+    <div class="chat__sidebar-content">
+      <h1>People</h1>
+      <p id="status">Loading...</p>
+      <div id="users"></div>
+    </div>
   </div>
 
   <div class="chat__main">
@@ -26,11 +29,12 @@
 
     <div class="chat__footer">
       <form id="message-form">
-        <input name="message" type="text" placeholder="Message" autofocus autocomplete="off"/>
+        <input name="message" type="text" placeholder="Message" id="chat-message" autofocus autocomplete="off"/>
     
         <button id="send-button">Send</button>
       </form>
     </div>
+  </div>
   </div>
 
   <script id="message-template" type="text/template">

@@ -11,7 +11,7 @@
     <div class="container">
       <div class="content">
         <div class="centered-form__form left">
-          <div>
+          <div class="left-content">
             <p class="title title-1">Corona</p>
             <p class="title title-2">Chat</p>
             <p class="subtitle">Anonymous chatting</p>
@@ -19,25 +19,27 @@
         </div>
 
         <div class="centered-form__form right">
-          <form action='/chat.html'>
-            <div class="form-field">
-              <h3>JOIN A CHAT</h3>
+          <div class="right-content">
+            <form action='/chat.html'>
+              <div class="form-field">
+                <h3>JOIN A CHAT</h3>
+                <br>
+                <p>
+                  Talk to other people who have been socially isolated, anonymously.
+                </p>
+                <br>
+              </div>
+              <div class="form-field">
+                <label>Display name</label>
+                <br>
+                <input type="text" name="name" placeholder="Chat name" id="chat-name" required />
+              </div>
               <br>
-              <p>
-                Talk to other people who have been socially isolated, anonymously.
-              </p>
-              <br>
-            </div>
-            <div class="form-field">
-              <label>Display name</label>
-              <br>
-              <input type="text" name="name" placeholder="Chat name" required />
-            </div>
-            <br>
-            <div class="form-field">
-              <button id="join-button">JOIN</button>
-            </div>
-          </form>
+              <div class="form-field">
+                <button id="join-button">JOIN</button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
