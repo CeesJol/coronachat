@@ -6,6 +6,7 @@ sendButton.attr('disabled', 'disabled');
 var messageTextbox = jQuery('[name=message]');
 var sendEnabled = false;
 var overlay = jQuery('#overlay');
+var chatUsers;
 
 socket.on('userInfo', function(data) {
   userID = data.id;
@@ -85,6 +86,8 @@ messageTextbox.on('input', function(e) {
 });
 
 socket.on('updateUserList', function(users) {
+  chatUsers = users;
+
   if (userID != -1) {
     var title = jQuery('#title');
 
@@ -96,9 +99,6 @@ socket.on('updateUserList', function(users) {
 
     if (users.length > 1) {
       overlay.hide();
-    } else {
-      
-      
     }
   }
 });
@@ -106,6 +106,8 @@ socket.on('updateUserList', function(users) {
 socket.on('userLeft', function(username) {
   createAlert(username + ' has left the chat.');
 
-  setTimeout(function() { createRefreshAlert(); }, 1000);
+  setTimeout(function() { 
+    if (chatUsers.length <= 1) createRefreshAlert(); 
+  }, 1000);
 });
 

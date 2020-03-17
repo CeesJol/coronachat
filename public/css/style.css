@@ -136,7 +136,7 @@ input {
   margin-top: .5rem;
 }
 #chat-message {
-  width: calc(100% - 188px);
+  width: calc(100% - 11.5rem);
   float: left;
 }
 
@@ -214,6 +214,7 @@ button:active {
 .chat__header-content {
   position: relative;
   left: 50px;
+  width: calc(100% - 50px);
 }
 
 
@@ -300,7 +301,7 @@ button:active {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .pop {
@@ -313,6 +314,7 @@ button:active {
   background-color: white;
   text-align: center;
   padding: 25px;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, .1);
 }
 .pop-header {
   left: 0;
