@@ -24,8 +24,11 @@ body {
 .chat__main {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100%
+  height: calc(100% - 100px);
+  width: 100%;
+  position: relative;
+  background-color: rgb(235, 235, 240);
+  float: left;
 }
 
 .chat__messages-container {
@@ -43,7 +46,7 @@ body {
 }
 
 .chat__messages,
-.chat__sidebar ol  {
+.chat__header ol  {
     list-style-type: none
 }
 
@@ -143,14 +146,6 @@ input:focus {
   border: 1px solid rgb(125, 145, 230);
 }
 
-/* input::-webkit-input-placeholder {
-  color: red;
-} */
-
-/* input:focus:invalid {
-  border: 1px solid rgb(255, 0, 0);
-} */
-
 label {
   font-size: 1rem;
   color: rgb(105, 120, 170);
@@ -190,7 +185,7 @@ button:disabled {
   background: #698ea5
 }
 
-button:hover,
+button:hover:enabled,
 button:focus {
   background: rgb(70, 95, 200);
 }
@@ -205,22 +200,23 @@ button:active {
 }
 
 
-.chat__sidebar {
+.chat__header {
   position: relative;
-  width: 200px;
-  height: calc(100% - 50px);
+  width: calc(100% - 50px);
+  height: 50px;
   float: left;
-  background-image: linear-gradient(rgb(30, 40, 70), rgb(10, 20, 40));
-  color: white;
+  background: rgb(220, 220, 225);
+  color: rgb(0, 0, 50);
   padding: 25px;
+  margin: 0;
 }
 
-.chat__main {
+.chat__header-content {
   position: relative;
-  height: 100vh;
-  width: calc(100% - 250px);
-  background-color: rgb(235, 235, 240);
+  left: 50px;
 }
+
+
 
 .chat__footer {
   position: absolute;
@@ -237,7 +233,7 @@ button:active {
   width: 100%;
   height: auto;
   float: left;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
 }
 
 .message {
@@ -279,10 +275,9 @@ button:active {
 }
 
 .message__body {
-  /* padding-top: 10px; */
-  padding-bottom: 10px;
+  padding-bottom: .7rem;
   padding-right: 50px;
-  padding-top: 10px;
+  padding-top: .7rem;
 }
 
 .alert-container {
@@ -300,6 +295,16 @@ button:active {
   max-width: calc(100% - 50px);
 }
 
+
+
+
+
+
+
+
+
+
+
 @media only screen and (min-width: 800px) {
   .centered-form__form {
     float: left;
@@ -311,10 +316,10 @@ button:active {
     width: calc(55% - 140px);
     text-align: justify;
   }
-
+/* 
   .chat__main {
     float: right;
-  }
+  } */
 }
 
 @media only screen and (max-width: 799px) {
@@ -361,30 +366,6 @@ button:active {
 
   #join-button {
     font-size: 1.2rem;
-  }
-
-  .chat__sidebar {
-    width: calc(100% - 50px);
-    height: 50px;
-    padding: 25px;
-    margin: 0;
-  }
-
-  .chat__sidebar-content {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 400px;
-  }
-
-  .chat__main {
-    position: relative;
-    width: 100%;
-    height: calc(100% - 100px);
-    float: left;
-  }
-
-  .chat__footer {
-    
   }
 }
 

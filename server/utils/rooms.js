@@ -128,6 +128,28 @@ class Rooms {
       return this.addRoom();
     }
   }
+
+  // Merge rooms
+  // merge() {
+  //   for (var i = 0; i < this.rooms.length - 1; i++) {
+  //     var room1 = this.rooms[i];
+  //     if (room1.users.length == 1) {
+  //       for (var j = i + 1; j < this.rooms.length; j++) {
+  //         var room2 = this.rooms[j];
+  //         if (room2.users.length == 1) {
+  //           // Merge the rooms
+  //           console.log('Rooms ' + i + ' and ' + j + ' will be merged.');
+  //           var movedUser = room2.users[0];
+  //           room1.users.push(movedUser);
+  //           room2.users = [];
+  //           break;
+  //         }
+  //       }
+  //     }
+  //   }
+
+  //   return this.rooms;
+  // }
 };
 
 module.exports = {Rooms};

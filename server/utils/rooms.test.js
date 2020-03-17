@@ -99,9 +99,7 @@ describe('Rooms', () => {
   it ('should remove the user', () => {
     var startLength = rooms.rooms[1].users.length;
 
-    var user = rooms.rooms[1].users[0];
-
-    console.log('user is ' + user);
+    var user = rooms.rooms[1].users[0]; 
 
     var resUser = rooms.removeUser(1);
 
@@ -123,4 +121,21 @@ describe('Rooms', () => {
 
     expect(room.id).toEqual(roomId + 1);
   });
+
+  // it('should merge the rooms', () => {
+  //   var rooms = new Rooms();
+
+  //   rooms.rooms = [{
+  //     id: roomId,
+  //     users: [new User(1, 'Mike', roomId)]
+  //   }, {
+  //     id: roomId + 1,
+  //     users: [new User(2, 'Mike', roomId)],
+  //   }];
+
+  //   rooms = rooms.merge();
+
+  //   expect(rooms[0].users.length).toEqual(2);
+  //   expect(rooms[1].users.length).toEqual(0);
+  // })
 });
