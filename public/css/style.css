@@ -2,6 +2,7 @@
 
 body {
   font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
 }
 
 h1, h3, h6, p {
@@ -50,7 +51,7 @@ h1, h3, h6, p {
 }
 
 .title {
-  font-size: 60px;
+  font-size: 4rem;
   font-weight: bold;
 }
 
@@ -67,7 +68,7 @@ h1, h3, h6, p {
 }
 
 h3 {
-  font-size: 30px;
+  font-size: 2rem;
   color: rgb(0, 0, 50);
   font-weight: 600;
 }
@@ -146,9 +147,19 @@ label {
     float: left;
     margin: 0px;
   }
+
+  .right {
+    padding-right: 100px;
+    width: calc(55% - 140px);
+    text-align: justify;
+  }
 }
 
 @media only screen and (max-width: 899px) {
+  html, body {
+    font-size: 13px;
+  }
+
   .left {
     width: calc(100% - 50px);
     height: auto;
@@ -169,7 +180,11 @@ label {
   }
 
   .title {
-    display:inline;
+    display: inline;
+  }
+
+  #join-button {
+    font-size: 1.2rem;
   }
 }
 
