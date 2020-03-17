@@ -13,19 +13,17 @@
   <div class="container">
   <div class="chat__sidebar">
     <div class="chat__sidebar-content">
-      <h1>People</h1>
+      <h1 id="title">Waiting...</h1>
       <p id="status">Loading...</p>
       <div id="users"></div>
     </div>
   </div>
 
   <div class="chat__main">
-    <ol id="messages" class="chat__messages">
-      <!--
-        ...
-        ...
-      -->
-    </ol>
+    <div class="chat__messages-container">
+      <ol id="messages" class="chat__messages">
+      </ol>
+    </div>
 
     <div class="chat__footer">
       <form id="message-form">
@@ -38,8 +36,8 @@
   </div>
 
   <script id="message-template" type="text/template">
-    <div class="message-container">
-      <li class="message">
+    <li class="message-container">
+      <div class="message">
         <div class="message__title message__title-white">
           <!--<h4>{{from}}</h4>-->
           <span>{{createdAt}}</span>
@@ -47,30 +45,30 @@
         <div class="message__body message__body-white">
           <p>{{text}}</p>
         </div>
-      </li>
-    </div>
+      </div>
+    </li>
   </script>
 
   <script id="message-template-color" type="text/template">
-    <div class="message-container">
-      <li class="message message-color">
+    <li class="message-container">
+      <div class="message message-color">
         <div class="message__title message__title-color">
           <span>{{createdAt}}</span>
         </div>
         <div class="message__body message__body-color">
           <p>{{text}}</p>
         </div>
-      </li>
-    </div>
+      </div>
+    </li>
   </script>
 
   <!-- TODO fix -->
   <script id="alert-template" type="text/template">
-    <div class="alert-container">
+    <li class="alert-container">
       <div class="alert">
         <p>{{text}}</p>
       </div>
-    </div>
+    </li>
   </script>
 
   <script src="socket.io/socket.io.js"></script>
@@ -78,6 +76,7 @@
   <script src='js/libs/moment.js'></script>
   <script src='js/libs/mustache.min.js'></script>
   <script src='js/libs/deparam.js'></script>
+  <script src='js/general.js'></script>
   <script src="js/chat.js"></script>
 </body>
 

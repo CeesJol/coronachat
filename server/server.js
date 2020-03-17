@@ -21,6 +21,8 @@ io.on('connection', (socket) => {
     // Validate data
     if (!isRealString(params.name)) {
       callback('Invalid name');
+    } else if (params.name.length > 20) {
+      callback('Name is too long (max: 20 characters)');
     }
 
     // Find best room
@@ -40,13 +42,13 @@ io.on('connection', (socket) => {
 
     console.log(params.name + ' joined room: ' + room.id);
 
-    // Send room info
-    io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
-
     // Send player info
     var id = socket.id;
     var username = params.name;
-    io.to(socket.id).emit('playerInfo', {id, username} );
+    io.to(socket.id).emit('userInfo', {id, username} );
+
+    // Send room info
+    io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
 
     socket.emit('newAlert', generateAlert('Welcome to the chat app'));
     if (rooms.getUsers(room.id).length > 1) {
@@ -56,6 +58,12 @@ io.on('connection', (socket) => {
     }
 
     callback();
+  });
+
+  socket.on('requestUserList', (userID) => {
+    // Send room info
+    var room = rooms.getRoomOfUser(userID)
+    io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
   });
 
   socket.on('createMessage', (message, callback) => {
@@ -91,7 +99,7 @@ io.on('connection', (socket) => {
 });
 
 server.listen(port, () => {
-  console.log('\n');
+  console.log();
   console.log('-----------------------');
   console.log(`Server is up on port ${port}`);
 });

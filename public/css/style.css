@@ -1,9 +1,53 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap');
 
+/**
+ * Removes weird margin
+ * TODO find a better way to fix this, the universal selector sucks!
+ */
+* {
+  margin: 0;
+}
+
 body {
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
 }
+
+#status {
+  color: rgb(77, 77, 88);
+}
+
+.chat {
+  display: flex
+}
+
+.chat__main {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%
+}
+
+.chat__messages-container {
+  position: relative;
+  height: calc(100% - 70px);
+}
+
+.chat__messages {
+  position: relative;
+  height: 100%;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  flex-grow: 1;
+  padding: 10px
+}
+
+.chat__messages,
+.chat__sidebar ol  {
+    list-style-type: none
+}
+
+
 
 h1, h3, h6, p {
   margin: 0;
@@ -12,7 +56,6 @@ h1, h3, h6, p {
 
 .centered-form__form {
   position: relative;
-  background-color: red;
   padding: 40px;
   width: 100px;
   height: 100px;
@@ -21,7 +64,7 @@ h1, h3, h6, p {
 .container {
   background-image: linear-gradient(rgb(90, 90, 110), rgb(60, 60, 80));
   width: 100%;
-  height: 100%;
+  height: 100vh;
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
 }
@@ -142,6 +185,11 @@ button {
   padding: .7rem 3rem;
 }
 
+button:disabled {
+  cursor: default;
+  background: #698ea5
+}
+
 button:hover,
 button:focus {
   background: rgb(70, 95, 200);
@@ -160,7 +208,7 @@ button:active {
 .chat__sidebar {
   position: relative;
   width: 200px;
-  height: calc(100% - 0px);
+  height: calc(100% - 50px);
   float: left;
   background-image: linear-gradient(rgb(30, 40, 70), rgb(10, 20, 40));
   color: white;
@@ -181,16 +229,7 @@ button:active {
   padding: 15px;
   bottom: 0;
   width: calc(100% - 30px);
-}
-
-.chat__messages,
-.chat__sidebar ol  {
-    list-style-type: none
-}
-
-.chat__messages {
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
+  margin-top: 30px;
 }
 
 .message-container {
@@ -198,6 +237,7 @@ button:active {
   width: 100%;
   height: auto;
   float: left;
+  margin-bottom: 10px;
 }
 
 .message {
@@ -206,7 +246,6 @@ button:active {
   width: auto;
   max-width: calc(100% - 200px);
   border-radius: .5rem;
-  margin: 10px;
   padding-left: 10px;
   padding-right: 10px;
   float: left;
@@ -258,6 +297,7 @@ button:active {
   padding: 5px 15px;
   display: inline-block;
   border-radius: .25rem;
+  max-width: calc(100% - 50px);
 }
 
 @media only screen and (min-width: 800px) {
