@@ -5,6 +5,7 @@ var sendButton = jQuery('#send-button');
 sendButton.attr('disabled', 'disabled');
 var messageTextbox = jQuery('[name=message]');
 var sendEnabled = false;
+var overlay = jQuery('#overlay');
 
 socket.on('userInfo', function(data) {
   userID = data.id;
@@ -92,17 +93,19 @@ socket.on('updateUserList', function(users) {
         title.html(user.name);
       }
     });
+
+    if (users.length > 1) {
+      overlay.hide();
+    } else {
+      
+      
+    }
   }
-
-
-  // var ol = jQuery('<ol></ol>');
-
-  // users.forEach(function(user) {
-  //   ol.append(jQuery('<li></li>').text(user.name));
-  //   console.log(user.name);
-  // });
-
-  // jQuery('#users').html(ol);
 });
 
+socket.on('userLeft', function(username) {
+  createAlert(username + ' has left the chat.');
+
+  setTimeout(function() { createRefreshAlert(); }, 1000);
+});
 

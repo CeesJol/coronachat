@@ -13,6 +13,23 @@ function createAlert(messageText) {
   jQuery('#messages').append(html);
 }
 
+/**
+ * Create alert, allowing user to refresh the page and find a new chat partner
+ */
+function createRefreshAlert() {
+  var template = jQuery('#alert-refresh-template').html();
+
+  var html = Mustache.render(template, {});
+
+  jQuery('#messages').append(html);
+}
+
+/**
+ * Create a message
+ * @param {*} from from
+ * @param {*} id id
+ * @param {*} messageText text of message
+ */
 function createMessage(from, id, messageText) {
   socket.emit('createMessage', {
     from: from,
@@ -45,16 +62,26 @@ function scrollToBottom() {
   }
 }
 
+/**
+ * Disable the send button
+ */
 function disableSendButton() {
   sendButton.attr('disabled', 'disabled');
   sendEnabled = false;
 }
 
+/**
+ * Enable the send button
+ */
 function enableSendButton() {
   sendButton.removeAttr('disabled');
   sendEnabled = true;
 }
 
+/**
+ * Set the dev status
+ * @param {*} x the status
+ */
 function setStatus(x) {
   jQuery('#status').text('Dev status: ' + x);
 }

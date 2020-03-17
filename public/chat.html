@@ -7,6 +7,7 @@
   <title>Chat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/loading_animation.css">
 </head>
 
 <body class="chat">
@@ -33,6 +34,22 @@
       </form>
     </div>
   </div>
+  </div>
+
+  <div id="overlay" class="overlay">
+    <div class="pop">
+      <div class="pop-header">
+        <p>Waiting for someone to join your chat...</p>
+      </div>
+
+      <div class="pop-body">
+        <div class="loading-animation">
+          <div class="loadingio-spinner-eclipse-osisb6eiupo"><div class="ldio-8w8am58tzjr">
+          <div></div>
+          </div></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script id="message-template" type="text/template">
@@ -62,11 +79,18 @@
     </li>
   </script>
 
-  <!-- TODO fix -->
   <script id="alert-template" type="text/template">
     <li class="alert-container">
       <div class="alert">
         <p><i>{{text}}</i></p>
+      </div>
+    </li>
+  </script>
+
+  <script id="alert-refresh-template" type="text/template">
+    <li class="alert-container">
+      <div class="alert">
+        <p><i><a href='javascript:location.reload();'>Search for another stranger</a></i></p>
       </div>
     </li>
   </script>

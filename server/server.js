@@ -93,7 +93,8 @@ io.on('connection', (socket) => {
       // Send room info
       io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
     
-      io.to(room.id).emit('newAlert', generateAlert(`${user.name} has left the chat.`));
+      var username = user.name;
+      io.to(room.id).emit('userLeft', username);
     }
   });
 });
