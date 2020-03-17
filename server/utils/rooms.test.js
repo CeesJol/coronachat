@@ -16,10 +16,10 @@ describe('Rooms', () => {
       users: []
     }, {
       id: roomId + 1,
-      users: [new User(1, roomId)],
+      users: [new User(1, 'Mike', roomId)],
     }];
 
-    user = new User(2, roomId);
+    user = new User(2, 'Katie', roomId);
   });
 
   it('should add a room with users', () => {
@@ -77,13 +77,13 @@ describe('Rooms', () => {
     expect(users).toEqual(rooms.rooms[0].users);
   });
 
-  // it ('should add the user', () => {
-  //   var user = new User(3, roomId + 1);
+  it ('should add the user', () => {
+    var user = new User(3, 'Cees', roomId);
 
-  //   rooms.addUser(roomId + 1, user);
+    rooms.addUser(roomId, user);
 
-  //   expect(rooms.rooms[1].users).toEqual([user]);
-  // });
+    expect(rooms.rooms[0].users).toEqual([user]);
+  });
 
   // it('should get the user', () => {
   //   var startLength = rooms.rooms[0].users.length;

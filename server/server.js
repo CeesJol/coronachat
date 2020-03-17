@@ -17,8 +17,6 @@ var rooms = new Rooms();
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
-  console.log('New user connected');
-
   socket.on('join', (params, callback) => {
     // Validate data
     if (!isRealString(params.name)) {
@@ -29,7 +27,7 @@ io.on('connection', (socket) => {
     var room = rooms.findBestRoom();
 
     // Create user
-    var me = new User(socket.id, room.id);
+    var me = new User(socket.id, params.name, room.id);
 
     // Add user to a room
     rooms.addUser(room.id, me);
@@ -40,7 +38,10 @@ io.on('connection', (socket) => {
     // Join user to itself
     socket.join(socket.id);
 
-    console.log(socket.id + ' joined room: ' + room.id);
+    console.log(params.name + ' joined room: ' + room.id);
+
+    // Send room info
+    io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
 
     // Send player info
     var id = socket.id;
@@ -48,25 +49,49 @@ io.on('connection', (socket) => {
     io.to(socket.id).emit('playerInfo', {id, username} );
 
     socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
-    socket.broadcast.to(room.id).emit('newMessage', generateMessage('Admin', `${params.name} user joined`));
+    if (rooms.getUsers(room.id).length > 1) {
+      socket.broadcast.to(room.id).emit('newMessage', generateMessage('Admin', `${params.name} user joined`));
+    } else {
+      socket.emit('newMessage', generateMessage('Admin', 'Please wait for someone to join'));
+    }
 
     callback();
   });
 
   socket.on('createMessage', (message, callback) => {
-    console.log('createMessage', message);
-    var room = rooms.getRoomOfUser(message.fromID);
-    io.to(room.id).emit('newMessage', generateMessage(message.from, message.text));
-    callback(); 
+    try{
+      console.log("'" + message.from + ": " + message.text + "'");
+      var room = rooms.getRoomOfUser(message.fromID);
+
+      if (room && isRealString(message.text)) {
+        io.to(room.id).emit('newMessage', generateMessage(message.from, message.text));
+      }
+      
+      callback(); 
+    } catch(e) {
+      console.log('createMessage ERROR: ' + e);
+    }
   });
 
   socket.on('disconnect', () => {
-    console.log('User was disconnected');
+    var user = rooms.getUser(socket.id);
+    var room = rooms.getRoomOfUser(socket.id);
+
+    rooms.removeUser(socket.id);
+
+    console.log(`User ${user.name} disconnected`);
+
+    if (rooms.getUsers(room.id).length > 0) {
+      // Send room info
+      io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
+    
+      io.to(room.id).emit('newMessage', generateMessage('Admin', `${user.name} has left the chat.`));
+    }
   });
 });
 
 server.listen(port, () => {
   console.log('\n');
   console.log('-----------------------');
-  console.log(`Server is up on ${port}`);
+  console.log(`Server is up on port ${port}`);
 });

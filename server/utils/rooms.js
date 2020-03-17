@@ -17,7 +17,7 @@ class Rooms {
     var room = {id, users};
     this.rooms.push(room);
 
-    console.log('Created new room with id ' + room.id);
+    console.log(' >> CREATED ROOM ' + room.id);
 
     return room;
   }
@@ -30,6 +30,8 @@ class Rooms {
     // If the room exists, remove it from the array
     if (room) {
       this.rooms = this.rooms.filter((room) => room.id !== id);
+
+      console.log(' << DELETED ROOM ' + room.id);
     }
 
     return room;
@@ -65,9 +67,7 @@ class Rooms {
   // Get a user from a room
   getUser(userId) {
     // Find the user's room
-    var room = this.rooms.filter((room) => {
-      return room.users.filter((user) => user.id === userId)[0];
-    })[0];
+    var room = this.getRoomOfUser(userId);
 
     if (!room) return undefined;
 
@@ -84,9 +84,7 @@ class Rooms {
   // TODO remove the room if empty?
   removeUser(userId) {
     // Find the user's room
-    var room = this.rooms.filter((room) => {
-      return room.users.filter((user) => user.id === userId)[0];
-    })[0];
+    var room = this.getRoomOfUser(userId);
 
     // Select the users
     var users = this.getUsers(room.id);
@@ -98,6 +96,12 @@ class Rooms {
     if (cur) {
       room.users = room.users.filter((user) => user.id !== userId);
     }
+
+    // If the room is empty, remove it
+    // TODO TEST THIS
+    // if (room.users.length == 0) {
+    //   this.removeRoom(room.id);
+    // }
 
     // Return the removed user
     return cur;

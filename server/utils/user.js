@@ -1,8 +1,8 @@
 
 class User {
-  constructor(id, roomId) {
+  constructor(id, name, roomId) {
     this.id = id;
-    this.name = "user";
+    this.name = name;
     this.roomId = roomId;
   }
 };
