@@ -6,6 +6,7 @@ sendButton.attr('disabled', 'disabled');
 var messageTextbox = jQuery('[name=message]');
 var sendEnabled = false;
 var overlay = jQuery('#overlay');
+var inputField = jQuery('#chat-message');
 var chatUsers;
 
 socket.on('userInfo', function(data) {
@@ -73,14 +74,17 @@ jQuery('#message-form').on('submit', function(e) {
 
   setStatus('Sending message...');
 
+  // focus on input area
+  inputField.focus();   
+
   createMessage(username, userID, messageTextbox.val())
 });
 
 // Detect input changes in textfield, and set send-button to disabled or not
 messageTextbox.on('input', function(e) {
-  if (sendEnabled && messageTextbox.val() == '') {
+  if (sendEnabled && !isRealString(messageTextbox.val())) {
     disableSendButton();
-  } else if (!sendEnabled && messageTextbox.val() !== '') {
+  } else if (!sendEnabled && isRealString(messageTextbox.val())) {
     enableSendButton();
   }
 });
@@ -99,6 +103,9 @@ socket.on('updateUserList', function(users) {
 
     if (users.length > 1) {
       overlay.hide();
+
+      // focus on input area
+      inputField.focus();      
     }
   }
 });
