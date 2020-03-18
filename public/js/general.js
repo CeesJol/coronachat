@@ -11,6 +11,8 @@ function createAlert(messageText) {
   });
 
   jQuery('#messages').append(html);
+
+  scrollToBottom();
 }
 
 /**
@@ -24,6 +26,8 @@ function createRefreshAlert(messageText) {
   });
 
   jQuery('#messages').append(html);
+
+  scrollToBottom();
 }
 
 /**
@@ -43,24 +47,24 @@ function createMessage(from, id, messageText) {
 }
 
 /**
- * Scroll to bottom, if user is near bottom
+ * Scroll to bottom, always
  */
 function scrollToBottom() {
   // Selectors
   var messages = jQuery('#messages');
-  var newMessage = messages.children('li:last-child');
+  // var newMessage = messages.children('li:last-child');
 
   // Heights
-  var clientHeight = messages.prop('clientHeight');
-  var scrollTop = messages.prop('scrollTop');
-  var newMessageHeight = newMessage.innerHeight();
-  var lastMessageHeight = newMessage.prev().innerHeight();
+  // var clientHeight = messages.prop('clientHeight');
+  // var scrollTop = messages.prop('scrollTop');
+  // var newMessageHeight = newMessage.innerHeight();
+  // var lastMessageHeight = newMessage.prev().innerHeight();
 
   var scrollHeight = messages.prop('scrollHeight');
 
-  if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+  // if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
     messages.scrollTop(scrollHeight);
-  }
+  // }
 }
 
 /**

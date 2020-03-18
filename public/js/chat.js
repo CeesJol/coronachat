@@ -51,7 +51,6 @@ socket.on('connect', function() {
 
 socket.on('disconnect', function() {
   createAlert('Lost connection to server :(');
-  scrollToBottom();
 
   console.log('Disconnected from server');
 
@@ -89,7 +88,6 @@ socket.on('newMessage', function (message) {
 
 socket.on('newAlert', function (message) {
   createAlert(message.text);
-  scrollToBottom();
 });
 
 jQuery('#message-form').on('submit', function(e) {
