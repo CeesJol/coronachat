@@ -2,6 +2,7 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
+var xss = require("xss");
 
 const {Rooms} = require('./utils/rooms');
 const {User} = require('./utils/user');
@@ -20,7 +21,7 @@ app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
   socket.on('join', (params, callback) => {
-    params.name = sanitize(params.name);
+    params.name = xss(params.name);
 
     // Validate data
     if (!isRealString(params.name)) {
@@ -66,7 +67,7 @@ io.on('connection', (socket) => {
 
   socket.on('requestUserList', (userID) => {
     // Send room info
-    userID = sanitize(userID);
+    userID = xss(userID);
 
     var room = rooms.getRoomOfUser(userID);
     io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
@@ -75,8 +76,8 @@ io.on('connection', (socket) => {
   socket.on('sendStatus', (params, callback) => {
     try {
       // Send latest status
-      params.fromID = sanitize(params.fromID);
-      params.text = sanitize(params.text);
+      params.fromID = xss(params.fromID);
+      params.text = xss(params.text);
 
       var room = rooms.getRoomOfUser(params.fromID);
       var user = rooms.getUser(params.fromID);
@@ -90,9 +91,9 @@ io.on('connection', (socket) => {
 
   socket.on('createMessage', (message, callback) => {
     try {
-      message.from = sanitize(message.from);
-      message.fromID = sanitize(message.fromID);
-      message.text = sanitize(message.text);
+      message.from = xss(message.from);
+      message.fromID = xss(message.fromID);
+      message.text = xss(message.text);
 
       console.log("'" + message.from + ": " + message.text + "'");
       var room = rooms.getRoomOfUser(message.fromID);
