@@ -7,8 +7,10 @@ var overlay = jQuery('#overlay');
 var inputField = jQuery('#chat-message');
 var numberOfUsers = jQuery('#numberOfUsers');
 
-// Page-specific variables
+// Page-specific variables and constants
 var sendEnabled = false;
+const AUDIO_LOCATION = '/./audio/zapsplat_household_portable_light_switch_plastic_off_43559.mp3';
+var audio = new Audio(AUDIO_LOCATION);
 
 // Connection variables
 var connected = false;
@@ -128,6 +130,9 @@ socket.on('updateUserList', function(users) {
       if (user.id != userID) {
         title.html(user.name);
         createAlert('Now chatting with ' + user.name);
+
+        // Play sound
+        audio.play();     
       }
     });
 
