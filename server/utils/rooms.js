@@ -8,6 +8,7 @@ class Rooms {
   // Set up Rooms list
   constructor() {
     this.rooms = [];
+    this.userCount = 0;
   }
 
   // Add a room
@@ -48,13 +49,14 @@ class Rooms {
 
   // Get number of users
   numberOfUsers() {
-    var amount = 0;
+    return this.userCount;
+    // var amount = 0;
 
-    for (var room of this.rooms) {
-      amount += room.users.length;
-    }
+    // for (var room of this.rooms) {
+    //   amount += room.users.length;
+    // }
 
-    return amount;
+    // return amount;
   }
 
   // Get a room of a user
@@ -81,6 +83,8 @@ class Rooms {
       console.log("that room is now full.");
       room.open = false;
     }
+
+    this.userCount++;
 
     return user;
   }
@@ -122,6 +126,8 @@ class Rooms {
     if (room.users.length == 0) {
       room.open = false;
     }
+
+    this.userCount--;
 
     // Return the removed user
     return cur;

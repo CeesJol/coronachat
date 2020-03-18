@@ -134,10 +134,50 @@ describe('Rooms', () => {
     expect(rooms.rooms.length).toEqual(1);
   });
 
-  it('should count the users', () => {
-    var amount = rooms.numberOfUsers();
+  // it('should count the users', () => {
+  //   var amount = rooms.numberOfUsers();
 
-    expect(amount).toEqual(1);
+  //   expect(amount).toEqual(1);
+  // });
+
+  it('should count the users (1)', () => {
+    var rooms = new Rooms();
+
+    rooms.rooms = [{
+      id: roomId,
+      users: []
+    }, {
+      id: roomId + 1,
+      users: [],
+    }];
+
+    var user = new User(3, 'Cees', roomId);
+
+    rooms.addUser(roomId, user);
+
+    expect(rooms.numberOfUsers()).toEqual(1);
+  });
+
+  // Complicated test!
+  // - findBestRoom
+  // - addUser
+  // - numberOfUsers
+  it('should count the users (3)', () => {
+    var rooms = new Rooms();
+
+    var res1 = rooms.findBestRoom();
+    var res2 = rooms.findBestRoom();
+    var res3 = rooms.findBestRoom();
+
+    var user1 = new User(3, 'Cees', res1.id);
+    var user2 = new User(4, 'Ceessie', res2.id);
+    var user3 = new User(5, 'Ceenon', res3.id);
+    
+    rooms.addUser(res1.id, user1);
+    rooms.addUser(res2.id, user2);
+    rooms.addUser(res3.id, user3);
+
+    expect(rooms.numberOfUsers()).toEqual(3);
   });
 
   // it('should merge the rooms', () => {
