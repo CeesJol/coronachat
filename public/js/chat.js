@@ -8,6 +8,7 @@ var sendEnabled = false;
 var overlay = jQuery('#overlay');
 var inputField = jQuery('#chat-message'); // same as messageTextbox? TODO
 var chatUsers;
+var connected = false;
 
 socket.on('userInfo', function(data) {
   userID = data.id;
@@ -17,29 +18,41 @@ socket.on('userInfo', function(data) {
 });
 
 socket.on('connect', function() {
-  console.log('Connected to server');
+  if (!connected) {
+    console.log('Connected to server');
 
-  var params = jQuery.deparam(window.location.search);
+    var params = jQuery.deparam(window.location.search);
+    username = params.name;
 
-  username = params.name;
+    socket.emit('join', params, function(err) {
+      if (err) {
+        alert(err);
+        window.location.href = '/';
+      }
+    });
 
-  socket.emit('join', params, function(err) {
-    if (err) {
-      alert(err);
-      window.location.href = '/';
-    }
-  });
+    connected = true;
 
-  setButton('Send');
+    setButton('Send');
+  }
 });
 
 socket.on('disconnect', function() {
   createAlert('Lost connection to server :(');
   scrollToBottom();
 
-  console.log('Disconnected to server');
+  console.log('Disconnected from server');
 
   setButton('Offline');
+  disableSendButton();
+  disableInput();
+  setStatus('Offline');
+
+  setTimeout(function() { 
+    createRefreshAlert('Reconnect'); 
+  }, 1000);
+
+  socket.disconnect();
 });
 
 socket.on('newMessage', function (message) {
@@ -125,7 +138,7 @@ socket.on('userLeft', function(username) {
   createAlert(username + ' has left the chat.');
 
   setTimeout(function() { 
-    if (chatUsers.length <= 1) createRefreshAlert(); 
+    createRefreshAlert('Search for another stranger'); 
   }, 1000);
 });
 

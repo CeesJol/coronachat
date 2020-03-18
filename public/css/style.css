@@ -140,6 +140,11 @@ input {
   width: calc(100% - 11.5rem);
   float: left;
 }
+#chat-message:disabled {
+  color: rgb(155, 155, 166);
+}
+
+
 
 input:focus {
   outline: none;

@@ -16,10 +16,12 @@ function createAlert(messageText) {
 /**
  * Create alert, allowing user to refresh the page and find a new chat partner
  */
-function createRefreshAlert() {
+function createRefreshAlert(messageText) {
   var template = jQuery('#alert-refresh-template').html();
 
-  var html = Mustache.render(template, {});
+  var html = Mustache.render(template, {
+    text: messageText
+  });
 
   jQuery('#messages').append(html);
 }
@@ -75,6 +77,20 @@ function disableSendButton() {
 function enableSendButton() {
   sendButton.removeAttr('disabled');
   sendEnabled = true;
+}
+
+/**
+ * Disable the input field
+ */
+function disableInput() {
+  inputField.attr('disabled', 'disabled');
+}
+
+/**
+ * Enable the input field
+ */
+function enableInput() {
+  inputField.removeAttr('disabled');
 }
 
 /**
