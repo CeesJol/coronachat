@@ -65,12 +65,29 @@ io.on('connection', (socket) => {
   socket.on('requestUserList', (userID) => {
     // Send room info
     userID = sanitize(userID);
-    var room = rooms.getRoomOfUser(userID)
+
+    var room = rooms.getRoomOfUser(userID);
     io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
   });
 
+  socket.on('sendStatus', (params, callback) => {
+    try {
+      // Send latest status
+      params.fromID = sanitize(params.fromID);
+      params.text = sanitize(params.text);
+
+      var room = rooms.getRoomOfUser(params.fromID);
+      var user = rooms.getUser(params.fromID);
+      socket.broadcast.to(room.id).emit('newStatus', params.text); 
+
+      callback();
+    } catch(e) {
+      console.log('createMessage ERROR: ' + e);
+    }
+  });
+
   socket.on('createMessage', (message, callback) => {
-    try{
+    try {
       message.from = sanitize(message.from);
       message.fromID = sanitize(message.fromID);
       message.text = sanitize(message.text);

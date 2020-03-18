@@ -78,11 +78,25 @@ function enableSendButton() {
 }
 
 /**
- * Set the dev status
+ * Send a new chat status
+ * @param {*} x the status
+ */
+function sendStatus(id, x) {
+  console.log('id: ' + id, 'x: ' + x);
+  socket.emit('sendStatus', {
+    fromID: id,
+    text: x
+  }, function() {
+    
+  }); 
+}
+
+/**
+ * Set the chat status
  * @param {*} x the status
  */
 function setStatus(x) {
-  jQuery('#status').text('Dev status: ' + x);
+  jQuery('#status').text(x);
 }
 
 /**

@@ -71,6 +71,7 @@ jQuery('#message-form').on('submit', function(e) {
   e.preventDefault();
 
   disableSendButton();
+  sendStatus(userID, 'Online');
 
   setButton('Sending...');
 
@@ -87,8 +88,10 @@ jQuery('#message-form').on('submit', function(e) {
 messageTextbox.on('input', function(e) {
   if (sendEnabled && !isRealString(messageTextbox.val())) {
     disableSendButton();
+    sendStatus(userID, 'Online');
   } else if (!sendEnabled && isRealString(messageTextbox.val())) {
     enableSendButton();
+    sendStatus(userID, username + ' is typing...');
   }
 });
 
@@ -112,6 +115,10 @@ socket.on('updateUserList', function(users) {
       inputField.focus();      
     }
   }
+});
+
+socket.on('newStatus', function(status) {
+  setStatus(status);
 });
 
 socket.on('userLeft', function(username) {

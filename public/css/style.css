@@ -15,6 +15,7 @@ body {
 
 #status {
   color: rgb(77, 77, 88);
+  font-style: italic;
 }
 
 .chat {
