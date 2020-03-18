@@ -117,8 +117,12 @@ io.on('connection', (socket) => {
       // Send room info
       io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
     
+      // Send user left info
       var username = user.name;
       io.to(room.id).emit('userLeft', username);
+
+      // Send status info
+      io.to(room.id).emit('newStatus', 'Offline'); 
     }
   });
 });
