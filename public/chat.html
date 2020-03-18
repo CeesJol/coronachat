@@ -8,20 +8,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/loading_animation.css">
-  <script>
-    // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
-    let vh = window.innerHeight * 0.01;
-    // Then we set the value in the --vh custom property to the root of the document
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-
-    // We listen to the resize event
-    window.addEventListener('resize', () => {
-      // We execute the same script as before
-      let vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-      console.log(vh);
-    });
-  </script>
 </head>
 
 <body class="chat">
@@ -118,6 +104,30 @@
   <script src='js/libs/deparam.js'></script>
   <script src='js/general.js'></script>
   <script src="js/chat.js"></script>
+  <script>
+    function myFunction() {
+      // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+      let vh = window.innerHeight * 0.01;
+      // Then we set the value in the --vh custom property to the root of the document
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+      console.log(vh);
+    } myFunction();
+
+    // We listen to the resize event
+    window.addEventListener('resize', function() {
+      myFunction();
+    });
+
+    const input = document.getElementById('chat-message');
+
+    input.addEventListener('focus', function(event) {
+      myFunction();
+    }, true);
+
+    input.addEventListener('blur', function(event) {
+      myFunction();
+    }, true);
+  </script>
 </body>
 
 </html>
