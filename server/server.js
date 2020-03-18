@@ -148,10 +148,14 @@ server.listen(port, () => {
   console.log('-----------------------');
   console.log(`Server is up on port ${port}`);
 
-  // Delete empty rooms
+  
   setInterval(() => {
+    // Delete empty rooms
     if (rooms.rooms && rooms.rooms.length > 0) {
       rooms.clean();
     }
+
+    // Emit number of users
+    io.emit('responseUserAmount', rooms.numberOfUsers());
   }, 1000);
 });

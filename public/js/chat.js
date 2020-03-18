@@ -9,12 +9,19 @@ var overlay = jQuery('#overlay');
 var inputField = jQuery('#chat-message'); // same as messageTextbox? TODO
 var chatUsers;
 var connected = false;
+var numberOfUsers = jQuery('#numberOfUsers');
 
 socket.on('userInfo', function(data) {
   userID = data.id;
   username = data.username;
   console.log('my id is ' + userID, 'my name is ' + username);
   socket.emit('requestUserList', userID);
+});
+
+socket.on('responseUserAmount', function(data) {
+  if (data != null) {
+    numberOfUsers.text(data + ' user' + ((data == 1)?'':'s') + ' online');
+  }
 });
 
 socket.on('connect', function() {
