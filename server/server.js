@@ -104,11 +104,10 @@ server.listen(port, () => {
   console.log('-----------------------');
   console.log(`Server is up on port ${port}`);
 
-  // Check to see if we can combine two rooms with each one user
-  // setInterval(() => {
-  //   if (rooms.rooms && rooms.rooms.length > 0) {
-  //     rooms.rooms = rooms.merge();
-  //   }
-    
-  // }, 1000);
+  // Delete empty rooms
+  setInterval(() => {
+    if (rooms.rooms && rooms.rooms.length > 0) {
+      rooms.clean();
+    }
+  }, 1000);
 });

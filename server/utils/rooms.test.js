@@ -13,9 +13,11 @@ describe('Rooms', () => {
 
     rooms.rooms = [{
       id: roomId,
+      open: true,
       users: []
     }, {
       id: roomId + 1,
+      open: true,
       users: [new User(1, 'Mike', roomId)],
     }];
 
@@ -111,6 +113,10 @@ describe('Rooms', () => {
   });
 
   it('should find best room', () => {
+    // Add user to first room
+    var user = new User(3, 'Cees', roomId);
+    rooms.addUser(roomId, user);
+
     var bestRoom = rooms.findBestRoom();
 
     expect(bestRoom).toEqual(rooms.rooms[0]);
@@ -121,6 +127,12 @@ describe('Rooms', () => {
 
     expect(room.id).toEqual(roomId + 1);
   });
+
+  it('should clean the rooms', () => {
+    rooms.clean();
+
+    expect(rooms.rooms.length).toEqual(1);
+  })
 
   // it('should merge the rooms', () => {
   //   var rooms = new Rooms();

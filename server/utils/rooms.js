@@ -13,8 +13,9 @@ class Rooms {
   // Add a room
   addRoom(us) {
     var id = randomId();
+    var open = true;
     var users = us || [];
-    var room = {id, users};
+    var room = {id, open, users};
     this.rooms.push(room);
 
     console.log(' >> CREATED ROOM ' + room.id);
@@ -23,6 +24,8 @@ class Rooms {
   }
 
   // Remove a room
+  // NOTE: I use filter in the clean() function to remove rooms,
+  // which means this function is currently not used.
   removeRoom(id) {
     // Select the room to be removed
     var room = this.rooms.filter((room) => room.id === id)[0];
@@ -59,7 +62,14 @@ class Rooms {
 
   // Add a user to a room
   addUser(roomId, user) {
-    this.getRoom(roomId).users.push(user);
+    var room = this.getRoom(roomId);
+
+    room.users.push(user);
+
+    if (room.users.length >= MAX_USER_SIZE) {
+      console.log("that room is now full.");
+      room.open = false;
+    }
 
     return user;
   }
@@ -97,11 +107,10 @@ class Rooms {
       room.users = room.users.filter((user) => user.id !== userId);
     }
 
-    // If the room is empty, remove it
-    // TODO TEST THIS
-    // if (room.users.length == 0) {
-    //   this.removeRoom(room.id);
-    // }
+    // If the room is now empty, close it
+    if (room.users.length == 0) {
+      room.open = false;
+    }
 
     // Return the removed user
     return cur;
@@ -112,7 +121,8 @@ class Rooms {
     var bestRoom;
 
     for (var room of this.rooms) {
-      if (room.users.length < MAX_USER_SIZE) {
+      console.log("Room status: " + room.open);
+      if (room.open && room.users.length < MAX_USER_SIZE && room.users.length > 0) {
         bestRoom = room;
         break;
       }
@@ -126,6 +136,18 @@ class Rooms {
 
       // All rooms are full, make a new room
       return this.addRoom();
+    }
+  }
+
+  // Clean rooms
+  clean() {
+    var prevSize = this.rooms.length;
+    this.rooms = this.rooms.filter((room) => room.users.length > 0);
+    var newSize = this.rooms.length
+    var difference = prevSize - newSize;
+
+    if (difference > 0) {
+      console.log('Cleaned up ' + difference + ' rooms!');
     }
   }
 
