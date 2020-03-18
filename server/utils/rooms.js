@@ -46,6 +46,17 @@ class Rooms {
     return this.rooms.filter((room) => room.id === id)[0];
   }
 
+  // Get number of users
+  numberOfUsers() {
+    var amount = 0;
+
+    for (var room of this.rooms) {
+      amount += room.users.length;
+    }
+
+    return amount;
+  }
+
   // Get a room of a user
   getRoomOfUser(userId) {
     var room = this.rooms.filter((room) => {

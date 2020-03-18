@@ -17,6 +17,20 @@ var rooms = new Rooms();
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
+  // On main page
+  socket.on('requestUserAmount', () => {
+    // Join user to itself
+    socket.join(socket.id);
+
+    // Get user amount
+    var amount = rooms.numberOfUsers();
+
+    console.log(amount);
+
+    // Send user amount to user
+    io.to(socket.id).emit('responseUserAmount', amount);
+  });
+
   socket.on('join', (params, callback) => {
     params.name = sanitize(params.name);
 
@@ -107,6 +121,8 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     var user = rooms.getUser(socket.id);
+    if (!user) return;
+
     var room = rooms.getRoomOfUser(socket.id);
 
     rooms.removeUser(socket.id);

@@ -38,6 +38,8 @@
               <div class="form-field">
                 <button id="join-button">JOIN</button>
               </div>
+              <br>
+              <p id="status">todo remove me</p>
             </form>
           </div>
         </div>
@@ -45,9 +47,11 @@
     </div>
 
     <script>
-      var isRealString = (str) => {
+      function isRealString(str) {
         return typeof str === 'string' && str.trim().length > 0;
       };
     </script>
+    <script src="socket.io/socket.io.js"></script>
+    <script src='js/index.js'></script>
   </body>
 </html>

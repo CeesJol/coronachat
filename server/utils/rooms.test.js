@@ -132,7 +132,13 @@ describe('Rooms', () => {
     rooms.clean();
 
     expect(rooms.rooms.length).toEqual(1);
-  })
+  });
+
+  it('should count the users', () => {
+    var amount = rooms.numberOfUsers();
+
+    expect(amount).toEqual(1);
+  });
 
   // it('should merge the rooms', () => {
   //   var rooms = new Rooms();
