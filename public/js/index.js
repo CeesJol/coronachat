@@ -1,11 +1,5 @@
 var socket = io();
 
-socket.on('connect', function() {
-  console.log('Connected to server');
-
-  socket.emit('requestUserAmount');
-});
-
 socket.on('responseUserAmount', function(data) {
   if (data != null) {
     var appendix;
@@ -15,8 +9,4 @@ socket.on('responseUserAmount', function(data) {
 
     document.getElementById('status').innerHTML = data + appendix;
   }
-});
-
-socket.on('disconnect', function() {
-  console.log('Disconnected from server');
 });

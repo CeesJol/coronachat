@@ -7,30 +7,18 @@ const {Rooms} = require('./utils/rooms');
 const {User} = require('./utils/user');
 const {generateMessage, generateAlert} = require('./utils/message');
 const {isRealString, sanitize} = require('./utils/validation');
+
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
 var app = express();
 var server = http.createServer(app);
 var io = socketIO(server);
+
 var rooms = new Rooms();
 
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
-  // On main page
-  socket.on('requestUserAmount', () => {
-    // Join user to itself
-    socket.join(socket.id);
-
-    // Get user amount
-    var amount = rooms.numberOfUsers();
-
-    console.log(amount);
-
-    // Send user amount to user
-    io.to(socket.id).emit('responseUserAmount', amount);
-  });
-
   socket.on('join', (params, callback) => {
     params.name = sanitize(params.name);
 
@@ -147,7 +135,6 @@ server.listen(port, () => {
   console.log();
   console.log('-----------------------');
   console.log(`Server is up on port ${port}`);
-
   
   setInterval(() => {
     // Delete empty rooms

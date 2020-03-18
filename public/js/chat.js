@@ -51,9 +51,9 @@ socket.on('disconnect', function() {
   console.log('Disconnected from server');
 
   setButton('Offline');
+  setStatus('Offline');
   disableSendButton();
   disableInput();
-  setStatus('Offline');
 
   setTimeout(function() { 
     createRefreshAlert('Reconnect'); 

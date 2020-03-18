@@ -87,17 +87,6 @@ describe('Rooms', () => {
     expect(rooms.rooms[0].users).toEqual([user]);
   });
 
-  // it('should get the user', () => {
-  //   var startLength = rooms.rooms[0].users.length;
-
-  //   var user = rooms.rooms[0].users[0];
-
-  //   var resUser = rooms.removeUser(1);
-
-  //   // Did we select the right user?
-  //   expect(resUser).toEqual(user);
-  // });
-
   it ('should remove the user', () => {
     var startLength = rooms.rooms[1].users.length;
 
@@ -133,12 +122,6 @@ describe('Rooms', () => {
 
     expect(rooms.rooms.length).toEqual(1);
   });
-
-  // it('should count the users', () => {
-  //   var amount = rooms.numberOfUsers();
-
-  //   expect(amount).toEqual(1);
-  // });
 
   it('should count the users (1)', () => {
     var rooms = new Rooms();
@@ -179,21 +162,4 @@ describe('Rooms', () => {
 
     expect(rooms.numberOfUsers()).toEqual(3);
   });
-
-  // it('should merge the rooms', () => {
-  //   var rooms = new Rooms();
-
-  //   rooms.rooms = [{
-  //     id: roomId,
-  //     users: [new User(1, 'Mike', roomId)]
-  //   }, {
-  //     id: roomId + 1,
-  //     users: [new User(2, 'Mike', roomId)],
-  //   }];
-
-  //   rooms = rooms.merge();
-
-  //   expect(rooms[0].users.length).toEqual(2);
-  //   expect(rooms[1].users.length).toEqual(0);
-  // })
 });

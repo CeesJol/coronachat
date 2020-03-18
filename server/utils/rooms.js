@@ -1,11 +1,9 @@
 const {User} = require('./user');
 const {randomId} = require('./general');
 
-const MAX_USER_SIZE = 2;          // Maximum amount of users in one room
+const MAX_USER_SIZE = 2; // Maximum amount of users in one room
 
 class Rooms {
-
-  // Set up Rooms list
   constructor() {
     this.rooms = [];
     this.userCount = 0;
@@ -50,13 +48,6 @@ class Rooms {
   // Get number of users
   numberOfUsers() {
     return this.userCount;
-    // var amount = 0;
-
-    // for (var room of this.rooms) {
-    //   amount += room.users.length;
-    // }
-
-    // return amount;
   }
 
   // Get a room of a user
@@ -167,28 +158,6 @@ class Rooms {
       console.log('Cleaned up ' + difference + ' rooms!');
     }
   }
-
-  // Merge rooms
-  // merge() {
-  //   for (var i = 0; i < this.rooms.length - 1; i++) {
-  //     var room1 = this.rooms[i];
-  //     if (room1.users.length == 1) {
-  //       for (var j = i + 1; j < this.rooms.length; j++) {
-  //         var room2 = this.rooms[j];
-  //         if (room2.users.length == 1) {
-  //           // Merge the rooms
-  //           console.log('Rooms ' + i + ' and ' + j + ' will be merged.');
-  //           var movedUser = room2.users[0];
-  //           room1.users.push(movedUser);
-  //           room2.users = [];
-  //           break;
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   return this.rooms;
-  // }
 };
 
 module.exports = {Rooms};
