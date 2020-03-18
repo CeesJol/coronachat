@@ -6,7 +6,7 @@ const socketIO = require('socket.io');
 const {Rooms} = require('./utils/rooms');
 const {User} = require('./utils/user');
 const {generateMessage, generateAlert} = require('./utils/message');
-const {isRealString} = require('./utils/validation');
+const {isRealString, sanitize} = require('./utils/validation');
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
 var app = express();
@@ -18,6 +18,8 @@ app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
   socket.on('join', (params, callback) => {
+    params.name = sanitize(params.name);
+
     // Validate data
     if (!isRealString(params.name)) {
       callback('Invalid name');
@@ -62,12 +64,17 @@ io.on('connection', (socket) => {
 
   socket.on('requestUserList', (userID) => {
     // Send room info
+    userID = sanitize(userID);
     var room = rooms.getRoomOfUser(userID)
     io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
   });
 
   socket.on('createMessage', (message, callback) => {
     try{
+      message.from = sanitize(message.from);
+      message.fromID = sanitize(message.fromID);
+      message.text = sanitize(message.text);
+
       console.log("'" + message.from + ": " + message.text + "'");
       var room = rooms.getRoomOfUser(message.fromID);
 

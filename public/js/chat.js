@@ -6,7 +6,7 @@ sendButton.attr('disabled', 'disabled');
 var messageTextbox = jQuery('[name=message]');
 var sendEnabled = false;
 var overlay = jQuery('#overlay');
-var inputField = jQuery('#chat-message');
+var inputField = jQuery('#chat-message'); // same as messageTextbox? TODO
 var chatUsers;
 
 socket.on('userInfo', function(data) {
@@ -78,6 +78,9 @@ jQuery('#message-form').on('submit', function(e) {
   inputField.focus();   
 
   createMessage(username, userID, messageTextbox.val())
+
+  // clear input area
+  messageTextbox.val('');
 });
 
 // Detect input changes in textfield, and set send-button to disabled or not
