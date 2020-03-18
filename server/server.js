@@ -7,7 +7,7 @@ var xss = require("xss");
 const {Rooms} = require('./utils/rooms');
 const {User} = require('./utils/user');
 const {generateMessage, generateAlert} = require('./utils/message');
-const {isRealString, sanitize} = require('./utils/validation');
+const {isRealString} = require('./utils/validation');
 
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
@@ -80,7 +80,6 @@ io.on('connection', (socket) => {
       params.text = xss(params.text);
 
       var room = rooms.getRoomOfUser(params.fromID);
-      var user = rooms.getUser(params.fromID);
       socket.broadcast.to(room.id).emit('newStatus', params.text); 
 
       callback();

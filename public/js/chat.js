@@ -1,27 +1,30 @@
 var socket = io();
+
+// Frequently used elements
+var sendButton = jQuery('#send-button');
+    sendButton.attr('disabled', 'disabled');
+var overlay = jQuery('#overlay');
+var inputField = jQuery('#chat-message');
+var numberOfUsers = jQuery('#numberOfUsers');
+
+// Page-specific variables
+var sendEnabled = false;
+
+// Connection variables
+var connected = false;
+var chatUsers;
 var username = 'unknown';
 var userID = -1;
-var sendButton = jQuery('#send-button');
-sendButton.attr('disabled', 'disabled');
-var messageTextbox = jQuery('[name=message]');
-var sendEnabled = false;
-var overlay = jQuery('#overlay');
-var inputField = jQuery('#chat-message'); // same as messageTextbox? TODO
-var chatUsers;
-var connected = false;
-var numberOfUsers = jQuery('#numberOfUsers');
 
 socket.on('userInfo', function(data) {
   userID = data.id;
   username = data.username;
-  console.log('my id is ' + userID, 'my name is ' + username);
+  console.log('ID: ' + userID + '\nName: ' + username);
   socket.emit('requestUserList', userID);
 });
 
 socket.on('responseUserAmount', function(data) {
-  if (data != null) {
-    numberOfUsers.text(data + ' user' + ((data == 1)?'':'s') + ' online');
-  }
+  if (data != null) numberOfUsers.text(data + ' user' + ((data == 1)?'':'s') + ' online');
 });
 
 socket.on('connect', function() {
@@ -98,18 +101,18 @@ jQuery('#message-form').on('submit', function(e) {
   // focus on input area
   inputField.focus();   
 
-  createMessage(username, userID, messageTextbox.val());
+  createMessage(username, userID, inputField.val());
 
   // clear input area
-  messageTextbox.val('');
+  inputField.val('');
 });
 
 // Detect input changes in textfield, and set send-button to disabled or not
-messageTextbox.on('input', function(e) {
-  if (sendEnabled && !isRealString(messageTextbox.val())) {
+inputField.on('input', function(e) {
+  if (sendEnabled && !isRealString(inputField.val())) {
     disableSendButton();
     sendStatus(userID, 'Online');
-  } else if (!sendEnabled && isRealString(messageTextbox.val())) {
+  } else if (!sendEnabled && isRealString(inputField.val())) {
     enableSendButton();
     sendStatus(userID, username + ' is typing...');
   }
