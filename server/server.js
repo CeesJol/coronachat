@@ -50,14 +50,14 @@ io.on('connection', (socket) => {
     io.to(socket.id).emit('userInfo', {id, username} );
 
     // Send room info
-    io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
+    // io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
 
-    socket.emit('newAlert', generateAlert('Welcome to the chat app'));
-    if (rooms.getUsers(room.id).length > 1) {
-      socket.broadcast.to(room.id).emit('newAlert', generateAlert(`${params.name} joined the chat`));
-    } else {
-      socket.emit('newAlert', generateAlert('Please wait for someone to join'));
-    }
+    socket.emit('newAlert', generateAlert(`Welcome to the chat app, ${params.name}`));
+    // if (rooms.getUsers(room.id).length > 1) {
+    //   socket.broadcast.to(room.id).emit('newAlert', generateAlert(`${params.name} joined the chat`));
+    // } else {
+    //   socket.emit('newAlert', generateAlert('Please wait for someone to join'));
+    // }
 
     callback();
   });

@@ -101,6 +101,7 @@ socket.on('updateUserList', function(users) {
     users.forEach(function (user) {
       if (user.id != userID) {
         title.html(user.name);
+        createAlert('Now chatting with ' + user.name);
       }
     });
 
