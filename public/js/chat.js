@@ -30,7 +30,7 @@ socket.on('connect', function() {
     }
   });
 
-  setStatus('Online');
+  setButton('Send');
 });
 
 socket.on('disconnect', function() {
@@ -39,7 +39,7 @@ socket.on('disconnect', function() {
 
   console.log('Disconnected to server');
 
-  setStatus('Offline');
+  setButton('Offline');
 });
 
 socket.on('newMessage', function (message) {
@@ -72,12 +72,12 @@ jQuery('#message-form').on('submit', function(e) {
 
   disableSendButton();
 
-  setStatus('Sending message...');
+  setButton('Sending...');
 
   // focus on input area
   inputField.focus();   
 
-  createMessage(username, userID, messageTextbox.val())
+  createMessage(username, userID, messageTextbox.val());
 
   // clear input area
   messageTextbox.val('');

@@ -32,12 +32,12 @@ function createRefreshAlert() {
  */
 function createMessage(from, id, messageText) {
   socket.emit('createMessage', {
-    from: from,
+    from: from, 
     fromID: id,
     text: messageText
   }, function() {
-    setStatus('Online');
-  });
+    setButton('Send');
+  });  
 }
 
 /**
@@ -83,6 +83,14 @@ function enableSendButton() {
  */
 function setStatus(x) {
   jQuery('#status').text('Dev status: ' + x);
+}
+
+/**
+ * Set the text of the send button
+ * @param {*} x the text
+ */
+function setButton(x) {
+  jQuery('#send-button').text(x);
 }
 
 /**

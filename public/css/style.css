@@ -172,12 +172,11 @@ button {
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
   border-radius: 2px;
 }
-#join-button {
-  
-}
 #send-button {
   margin-left: 10px;
   padding: .7rem 3rem;
+  width: 8.5rem;
+  padding: .75rem 0;
 }
 
 button:disabled {
