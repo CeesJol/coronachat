@@ -130,7 +130,10 @@ socket.on('updateUserList', function(users) {
         createAlert('Now chatting with ' + user.name);
 
         // Play sound
-        audio.play();     
+        audio.play();    
+        
+        // Update title
+        document.title = user.name + ' | CoronaChat';
       }
     });
 
