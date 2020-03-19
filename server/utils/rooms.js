@@ -17,8 +17,6 @@ class Rooms {
     var room = {id, open, users};
     this.rooms.push(room);
 
-    console.log(' >> CREATED ROOM ' + room.id);
-
     return room;
   }
 
@@ -32,8 +30,6 @@ class Rooms {
     // If the room exists, remove it from the array
     if (room) {
       this.rooms = this.rooms.filter((room) => room.id !== id);
-
-      console.log(' << DELETED ROOM ' + room.id);
     }
 
     return room;
@@ -71,7 +67,6 @@ class Rooms {
     room.users.push(user);
 
     if (room.users.length >= MAX_USER_SIZE) {
-      console.log("that room is now full.");
       room.open = false;
     }
 
@@ -129,7 +124,6 @@ class Rooms {
     var bestRoom;
 
     for (var room of this.rooms) {
-      console.log("Room status: " + room.open);
       if (room.open && room.users.length < MAX_USER_SIZE && room.users.length > 0) {
         bestRoom = room;
         break;
@@ -149,14 +143,7 @@ class Rooms {
 
   // Clean rooms
   clean() {
-    var prevSize = this.rooms.length;
     this.rooms = this.rooms.filter((room) => room.users.length > 0);
-    var newSize = this.rooms.length
-    var difference = prevSize - newSize;
-
-    if (difference > 0) {
-      console.log('Cleaned up ' + difference + ' rooms!');
-    }
   }
 };
 

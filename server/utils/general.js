@@ -1,7 +1,5 @@
 // Generate random id
 var randomId = () => {
-  // return Date.now() + Math.floor(Math.random() * 1e6);
-
   var length = 10;
   var result = "";
 

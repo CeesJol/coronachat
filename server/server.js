@@ -44,8 +44,6 @@ io.on('connection', (socket) => {
       // Join user to itself
       socket.join(socket.id);
 
-      console.log(params.name + ' joined room: ' + room.id);
-
       // Send user info
       var id = socket.id;
       var username = params.name;
@@ -73,7 +71,7 @@ io.on('connection', (socket) => {
     io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
   });
 
-  socket.on('sendStatus', (params, callback) => {
+  socket.on('sendStatus', (params) => {
     try {
       // Send latest status
       params.fromID = xss(params.fromID);
@@ -81,10 +79,8 @@ io.on('connection', (socket) => {
 
       var room = rooms.getRoomOfUser(params.fromID);
       socket.broadcast.to(room.id).emit('newStatus', params.text); 
-
-      callback();
     } catch(e) {
-      console.log('createMessage ERROR: ' + e);
+      console.log('sendStatus ERROR: ' + e);
     }
   });
 
@@ -94,9 +90,7 @@ io.on('connection', (socket) => {
       message.fromID = xss(message.fromID);
       message.text = xss(message.text);
 
-      console.log("'" + message.from + ": " + message.text + "'");
       var room = rooms.getRoomOfUser(message.fromID);
-
       if (room && isRealString(message.text)) {
         io.to(room.id).emit('newMessage', generateMessage(message.from, message.fromID, message.text));
       }
@@ -112,10 +106,7 @@ io.on('connection', (socket) => {
     if (!user) return;
 
     var room = rooms.getRoomOfUser(socket.id);
-
     rooms.removeUser(socket.id);
-
-    console.log(`User ${user.name} disconnected`);
 
     if (rooms.getUsers(room.id).length > 0) {
       // Send room info
@@ -132,8 +123,6 @@ io.on('connection', (socket) => {
 });
 
 server.listen(port, () => {
-  console.log();
-  console.log('-----------------------');
   console.log(`Server is up on port ${port}`);
   
   setInterval(() => {

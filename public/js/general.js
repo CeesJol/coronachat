@@ -5,11 +5,9 @@
  */
 function createAlert(messageText) {
   var template = jQuery('#alert-template').html();
-
   var html = Mustache.render(template, {
     text: messageText
   });
-
   jQuery('#messages').append(html);
 
   scrollToBottom();
@@ -20,11 +18,9 @@ function createAlert(messageText) {
  */
 function createRefreshAlert(messageText) {
   var template = jQuery('#alert-refresh-template').html();
-
   var html = Mustache.render(template, {
     text: messageText
   });
-
   jQuery('#messages').append(html);
 
   scrollToBottom();
@@ -138,13 +134,10 @@ function isRealString(str) {
  * Set vh
  */
 function myFunction() {
-  // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
   let vh = window.innerHeight * 0.01;
-  // Then we set the value in the --vh custom property to the root of the document
   document.documentElement.style.setProperty('--vh', `${vh}px`);
-  console.log(vh);
 } myFunction();
-// We listen to the resize event
+
 window.addEventListener('resize', function() {
   myFunction();
 });

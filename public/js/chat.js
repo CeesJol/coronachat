@@ -14,14 +14,13 @@ var audio = new Audio(AUDIO_LOCATION);
 
 // Connection variables
 var connected = false;
-var chatUsers;
+var chatUsers = [];
 var username = 'unknown';
 var userID = -1;
 
 socket.on('userInfo', function(data) {
   userID = data.id;
   username = data.username;
-  console.log('ID: ' + userID + '\nName: ' + username);
   socket.emit('requestUserList', userID);
 });
 
@@ -31,11 +30,8 @@ socket.on('responseUserAmount', function(data) {
 
 socket.on('connect', function() {
   if (!connected) {
-    console.log('Connected to server');
-
     var params = jQuery.deparam(window.location.search);
     username = params.name;
-
     socket.emit('join', params, function(err) {
       if (err) {
         alert(err);
@@ -52,8 +48,6 @@ socket.on('connect', function() {
 socket.on('disconnect', function() {
   createAlert('Lost connection to server :(');
 
-  console.log('Disconnected from server');
-
   setButton('Offline');
   setStatus('Offline');
   disableSendButton();
@@ -63,12 +57,12 @@ socket.on('disconnect', function() {
     createRefreshAlert('Reconnect'); 
   }, 1000);
 
+  // Don't reconnect anymore
   socket.disconnect();
 });
 
 socket.on('newMessage', function (message) {
   var formattedTime = moment(message.createdAt).format('HH:mm');
-
   var template;
   if (message.id === userID) {
     template = jQuery('#message-template-color').html();
@@ -81,8 +75,8 @@ socket.on('newMessage', function (message) {
     from: message.from, 
     createdAt: formattedTime
   });
-
   jQuery('#messages').append(html);
+
   scrollToBottom();
 });
 
@@ -92,18 +86,12 @@ socket.on('newAlert', function (message) {
 
 jQuery('#message-form').on('submit', function(e) {
   e.preventDefault();
-
   disableSendButton();
   sendStatus(userID, 'Online');
-
   setButton('Sending...');
-
-  // focus on input area
-  inputField.focus();   
-
   createMessage(username, userID, inputField.val());
 
-  // clear input area
+  inputField.focus();   
   inputField.val('');
 });
 
@@ -126,21 +114,15 @@ socket.on('updateUserList', function(users) {
 
     users.forEach(function (user) {
       if (user.id != userID) {
-        title.html(user.name);
+        title.html(user.name); // .html xss danger?
         createAlert('Now chatting with ' + user.name);
-
-        // Play sound
         audio.play();    
-        
-        // Update title
         document.title = user.name + ' | CoronaChat';
       }
     });
 
     if (users.length > 1) {
       overlay.hide();
-
-      // focus on input area
       inputField.focus();      
     }
   }
