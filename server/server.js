@@ -28,41 +28,41 @@ io.on('connection', (socket) => {
       callback('Invalid name');
     } else if (params.name.length > 20) {
       callback('Name is too long (max: 20 characters)');
+    } else {
+      // Find best room
+      var room = rooms.findBestRoom();
+
+      // Create user
+      var me = new User(socket.id, params.name, room.id);
+
+      // Add user to a room
+      rooms.addUser(room.id, me);
+
+      // Join user to a room
+      socket.join(room.id);
+
+      // Join user to itself
+      socket.join(socket.id);
+
+      console.log(params.name + ' joined room: ' + room.id);
+
+      // Send user info
+      var id = socket.id;
+      var username = params.name;
+      io.to(socket.id).emit('userInfo', {id, username} );
+
+      // Send room info
+      // io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
+
+      socket.emit('newAlert', generateAlert(`Welcome to the chat app, ${params.name}`));
+      // if (rooms.getUsers(room.id).length > 1) {
+      //   socket.broadcast.to(room.id).emit('newAlert', generateAlert(`${params.name} joined the chat`));
+      // } else {
+      //   socket.emit('newAlert', generateAlert('Please wait for someone to join'));
+      // }
+
+      callback();
     }
-
-    // Find best room
-    var room = rooms.findBestRoom();
-
-    // Create user
-    var me = new User(socket.id, params.name, room.id);
-
-    // Add user to a room
-    rooms.addUser(room.id, me);
-
-    // Join user to a room
-    socket.join(room.id);
-
-    // Join user to itself
-    socket.join(socket.id);
-
-    console.log(params.name + ' joined room: ' + room.id);
-
-    // Send player info
-    var id = socket.id;
-    var username = params.name;
-    io.to(socket.id).emit('userInfo', {id, username} );
-
-    // Send room info
-    // io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
-
-    socket.emit('newAlert', generateAlert(`Welcome to the chat app, ${params.name}`));
-    // if (rooms.getUsers(room.id).length > 1) {
-    //   socket.broadcast.to(room.id).emit('newAlert', generateAlert(`${params.name} joined the chat`));
-    // } else {
-    //   socket.emit('newAlert', generateAlert('Please wait for someone to join'));
-    // }
-
-    callback();
   });
 
   socket.on('requestUserList', (userID) => {
