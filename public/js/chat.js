@@ -1,4 +1,4 @@
-var socket = io();
+var socket = io({transports: ['websocket'], upgrade: false});
 
 // Frequently used elements
 var sendButton = jQuery('#send-button');
