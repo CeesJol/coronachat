@@ -29,6 +29,7 @@ socket.on('responseUserAmount', function(data) {
 var developer = false;
 function playSound() {
   if (developer) {
+    console.log('Someone joined the chat');
     const AUDIO_LOCATION = '/./audio/25879__acclivity__drip1.wav';
     var audio = new Audio(AUDIO_LOCATION);
     audio.play();  
