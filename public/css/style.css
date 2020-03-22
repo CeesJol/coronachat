@@ -138,6 +138,8 @@ input {
 #chat-message {
   width: calc(100% - 11.5rem);
   float: left;
+  padding-top: .55rem;
+  padding-bottom: .55rem;
 }
 #chat-message:disabled {
   color: rgb(155, 155, 166);
