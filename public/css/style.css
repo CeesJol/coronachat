@@ -379,10 +379,9 @@ button:active {
 
   .right {
     width: calc(100% - 50px);
-    height: calc(100% - 50px);
+    height: auto;
     padding: 25px;
     margin: 0;
-    
   }
 
   .right-content {
