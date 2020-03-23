@@ -57,12 +57,18 @@ class Rooms {
 
   // Get a list of users of a room
   getUsers(id) {
-    return this.getRoom(id).users;
+    var room = this.getRoom(id);
+
+    if (!room) return [];
+
+    return room.users;
   }
 
   // Add a user to a room
   addUser(roomId, user) {
     var room = this.getRoom(roomId);
+
+    if (!room) return undefined;
 
     room.users.push(user);
 
@@ -75,48 +81,37 @@ class Rooms {
     return user;
   }
 
-  // Get a user from a room
+  // Get a user by their id
   getUser(userId) {
-    // Find the user's room
-    var room = this.getRoomOfUser(userId);
+    var room = this.rooms.filter((room) => {
+      return room.users.filter((user) => user.id === userId)[0];
+    })[0];
 
     if (!room) return undefined;
 
-    // Select the users
-    var users = this.getUsers(room.id);
-
-    // Select the user from this room
-    var cur = users.filter((user) => user.id === userId)[0];
-
-    return cur;
+    return room.users[0];
   }
 
   // Remove a user from a room
-  // TODO remove the room if empty?
   removeUser(userId) {
-    // Find the user's room
-    var room = this.getRoomOfUser(userId);
+    for (var i = 0; i < this.rooms.length; i++) {
+      var room = this.rooms[i];
+      for (var j = 0; j < room.users.length; j++) {
+        var user = room.users[j];
+        if (user.id == userId) {
+          room.users.splice(j, 1);
 
-    // Select the users
-    var users = this.getUsers(room.id);
+          // If the room is now empty, close it
+          if (room.users.length == 0) {
+            room.open = false;
+          }
 
-    // Select the user from this room
-    var cur = users.filter((user) => user.id === userId)[0];
+          this.userCount--;
 
-    // If the user exists, remove it from the array
-    if (cur) {
-      room.users = room.users.filter((user) => user.id !== userId);
+          return user;
+        }
+      }
     }
-
-    // If the room is now empty, close it
-    if (room.users.length == 0) {
-      room.open = false;
-    }
-
-    this.userCount--;
-
-    // Return the removed user
-    return cur;
   }
 
   // Find the best room for a user to join
@@ -131,13 +126,9 @@ class Rooms {
     }
 
     if (bestRoom) {
-
-      // We found a room, return it
-      return bestRoom;
+      return bestRoom;        // We found a room, return it
     } else {
-
-      // All rooms are full, make a new room
-      return this.addRoom();
+      return this.addRoom();   // All rooms are full/closed, make a new room
     }
   }
 

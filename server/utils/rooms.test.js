@@ -7,6 +7,7 @@ describe('Rooms', () => {
   var rooms;
   var user;
   var roomId = 100;
+  var mike = new User(1, 'Mike', roomId);
 
   beforeEach(() => {
     rooms = new Rooms();
@@ -18,7 +19,7 @@ describe('Rooms', () => {
     }, {
       id: roomId + 1,
       open: true,
-      users: [new User(1, 'Mike', roomId)],
+      users: [mike],
     }];
 
     user = new User(2, 'Katie', roomId);
@@ -35,12 +36,9 @@ describe('Rooms', () => {
   });
   it('should add a room without users', () => {
     var rooms = new Rooms();
-    var room = {
-      users: []
-    };
     var resRoom = rooms.addRoom();
 
-    expect(rooms.rooms[0].users).toEqual(room.users);
+    expect(rooms.rooms[0].users).toEqual([]);
   });
 
   it('should remove a room', () => {
@@ -65,6 +63,17 @@ describe('Rooms', () => {
     expect(rooms.rooms.length).toBe(startLength);
   });
 
+  it('should get user', () => {
+    var user = rooms.getUser(1);
+
+    expect(user).toEqual(mike);
+  });
+  it('should not get user', () => {
+    var user = rooms.getUser(42);
+
+    expect(user).toEqual(undefined);
+  });
+
   it('should find room', () => {
     var room = rooms.getRoom(roomId);
 
@@ -78,16 +87,28 @@ describe('Rooms', () => {
 
     expect(users).toEqual(rooms.rooms[0].users);
   });
+  it('nonexisting room: should return list of users', () => {
+    var users = rooms.getUsers(1337);
 
-  it ('should add the user', () => {
+    expect(users).toEqual([]);
+  });
+
+  it('should add the user', () => {
     var user = new User(3, 'Cees', roomId);
 
     rooms.addUser(roomId, user);
 
     expect(rooms.rooms[0].users).toEqual([user]);
   });
+  it('should not add the user', () => {
+    var user = new User(3, 'Cees', roomId);
 
-  it ('should remove the user', () => {
+    rooms.addUser(1337, user);
+
+    expect(rooms.rooms[0].users).toEqual([]);
+  });
+
+  it('should remove the user', () => {
     var startLength = rooms.rooms[1].users.length;
 
     var user = rooms.rooms[1].users[0]; 
@@ -99,6 +120,19 @@ describe('Rooms', () => {
 
     // Is the user actually removed?
     expect(rooms.rooms[1].users.length).toEqual(startLength - 1);
+  });
+  it('should not remove the user', () => {
+    var startLength = rooms.rooms[1].users.length;
+
+    var user = new User(42, 'Nonexisting', 1337); 
+
+    var resUser = rooms.removeUser(user.id);
+
+    // Did the function return undefined? (.toBeUndefined() doesnt work for me)
+    expect(resUser).toEqual(undefined);
+
+    // Is no user removed?
+    expect(rooms.rooms[1].users.length).toEqual(startLength);
   });
 
   it('should find best room', () => {
@@ -144,8 +178,9 @@ describe('Rooms', () => {
   // Complicated test!
   // - findBestRoom
   // - addUser
+  // - removeUser
   // - numberOfUsers
-  it('should count the users (3)', () => {
+  it('should count the users (2) (complicated test)', () => {
     var rooms = new Rooms();
 
     var res1 = rooms.findBestRoom();
@@ -155,11 +190,15 @@ describe('Rooms', () => {
     var user1 = new User(3, 'Cees', res1.id);
     var user2 = new User(4, 'Ceessie', res2.id);
     var user3 = new User(5, 'Ceenon', res3.id);
+    var unassignedUser = new User(6, 'Oof', 0);
     
     rooms.addUser(res1.id, user1);
     rooms.addUser(res2.id, user2);
     rooms.addUser(res3.id, user3);
 
-    expect(rooms.numberOfUsers()).toEqual(3);
+    rooms.removeUser(user2.id);
+    rooms.removeUser(unassignedUser.id);
+
+    expect(rooms.numberOfUsers()).toEqual(2);
   });
 });
