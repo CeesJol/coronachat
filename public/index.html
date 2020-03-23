@@ -57,21 +57,11 @@
       </div>
     </div>
 
+    <script src="js/index-functions.js"></script>
+    <script src="js/general.js"></script>
     <script>
-      function isRealString(str) {
-        return typeof str === 'string' && str.trim().length > 0;
-      };
-
-      function myFunction() {
-        let vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-      } myFunction();
-
-      window.addEventListener('resize', function() {
-        myFunction();
-      });
+      if (isDeveloper()) document.write('<script src="socket.io/socket.io.js"><\/script>');
     </script>
-    <script src="socket.io/socket.io.js"></script>
     <script src='js/index.js'></script>
   </body>
 </html>
