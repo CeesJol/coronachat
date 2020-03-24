@@ -118,3 +118,22 @@ function setStatus(x) {
 function setButton(x) {
   jQuery('#send-button').text(x);
 }
+
+var volume = true;
+/**
+ * Set volume and the corresponding icon toggle
+ */
+jQuery('#volume-option-toggle').click(function(){
+  var img = jQuery("#volume-option-img");
+  if (volume) {
+    img.attr("src", "/./img/volume_mute.png");
+    volume = false;
+  } else {
+    img.attr("src", "/./img/volume.png");
+    volume = true;
+  }
+});
+
+jQuery('#leave-option').click(function(){
+  window.location.href = "../index.html";
+});

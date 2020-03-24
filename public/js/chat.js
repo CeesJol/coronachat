@@ -7,10 +7,19 @@ var overlay = jQuery('#overlay');
 var inputField = jQuery('#chat-message');
 var numberOfUsers = jQuery('#numberOfUsers');
 
-// Page-specific variables and constants
+// Page-specific variables
 var sendEnabled = false;
+
+// Audio
 const AUDIO_LOCATION = '/./audio/zapsplat_household_portable_light_switch_plastic_off_43559.mp3';
-var audio = new Audio(AUDIO_LOCATION);
+const AUDIO_MESSAGE_LOCATION = '/./audio/26777__junggle__btn402.mp3';
+const AUDIO_MESSAGE_SENT_LOCATION = '/./audio/26777__junggle__btn402.mp3';
+
+var audio = {
+  join: new Audio(AUDIO_LOCATION),
+  message: new Audio(AUDIO_MESSAGE_LOCATION),
+  sent: new Audio(AUDIO_MESSAGE_SENT_LOCATION)
+}
 
 // Connection variables
 var connected = false;
@@ -66,8 +75,10 @@ socket.on('newMessage', function (message) {
   var template;
   if (message.id === userID) {
     template = jQuery('#message-template-color').html();
+    if (volume) audio.sent.play();
   } else {
     template = jQuery('#message-template').html();
+    if (volume) audio.message.play();
   }
 
   var html = Mustache.render(template, {
@@ -116,7 +127,8 @@ socket.on('updateUserList', function(users) {
       if (user.id != userID) {
         title.html(user.name); // .html xss danger?
         createAlert('Now chatting with ' + user.name);
-        audio.play();    
+        if (volume) audio.join.play();    
+        jQuery('#options').css("visibility", "visible");
         document.title = user.name + ' | CoronaChat';
       }
     });
