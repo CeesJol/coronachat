@@ -57,7 +57,7 @@
   </div>
 
   <div id="overlay" class="overlay">
-    <div class="pop">
+    <div class="pop" id="pop_waiting">
       <div class="pop-header">
         <p>Waiting for someone to join your chat...</p>
         <p id="numberOfUsers"></p>
@@ -68,6 +68,17 @@
           <div class="loadingio-spinner-eclipse-osisb6eiupo"><div class="ldio-8w8am58tzjr">
           <div></div>
           </div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pop" id="pop_leave">
+      <div class="pop-body pop-body-full-height">
+        <div>
+          <p>Are you sure you want to leave?</p>
+          <br>
+          <button class="button-red popup-button" id="leave-button">Leave</button>
+          <button class="button-green popup-button" id="cancel-button">Stay</button>
         </div>
       </div>
     </div>

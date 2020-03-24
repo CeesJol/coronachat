@@ -133,7 +133,3 @@ jQuery('#volume-option-toggle').click(function(){
     volume = true;
   }
 });
-
-jQuery('#leave-option').click(function(){
-  window.location.href = "../index.html";
-});

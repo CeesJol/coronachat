@@ -23,6 +23,7 @@ var audio = {
 
 // Connection variables
 var connected = false;
+var joined = false;
 var chatUsers = [];
 var username = 'unknown';
 var userID = -1;
@@ -134,7 +135,9 @@ socket.on('updateUserList', function(users) {
     });
 
     if (users.length > 1) {
+      joined = true;
       overlay.hide();
+      jQuery('#pop_waiting').hide();
       inputField.focus();      
     }
   }
@@ -152,3 +155,23 @@ socket.on('userLeft', function(username) {
   }, 1000);
 });
 
+// Button to leave the chat, opens the confirmation popup
+jQuery('#leave-option').click(function(){
+  overlay.show();
+  jQuery('#pop_leave').show();
+});
+
+// Leave the chat
+jQuery('#leave-button').click(function(){
+  window.location.href = "../index.html";
+});
+
+// Remove popup
+jQuery('#cancel-button').click(function(){
+  overlay.hide();
+});
+
+// When clicked on the overlay, hide it only if user is not waiting for a chat partner
+overlay.click(function() {
+  if (joined) overlay.hide();
+});
