@@ -180,6 +180,10 @@ overlay.click(function() {
   if (joined) overlay.hide();
 });
 
+jQuery('#pop_leave').click(function() {
+  return false;
+});
+
 window.onfocus = function() {
     focused = true;
 };
