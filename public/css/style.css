@@ -342,7 +342,6 @@ button:active {
   max-width: calc(100% - 50px);
 }
 
-
 .overlay {
   position: absolute;
   width: 100%;
