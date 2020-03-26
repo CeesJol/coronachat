@@ -188,30 +188,11 @@ describe('Rooms', () => {
     expect(rooms.rooms.length).toEqual(5 + MIN_ROOMS);
   });
 
-  it('should count the users (1)', () => {
-    var rooms = new Rooms();
-
-    rooms.rooms = [{
-      id: roomId,
-      users: []
-    }, {
-      id: roomId + 1,
-      users: [],
-    }];
-
-    var user = new User(3, 'Cees', roomId);
-
-    rooms.addUser(roomId, user);
-
-    expect(rooms.numberOfUsers()).toEqual(1);
-  });
-
   // Complicated test!
   // - findBestRoom
   // - addUser
   // - removeUser
-  // - numberOfUsers
-  it('should count the users (2) (complicated test)', () => {
+  it('complicated test', () => {
     var rooms = new Rooms();
 
     var res1 = rooms.findBestRoom();
@@ -230,6 +211,11 @@ describe('Rooms', () => {
     rooms.removeUser(user2.id);
     rooms.removeUser(unassignedUser.id);
 
-    expect(rooms.numberOfUsers()).toEqual(2);
+    var nUsers = 0;
+    for (var room of rooms.rooms) {
+      nUsers += room.users.length;
+    }
+
+    expect(nUsers).toEqual(2);
   });
 });

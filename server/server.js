@@ -121,8 +121,6 @@ io.on('connection', (socket) => {
     var user = rooms.getUser(socket.id);
     if (!user) return;
 
-    console.log("User left: " + user.name);
-
     var room = rooms.getRoomOfUser(socket.id);
     rooms.removeUser(socket.id);
 
@@ -153,7 +151,7 @@ server.listen(port, () => {
       io.emit('responseRoomInfo', rooms.rooms);
 
       // Emit number of users
-      io.emit('responseUserAmount', rooms.numberOfUsers());
+      io.emit('responseUserAmount', io.engine.clientsCount);
     }
   }, 1000);
 });

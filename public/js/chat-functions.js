@@ -13,10 +13,23 @@ function createAlert(messageText) {
 }
 
 /**
- * Create alert, allowing user to refresh the page and find a new chat partner
+ * Create alert, allowing user to refresh the page to reconnect
  */
 function createRefreshAlert(messageText) {
   var template = jQuery('#alert-refresh-template').html();
+  var html = Mustache.render(template, {
+    text: messageText
+  });
+  jQuery('#messages').append(html);
+
+  scrollToBottom();
+}
+
+/**
+ * Create alert, allowing user to leave the page
+ */
+function createLeaveAlert(messageText) {
+  var template = jQuery('#alert-leave-template').html();
   var html = Mustache.render(template, {
     text: messageText
   });

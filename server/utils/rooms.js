@@ -7,7 +7,6 @@ const MIN_ROOMS = 3; // Minimum number of rooms at all times
 class Rooms {
   constructor() {
     this.rooms = [];
-    this.userCount = 0;
 
     for (var i = 1; i <= 3; i++) {
       this.addRoom([], "Room " + i, true);
@@ -49,11 +48,6 @@ class Rooms {
     return this.rooms.filter((room) => room.id === id)[0];
   }
 
-  // Get number of users
-  numberOfUsers() {
-    return this.userCount;
-  }
-
   // Get a room of a user
   getRoomOfUser(userId) {
     var room = this.rooms.filter((room) => {
@@ -84,8 +78,6 @@ class Rooms {
     //   room.open = false;
     // }
 
-    this.userCount++;
-
     return user;
   }
 
@@ -114,8 +106,6 @@ class Rooms {
           //   room.open = false;
           // }
 
-          this.userCount--;
-
           return user;
         }
       }
@@ -134,17 +124,15 @@ class Rooms {
     }
 
     if (bestRoom) {
-      return bestRoom;        // We found a room, return it
+      return bestRoom;         // We found a room, return it
     } else {
       return this.addRoom();   // All rooms are full/closed, make a new room
     }
   }
 
-  // Clean rooms (?)
+  // Clean rooms
   clean() {
-    console.log("BEFORE: " + this.rooms.length)
     this.rooms = this.rooms.filter((room) => room.users.length > 0 || room.invincible == true);
-    console.log("AFTER: " + this.rooms.length)
   }
 };
 

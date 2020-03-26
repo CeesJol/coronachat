@@ -72,10 +72,8 @@ socket.on('disconnect', function() {
 
   setTimeout(function() { 
     createRefreshAlert('Reconnect'); 
+    socket.connect();
   }, 1000);
-
-  // Don't reconnect anymore
-  socket.disconnect();
 });
 
 socket.on('newMessage', function (message) {
@@ -164,7 +162,7 @@ socket.on('userLeft', function(username) {
 
   setTimeout(function() {
     if (chatUsers.length <= 1) {
-      createRefreshAlert('Find a new chat TODO THIS DOESNT WORK :(( ???'); 
+      createLeaveAlert('Go back to main page'); 
     }
   }, 1000);
 });
