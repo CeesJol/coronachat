@@ -2,25 +2,27 @@ const {User} = require('./user');
 const {randomId} = require('./general');
 
 const MAX_USER_SIZE = 5; // Maximum amount of users in one room
+const MIN_ROOMS = 3; // Minimum number of rooms at all times
 
 class Rooms {
   constructor() {
     this.rooms = [];
     this.userCount = 0;
 
-    for (var i = 0; i < 3; i++) {
-      this.addRoom();
+    for (var i = 1; i <= 3; i++) {
+      this.addRoom([], "Room " + i, true);
     }
   }
 
   // Add a room
-  addRoom(us, name) {
+  addRoom(us, name, invincible) {
     var id = "" + (this.rooms.length + 1);
     var open = true;
     var users = us || [];
-    var name = name || "Room " + id;
+    var name = name || "A cool room";
+    var invincible = invincible || false;
     
-    var room = {id, open, users, name};
+    var room = {id, open, users, name, invincible};
     this.rooms.push(room);
 
     return room;
@@ -140,8 +142,10 @@ class Rooms {
 
   // Clean rooms (?)
   clean() {
-    this.rooms = this.rooms.filter((room) => room.users.length > 0);
+    console.log("BEFORE: " + this.rooms.length)
+    this.rooms = this.rooms.filter((room) => room.users.length > 0 || room.invincible == true);
+    console.log("AFTER: " + this.rooms.length)
   }
 };
 
-module.exports = {Rooms};
+module.exports = {Rooms, MAX_USER_SIZE, MIN_ROOMS};

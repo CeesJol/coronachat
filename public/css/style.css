@@ -252,6 +252,10 @@ button:active {
   margin-right: 10px;
 }
 
+#join-button {
+  margin: 0;
+}
+
 .chat__header {
   position: relative;
   width: calc(100% - 3.125rem);
@@ -417,7 +421,7 @@ button:active {
   display: none;
 }
 
-@media only screen and (min-width: 800px) {
+@media only screen and (min-width: 9800px) {
   .container {
     background-image: linear-gradient(rgb(90, 90, 110), rgb(60, 60, 80));
   }
@@ -434,7 +438,7 @@ button:active {
   }
 }
 
-@media only screen and (max-width: 799px) {
+@media only screen and (max-width: 9799px) {
   .container {
     background-color: white;
   }
@@ -448,7 +452,6 @@ button:active {
     height: auto;
     padding: 25px;
     margin: 0;
-    
   }
 
   .left-content {
@@ -459,7 +462,7 @@ button:active {
 
   .right {
     width: calc(100% - 50px);
-    height: auto;
+    height: calc(100% - 15rem);
     padding: 25px;
     margin: 0;
   }
@@ -468,6 +471,7 @@ button:active {
     margin-left: auto;
     margin-right: auto;
     max-width: 400px;
+    height: 100%;
   }
 
   .content {

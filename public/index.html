@@ -76,8 +76,8 @@
     </div>
 
     <script id="room-template" type="text/template">
-      <tr onClick="document.getElementById('room-name').value = {{id}}; unselectAll(); this.className += ' selected';">
-        <td>{{id}}</td>
+      <tr class={{class}} id="room-{{id}}" onClick="selectRoom({{id}})">
+        <td>{{number}}</td>
         <td>{{name}}</td>
         <td>{{online}}</td>
       </tr>

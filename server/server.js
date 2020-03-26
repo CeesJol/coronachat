@@ -32,42 +32,46 @@ io.on('connection', (socket) => {
     } else {
       var room;
       if (params.room) {
-       room = rooms.getRoom(params.room);
+        room = rooms.getRoom(params.room);
       } else {
-      // Find best room
-       room = rooms.findBestRoom();
+        // Find best room
+        room = rooms.findBestRoom();
       }
 
-      // Create user
-      var me = new User(socket.id, params.name, room.id);
-
-      // Add user to a room
-      rooms.addUser(room.id, me);
-
-      // Join user to a room
-      socket.join(room.id);
-
-      // Join user to itself
-      socket.join(socket.id);
-
-      // Send user info
-      var id = socket.id;
-      var username = params.name;
-      var roomName = room.name;
-      io.to(socket.id).emit('userInfo', {id, username, roomName} );
-
-      // Send room info
-      // Necessary?
-      io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
-
-      socket.emit('newAlert', generateAlert(`Welcome to the chat app, ${params.name}`));
-      if (rooms.getUsers(room.id).length > 1) {
-        socket.broadcast.to(room.id).emit('newAlert', generateAlert(`${params.name} joined the chat`));
+      if (!room) {
+        callback('That room does not exist (anymore).');
       } else {
-        socket.emit('newAlert', generateAlert('Please wait for someone to join'));
-      }
+        // Create user
+        var me = new User(socket.id, params.name, room.id);
 
-      callback();
+        // Add user to a room
+        rooms.addUser(room.id, me);
+
+        // Join user to a room
+        socket.join(room.id);
+
+        // Join user to itself
+        socket.join(socket.id);
+
+        // Send user info
+        var id = socket.id;
+        var username = params.name;
+        var roomName = room.name;
+        io.to(socket.id).emit('userInfo', {id, username, roomName} );
+
+        // Send room info
+        // Necessary?
+        io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
+
+        socket.emit('newAlert', generateAlert(`Welcome to the chat app, ${params.name}`));
+        if (rooms.getUsers(room.id).length > 1) {
+          socket.broadcast.to(room.id).emit('newAlert', generateAlert(`${params.name} joined the chat`));
+        } else {
+          socket.emit('newAlert', generateAlert('Please wait for someone to join'));
+        }
+
+        callback();
+      }
     }
   });
 
@@ -140,12 +144,16 @@ server.listen(port, () => {
   console.log(`Server is up on port ${port}`);
   
   setInterval(() => {
-    // Delete empty rooms
-    // if (rooms.rooms && rooms.rooms.length > 0) {
-    //   rooms.clean();
-    // }
+    if (rooms.rooms) {
+      // Delete empty rooms
+      rooms.clean();
 
-    // Emit number of users
-    io.emit('responseUserAmount', rooms.numberOfUsers());
+      // Emit sorted rooms
+      rooms.rooms.sort((room1, room2) => room2.users.length - room1.users.length);
+      io.emit('responseRoomInfo', rooms.rooms);
+
+      // Emit number of users
+      io.emit('responseUserAmount', rooms.numberOfUsers());
+    }
   }, 1000);
 });

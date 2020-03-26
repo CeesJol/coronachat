@@ -1,6 +1,6 @@
 const expect = require('expect');
 
-const {Rooms} = require('./rooms');
+const {Rooms, MAX_USER_SIZE, MIN_ROOMS} = require('./rooms');
 const {User} = require('./user');
 
 describe('Rooms', () => {
@@ -16,7 +16,7 @@ describe('Rooms', () => {
     rooms.rooms = [{
       id: roomId,
       open: true,
-      users: []
+      users: [],
     }, {
       id: roomId + 1,
       open: true,
@@ -152,10 +152,40 @@ describe('Rooms', () => {
     expect(room.id).toEqual(roomId + 1);
   });
 
-  it('should clean the rooms', () => {
+  it('should clean some rooms', () => {
+    var rooms = new Rooms();
+    
+    for (var i = 0; i < 5; i++) {
+      rooms.addRoom();
+    }
+
     rooms.clean();
 
-    expect(rooms.rooms.length).toEqual(1);
+    expect(rooms.rooms.length).toEqual(MIN_ROOMS);
+  });
+
+  it('should clean no rooms, because there are users', () => {
+    var rooms = new Rooms();
+    
+    for (var i = 0; i < 5; i++) {
+      rooms.addRoom([mike]);
+    }
+
+    rooms.clean();
+
+    expect(rooms.rooms.length).toEqual(5 + MIN_ROOMS);
+  });
+
+  it('should clean no rooms, because they are invincible', () => {
+    var rooms = new Rooms();
+    
+    for (var i = 0; i < 5; i++) {
+      rooms.addRoom([], 'some name', true);
+    }
+
+    rooms.clean();
+
+    expect(rooms.rooms.length).toEqual(5 + MIN_ROOMS);
   });
 
   it('should count the users (1)', () => {
