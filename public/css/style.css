@@ -118,22 +118,28 @@ h3 {
   font-weight: 600;
 }
 
-#rooms {
+.rooms {
   border-collapse: collapse;
   width: 100%;
 }
-#rooms th {
+.rooms th {
   text-align: left;
   border-bottom: 2px solid rgb(240, 240, 240);
   color: rgb(80, 85, 90);
 }
-#rooms tr {
+.rooms tr {
   height: 2rem;
 }
-#rooms td, #rooms th {
+.rooms td, .rooms th {
   border: 1px solid rgb(240, 240, 240);
   border-collapse: collapse;
   padding-left: 1rem;
+}
+.rooms td:focus {
+  background-color: red;
+}
+.selected {
+  background-color: green;
 }
 
 input {

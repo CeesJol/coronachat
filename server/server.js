@@ -38,8 +38,6 @@ io.on('connection', (socket) => {
        room = rooms.findBestRoom();
       }
 
-      console.log(room);
-
       // Create user
       var me = new User(socket.id, params.name, room.id);
 
@@ -78,6 +76,10 @@ io.on('connection', (socket) => {
 
     var room = rooms.getRoomOfUser(userID);
     io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
+  });
+
+  socket.on('requestRoomInfo', () => {
+    io.to(socket.id).emit('responseRoomInfo', rooms.rooms);
   });
 
   socket.on('sendStatus', (params) => {
