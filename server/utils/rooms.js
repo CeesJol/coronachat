@@ -1,7 +1,7 @@
 const {User} = require('./user');
 const {randomId} = require('./general');
 
-const MAX_USER_SIZE = 2; // Maximum amount of users in one room
+const MAX_USER_SIZE = 5; // Maximum amount of users in one room
 
 class Rooms {
   constructor() {
@@ -72,9 +72,9 @@ class Rooms {
 
     room.users.push(user);
 
-    if (room.users.length >= MAX_USER_SIZE) {
-      room.open = false;
-    }
+    // if (room.users.length >= MAX_USER_SIZE) {
+    //   room.open = false;
+    // }
 
     this.userCount++;
 
@@ -102,9 +102,9 @@ class Rooms {
           room.users.splice(j, 1);
 
           // If the room is now empty, close it
-          if (room.users.length == 0) {
-            room.open = false;
-          }
+          // if (room.users.length == 0) {
+          //   room.open = false;
+          // }
 
           this.userCount--;
 
@@ -134,7 +134,8 @@ class Rooms {
 
   // Clean rooms
   clean() {
-    this.rooms = this.rooms.filter((room) => room.users.length > 0);
+    return;
+    // this.rooms = this.rooms.filter((room) => room.users.length > 0);
   }
 };
 

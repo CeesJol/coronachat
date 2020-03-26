@@ -22,6 +22,7 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
   socket.on('join', (params, callback) => {
     params.name = xss(params.name);
+    params.room = xss(params.room);
 
     // Validate data
     if (!isRealString(params.name)) {
@@ -53,11 +54,11 @@ io.on('connection', (socket) => {
       // io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
 
       socket.emit('newAlert', generateAlert(`Welcome to the chat app, ${params.name}`));
-      // if (rooms.getUsers(room.id).length > 1) {
-      //   socket.broadcast.to(room.id).emit('newAlert', generateAlert(`${params.name} joined the chat`));
-      // } else {
-      //   socket.emit('newAlert', generateAlert('Please wait for someone to join'));
-      // }
+      if (rooms.getUsers(room.id).length > 1) {
+        socket.broadcast.to(room.id).emit('newAlert', generateAlert(`${params.name} joined the chat`));
+      } else {
+        socket.emit('newAlert', generateAlert('Please wait for someone to join'));
+      }
 
       callback();
     }

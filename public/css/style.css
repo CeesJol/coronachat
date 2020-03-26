@@ -118,6 +118,24 @@ h3 {
   font-weight: 600;
 }
 
+.rooms {
+  border-collapse: collapse;
+  width: 100%;
+}
+.rooms th {
+  text-align: left;
+  border-bottom: 2px solid rgb(240, 240, 240);
+  color: rgb(80, 85, 90);
+}
+.rooms tr {
+  height: 2rem;
+}
+.rooms td, .rooms th {
+  border: 1px solid rgb(240, 240, 240);
+  border-collapse: collapse;
+  padding-left: 1rem;
+}
+
 input {
   font-size: 1rem;
   font-family: inherit;
@@ -132,7 +150,6 @@ input {
 }
 #chat-name {
   width: 90%;
-  margin-top: .5rem;
 }
 #chat-message {
   width: calc(100% - 11.5rem);
@@ -153,9 +170,11 @@ input:focus {
 }
 
 label {
+  display:inline-block;
   font-size: 1rem;
   color: rgb(105, 120, 170);
   font-weight: 600;
+  margin-bottom: .5rem;
 }
 
 button {

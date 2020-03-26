@@ -1,4 +1,4 @@
-if (isDeveloper()) {
+// if (isDeveloper()) {
   var socket = io({transports: ['websocket'], upgrade: false});
 
   var prevData = -1;
@@ -34,4 +34,4 @@ if (isDeveloper()) {
     console.log('Someone joined the chat');
     audio.play();  
   }
-}
+// }

@@ -47,6 +47,30 @@
               </div>
               <br>
               <div class="form-field">
+                <label>Rooms</label>
+                <br>
+                <table class="rooms">
+                  <tr>
+                    <th>Room name</th>
+                    <th>Online</th>
+                  </tr>
+                  <tr>
+                    <td>Cool people room</td>
+                    <td>42</td>
+                  </tr>
+                  <tr>
+                    <td>The boring room</td>
+                    <td>1337</td>
+                  </tr>
+                  <tr>
+                    <td>Some empty room</td>
+                    <td>0</td>
+                  </tr>
+                </table>
+                <input type="text" name="room" id="room-name" style="display: none" />
+              </div>
+              <br>
+              <div class="form-field">
                 <button id="join-button">JOIN</button>
               </div>
               <br>
@@ -57,11 +81,13 @@
       </div>
     </div>
 
+    <script src="socket.io/socket.io.js"></script>
+    <script src='js/libs/jquery-3.4.1.min.js'></script>
+    <script src='js/libs/moment.js'></script>
+    <script src='js/libs/mustache.min.js'></script>
+    <script src='js/libs/deparam.js'></script>
     <script src="js/index-functions.js"></script>
-    <script src="js/general.js"></script>
-    <script>
-      if (isDeveloper()) document.write('<script src="socket.io/socket.io.js"><\/script>');
-    </script>
+    <script src='js/general.js'></script>
     <script src='js/index.js'></script>
   </body>
 </html>
