@@ -53,7 +53,8 @@ io.on('connection', (socket) => {
       // Send user info
       var id = socket.id;
       var username = params.name;
-      io.to(socket.id).emit('userInfo', {id, username} );
+      var roomName = room.name;
+      io.to(socket.id).emit('userInfo', {id, username, roomName} );
 
       // Send room info
       // Necessary?
@@ -115,6 +116,8 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     var user = rooms.getUser(socket.id);
     if (!user) return;
+
+    console.log("User left: " + user.name);
 
     var room = rooms.getRoomOfUser(socket.id);
     rooms.removeUser(socket.id);

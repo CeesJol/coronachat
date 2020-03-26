@@ -30,10 +30,14 @@ var joined = false;
 var chatUsers = [];
 var username = 'unknown';
 var userID = -1;
+var roomName = "Room";
 
 socket.on('userInfo', function(data) {
   userID = data.id;
   username = data.username;
+  roomName = data.roomName;
+  jQuery('#title').html(roomName);
+  document.title = roomName + ' | CoronaChat';
   socket.emit('requestUserList', userID);
 });
 
@@ -126,22 +130,27 @@ socket.on('updateUserList', function(users) {
   chatUsers = users;
 
   if (userID != -1) {
-    var title = jQuery('#title');
+    var status = jQuery('#status');
 
-    users.forEach(function (user) {
+    status.html("");
+
+    users.forEach(function (user, index, array) {
+      // .html xss danger?
       if (user.id != userID) {
-        title.html(title.html() + user.name); // .html xss danger?
-        audio.join.play();    
-        jQuery('#options').css("visibility", "visible");
-        document.title = '[TODO room name] | CoronaChat';
+        status.html(status.html() + user.name + ', '); 
       }
     });
+
+    status.html(status.html() + 'You');
 
     if (users.length > 1) {
       joined = true;
       overlay.hide();
       jQuery('#pop_waiting').hide();
-      inputField.focus();      
+      inputField.focus();  
+      
+      audio.join.play();    
+      jQuery('#options').css("visibility", "visible");
     }
   }
 });

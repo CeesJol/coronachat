@@ -14,11 +14,11 @@ class Rooms {
   }
 
   // Add a room
-  addRoom(us) {
+  addRoom(us, name) {
     var id = "" + (this.rooms.length + 1);
     var open = true;
     var users = us || [];
-    var name = "Some epic room";
+    var name = name || "Room " + id;
     
     var room = {id, open, users, name};
     this.rooms.push(room);
@@ -89,13 +89,13 @@ class Rooms {
 
   // Get a user by their id
   getUser(userId) {
-    var room = this.rooms.filter((room) => {
-      return room.users.filter((user) => user.id === userId)[0];
-    })[0];
+    for (var room of this.rooms) {
+      for (var user of room.users) {
+        if (user.id == userId) return user;
+      }
+    }
 
-    if (!room) return undefined;
-
-    return room.users[0];
+    return undefined;
   }
 
   // Remove a user from a room
