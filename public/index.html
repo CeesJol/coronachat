@@ -49,25 +49,29 @@
               <div class="form-field">
                 <label>Rooms</label>
                 <br>
-                <table class="rooms">
+                <table id="rooms">
                   <tr>
+                    <th>#</th>
                     <th>Room name</th>
                     <th>Online</th>
                   </tr>
-                  <tr>
+                  <tr onClick="document.getElementById('room-name').value = 1;">
+                    <td>1</td>
                     <td>Cool people room</td>
                     <td>42</td>
                   </tr>
-                  <tr>
+                  <tr onClick="document.getElementById('room-name').value = 2;">
+                    <td>2</td>
                     <td>The boring room</td>
                     <td>1337</td>
                   </tr>
-                  <tr>
+                  <tr onClick="document.getElementById('room-name').value = 3;">
+                    <td>3</td>
                     <td>Some empty room</td>
                     <td>0</td>
                   </tr>
                 </table>
-                <input type="text" name="room" id="room-name" style="display: none" />
+                <input type="text" name="room" id="room-name" style="display: block" />
               </div>
               <br>
               <div class="form-field">
@@ -80,6 +84,14 @@
         </div>
       </div>
     </div>
+
+    <script id="room-template" type="text/template">
+      <tr onClick="document.getElementById('room-name').value = 3">
+        <td>4</td>
+        <td>Some generated room</td>
+        <td>0</td>
+      </tr>
+    </script>
 
     <script src="socket.io/socket.io.js"></script>
     <script src='js/libs/jquery-3.4.1.min.js'></script>

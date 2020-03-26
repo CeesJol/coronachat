@@ -35,3 +35,11 @@
     audio.play();  
   }
 // }
+
+for (var i = 0; i < 3; i++) {
+  var template = jQuery('#room-template').html();
+  var html = Mustache.render(template, {
+
+  });
+  jQuery('#rooms').append(html);
+}

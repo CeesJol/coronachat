@@ -7,14 +7,20 @@ class Rooms {
   constructor() {
     this.rooms = [];
     this.userCount = 0;
+
+    for (var i = 0; i < 3; i++) {
+      this.addRoom();
+    }
   }
 
   // Add a room
   addRoom(us) {
-    var id = randomId();
+    var id = "" + (this.rooms.length + 1);
     var open = true;
     var users = us || [];
-    var room = {id, open, users};
+    var name = "Some epic room";
+    
+    var room = {id, open, users, name};
     this.rooms.push(room);
 
     return room;
@@ -132,10 +138,9 @@ class Rooms {
     }
   }
 
-  // Clean rooms
+  // Clean rooms (?)
   clean() {
-    return;
-    // this.rooms = this.rooms.filter((room) => room.users.length > 0);
+    this.rooms = this.rooms.filter((room) => room.users.length > 0);
   }
 };
 

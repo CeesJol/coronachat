@@ -32,13 +32,13 @@ describe('Rooms', () => {
     };
     var resRoom = rooms.addRoom(room.users);
 
-    expect(rooms.rooms[0].users).toEqual(room.users);
+    expect(resRoom.users).toEqual(room.users);
   });
   it('should add a room without users', () => {
     var rooms = new Rooms();
     var resRoom = rooms.addRoom();
 
-    expect(rooms.rooms[0].users).toEqual([]);
+    expect(resRoom.users).toEqual([]);
   });
 
   it('should remove a room', () => {

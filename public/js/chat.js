@@ -103,7 +103,7 @@ socket.on('newAlert', function (message) {
 jQuery('#message-form').on('submit', function(e) {
   e.preventDefault();
   disableSendButton();
-  sendStatus(userID, 'Online');
+  // sendStatus(userID, 'Online');
   setButton('Sending...');
   createMessage(username, userID, inputField.val());
 
@@ -115,10 +115,10 @@ jQuery('#message-form').on('submit', function(e) {
 inputField.on('input', function(e) {
   if (sendEnabled && !isRealString(inputField.val())) {
     disableSendButton();
-    sendStatus(userID, 'Online');
+    // sendStatus(userID, 'Online');
   } else if (!sendEnabled && isRealString(inputField.val())) {
     enableSendButton();
-    sendStatus(userID, username + ' is typing...');
+    // sendStatus(userID, username + ' is typing...');
   }
 });
 
@@ -130,11 +130,10 @@ socket.on('updateUserList', function(users) {
 
     users.forEach(function (user) {
       if (user.id != userID) {
-        title.html(user.name); // .html xss danger?
-        createAlert('Now chatting with ' + user.name);
+        title.html(title.html() + user.name); // .html xss danger?
         audio.join.play();    
         jQuery('#options').css("visibility", "visible");
-        document.title = user.name + ' | CoronaChat';
+        document.title = '[TODO room name] | CoronaChat';
       }
     });
 
@@ -154,8 +153,10 @@ socket.on('newStatus', function(status) {
 socket.on('userLeft', function(username) {
   createAlert(username + ' has left the chat.');
 
-  setTimeout(function() { 
-    createRefreshAlert('Search for another stranger'); 
+  setTimeout(function() {
+    if (chatUsers.length <= 1) {
+      createRefreshAlert('Find a new chat TODO THIS DOESNT WORK :(( ???'); 
+    }
   }, 1000);
 });
 

@@ -30,8 +30,15 @@ io.on('connection', (socket) => {
     } else if (params.name.length > 20) {
       callback('Name is too long (max: 20 characters)');
     } else {
+      var room;
+      if (params.room) {
+       room = rooms.getRoom(params.room);
+      } else {
       // Find best room
-      var room = rooms.findBestRoom();
+       room = rooms.findBestRoom();
+      }
+
+      console.log(room);
 
       // Create user
       var me = new User(socket.id, params.name, room.id);
@@ -51,7 +58,8 @@ io.on('connection', (socket) => {
       io.to(socket.id).emit('userInfo', {id, username} );
 
       // Send room info
-      // io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
+      // Necessary?
+      io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
 
       socket.emit('newAlert', generateAlert(`Welcome to the chat app, ${params.name}`));
       if (rooms.getUsers(room.id).length > 1) {
@@ -118,7 +126,7 @@ io.on('connection', (socket) => {
       io.to(room.id).emit('userLeft', username);
 
       // Send status info
-      io.to(room.id).emit('newStatus', 'Offline'); 
+      // io.to(room.id).emit('newStatus', 'Offline'); 
     }
   });
 });
@@ -128,9 +136,9 @@ server.listen(port, () => {
   
   setInterval(() => {
     // Delete empty rooms
-    if (rooms.rooms && rooms.rooms.length > 0) {
-      rooms.clean();
-    }
+    // if (rooms.rooms && rooms.rooms.length > 0) {
+    //   rooms.clean();
+    // }
 
     // Emit number of users
     io.emit('responseUserAmount', rooms.numberOfUsers());
