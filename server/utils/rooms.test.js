@@ -8,6 +8,7 @@ describe('Rooms', () => {
   var user;
   var roomId = 100;
   var mike = new User(1, 'Mike', roomId);
+  var john = new User(2, 'John', roomId);
 
   beforeEach(() => {
     rooms = new Rooms();
@@ -19,7 +20,7 @@ describe('Rooms', () => {
     }, {
       id: roomId + 1,
       open: true,
-      users: [mike],
+      users: [mike, john],
     }];
 
     user = new User(2, 'Katie', roomId);
@@ -64,9 +65,9 @@ describe('Rooms', () => {
   });
 
   it('should get user', () => {
-    var user = rooms.getUser(1);
+    var user = rooms.getUser(2);
 
-    expect(user).toEqual(mike);
+    expect(user).toEqual(john);
   });
   it('should not get user', () => {
     var user = rooms.getUser(42);

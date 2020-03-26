@@ -83,13 +83,13 @@ class Rooms {
 
   // Get a user by their id
   getUser(userId) {
-    var room = this.rooms.filter((room) => {
-      return room.users.filter((user) => user.id === userId)[0];
-    })[0];
+    for (var room of this.rooms) {
+      for (var user of room.users) {
+        if (user.id == userId) return user;
+      }
+    }
 
-    if (!room) return undefined;
-
-    return room.users[0];
+    return undefined;
   }
 
   // Remove a user from a room
