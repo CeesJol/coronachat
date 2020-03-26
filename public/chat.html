@@ -88,7 +88,20 @@
     <li class="message-container">
       <div class="message">
         <div class="message__title message__title-white">
-          <h4>{{from}}</h4>
+          <span>{{createdAt}}</span>
+        </div>
+        <div class="message__body message__body-white">
+          <p>{{text}}</p>
+        </div>
+      </div>
+    </li>
+  </script>
+
+  <script id="message-template-username" type="text/template">
+    <h4>{{from}}</h4>
+    <li class="message-container">
+      <div class="message">
+        <div class="message__title message__title-white">
           <span>{{createdAt}}</span>
         </div>
         <div class="message__body message__body-white">

@@ -31,6 +31,7 @@ var chatUsers = [];
 var username = 'unknown';
 var userID = -1;
 var roomName = "Room";
+var lastMessageId = -1; // userid of last message sent
 
 socket.on('userInfo', function(data) {
   userID = data.id;
@@ -82,17 +83,24 @@ socket.on('newMessage', function (message) {
   if (message.id === userID) {
     template = jQuery('#message-template-color').html();
     if (volume) audio.sent.play();
+  } else if (lastMessageId != message.id) {
+    template = jQuery('#message-template-username').html();
+    if (!focused) audio.notification.play();
+    else if (volume) audio.message.play();
   } else {
     template = jQuery('#message-template').html();
     if (!focused) audio.notification.play();
     else if (volume) audio.message.play();
   }
 
+  lastMessageId = message.id;
+
   var html = Mustache.render(template, {
     text: message.text,
     from: message.from, 
     createdAt: formattedTime
   });
+
   jQuery('#messages').append(html);
 
   scrollToBottom();
