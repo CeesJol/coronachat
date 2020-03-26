@@ -79,7 +79,15 @@
       <tr class={{class}} id="room-{{id}}" onClick="selectRoom({{id}})">
         <td>{{number}}</td>
         <td>{{name}}</td>
-        <td>{{online}}</td>
+        <td>{{online}} / {{maxUserSize}}</td>
+      </tr>
+    </script>
+
+    <script id="room-template-disabled" type="text/template">
+      <tr id="room-disabled">
+        <td>{{number}}</td>
+        <td>{{name}}</td>
+        <td>{{online}} / {{maxUserSize}}</td>
       </tr>
     </script>
 

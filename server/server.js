@@ -4,7 +4,7 @@ const express = require('express');
 const socketIO = require('socket.io');
 var xss = require("xss");
 
-const {Rooms} = require('./utils/rooms');
+const {Rooms, MAX_USER_SIZE} = require('./utils/rooms');
 const {User} = require('./utils/user');
 const {generateMessage, generateAlert} = require('./utils/message');
 const {isRealString} = require('./utils/validation');
@@ -45,7 +45,10 @@ io.on('connection', (socket) => {
         var me = new User(socket.id, params.name, room.id);
 
         // Add user to a room
-        rooms.addUser(room.id, me);
+        if (!rooms.addUser(room.id, me)) {
+          callback('That room is full...');
+          return false;
+        }
 
         // Join user to a room
         socket.join(room.id);
@@ -57,7 +60,7 @@ io.on('connection', (socket) => {
         var id = socket.id;
         var username = params.name;
         var roomName = room.name;
-        io.to(socket.id).emit('userInfo', {id, username, roomName} );
+        io.to(socket.id).emit('userInfo', {id, username, roomName, MAX_USER_SIZE} );
 
         // Send room info
         // Necessary?

@@ -1,7 +1,7 @@
 const {User} = require('./user');
 const {randomId} = require('./general');
 
-const MAX_USER_SIZE = 5; // Maximum amount of users in one room
+const MAX_USER_SIZE = 5; // Maximum amount of users in one room, duplicated at index.js
 const MIN_ROOMS = 3; // Minimum number of rooms at all times
 
 class Rooms {
@@ -71,6 +71,8 @@ class Rooms {
     var room = this.getRoom(roomId);
 
     if (!room) return undefined;
+
+    if (room.users.length >= MAX_USER_SIZE) return false;
 
     room.users.push(user);
 
