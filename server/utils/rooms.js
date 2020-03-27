@@ -35,12 +35,11 @@ class Rooms {
   // Add a room
   addRoom(us, name, invincible) {
     var id = this.createId();
-    var open = true;
     var users = us || [];
     var name = name || 'Room ' + id;
     var invincible = invincible || false;
     
-    var room = {id, open, users, name, invincible};
+    var room = {id, users, name, invincible};
     this.rooms.push(room);
 
     return room;
@@ -95,10 +94,6 @@ class Rooms {
 
     room.users.push(user);
 
-    // if (room.users.length >= MAX_USER_SIZE) {
-    //   room.open = false;
-    // }
-
     return user;
   }
 
@@ -122,11 +117,6 @@ class Rooms {
         if (user.id == userId) {
           room.users.splice(j, 1);
 
-          // If the room is now empty, close it
-          // if (room.users.length == 0) {
-          //   room.open = false;
-          // }
-
           return user;
         }
       }
@@ -139,7 +129,7 @@ class Rooms {
     var bestRoom;
 
     for (var room of this.rooms) {
-      if (room.open && room.users.length < MAX_USER_SIZE) {
+      if (room.users.length < MAX_USER_SIZE) {
         bestRoom = room;
         break;
       }

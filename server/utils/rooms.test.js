@@ -15,11 +15,9 @@ describe('Rooms', () => {
 
     rooms.rooms = [{
       id: roomId,
-      open: true,
       users: [],
     }, {
       id: roomId + 1,
-      open: true,
       users: [mike, john],
     }];
 

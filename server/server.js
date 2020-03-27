@@ -136,9 +136,6 @@ io.on('connection', (socket) => {
       // Send user left info
       var username = user.name;
       io.to(room.id).emit('userLeft', username);
-
-      // Send status info
-      // io.to(room.id).emit('newStatus', 'Offline'); 
     }
   });
 });

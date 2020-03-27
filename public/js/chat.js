@@ -138,7 +138,7 @@ socket.on('updateUserList', function(users) {
       jQuery('#pop_waiting').hide();
       inputField.focus();  
       
-      audio.join.play();    
+      if (volume) audio.join.play();    
       jQuery('#options').css("visibility", "visible");
     }
   }
