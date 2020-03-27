@@ -15,11 +15,9 @@ describe('Rooms', () => {
 
     rooms.rooms = [{
       id: roomId,
-      open: true,
       users: [],
     }, {
       id: roomId + 1,
-      open: true,
       users: [mike, john],
     }];
 
@@ -161,7 +159,7 @@ describe('Rooms', () => {
 
     rooms.clean();
 
-    expect(rooms.rooms.length).toEqual(MIN_ROOMS);
+    expect(rooms.rooms.length).toEqual(MIN_ROOMS + 1);
   });
 
   it('should clean no rooms, because there are users', () => {
@@ -173,7 +171,7 @@ describe('Rooms', () => {
 
     rooms.clean();
 
-    expect(rooms.rooms.length).toEqual(5 + MIN_ROOMS);
+    expect(rooms.rooms.length).toEqual(5 + MIN_ROOMS + 1);
   });
 
   it('should clean no rooms, because they are invincible', () => {
@@ -185,7 +183,7 @@ describe('Rooms', () => {
 
     rooms.clean();
 
-    expect(rooms.rooms.length).toEqual(5 + MIN_ROOMS);
+    expect(rooms.rooms.length).toEqual(5 + MIN_ROOMS + 1);
   });
 
   // Complicated test!
