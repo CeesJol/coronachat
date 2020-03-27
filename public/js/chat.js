@@ -47,33 +47,39 @@ socket.on('responseUserAmount', function(data) {
 });
 
 socket.on('connect', function() {
-  if (!connected) {
-    var params = jQuery.deparam(window.location.search);
-    username = params.name;
-    socket.emit('join', params, function(err) {
-      if (err) {
-        alert(err);
-        window.location.href = '/';
-      }
-    });
+  console.log('Connected to server');
 
-    connected = true;
+  var params = jQuery.deparam(window.location.search);
+  username = params.name;
+  socket.emit('join', params, function(err) {
+    if (err) {
+      alert(err);
+      window.location.href = '/';
+    }
+  });
 
-    setButton('Send');
-  }
+  connected = true;
+
+  setButton('Send');
+  enableSendButton();
+  enableInput();
 });
 
 socket.on('disconnect', function() {
   createAlert('Lost connection to server :(');
 
+  connected = false;
+
+  
   setButton('Offline');
   setStatus('Offline');
   disableSendButton();
   disableInput();
 
   setTimeout(function() { 
-    createRefreshAlert('Reconnect'); 
-    socket.connect();
+    if (!connected) {
+      createRefreshAlert('Reconnect'); 
+    }
   }, 1000);
 });
 

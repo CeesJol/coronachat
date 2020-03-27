@@ -4,7 +4,7 @@ var randomId = () => {
   var result = "";
 
   var randomChar = () => {
-    var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*";
+    var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
     var val = Math.floor(Math.random() * chars.length);
     return chars.substr(val, 1);
   }

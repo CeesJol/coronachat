@@ -34,7 +34,7 @@ io.on('connection', (socket) => {
       if (params.room) {
         room = rooms.getRoom(params.room);
       } else {
-        // Find best room
+        // If user specified no room, find best room
         room = rooms.findBestRoom();
       }
 
