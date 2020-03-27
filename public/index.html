@@ -15,7 +15,6 @@
 
       gtag('config', 'UA-129727291-2');
     </script>
-
   </head>
 
   <body class="centered-form">
@@ -47,6 +46,24 @@
               </div>
               <br>
               <div class="form-field">
+                <label>Rooms</label>
+                <br>
+                <table class="rooms">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Room name</th>
+                      <th>Online</th>
+                    </tr>
+                  </thead>
+                  <tbody id="rooms">
+  
+                  </tbody>
+                </table>
+                <input type="text" name="room" id="room-name" style="display: none" />
+              </div>
+              <br>
+              <div class="form-field">
                 <button id="join-button">JOIN</button>
               </div>
               <br>
@@ -57,11 +74,29 @@
       </div>
     </div>
 
-    <script src="js/index-functions.js"></script>
-    <script src="js/general.js"></script>
-    <script>
-      if (isDeveloper()) document.write('<script src="socket.io/socket.io.js"><\/script>');
+    <script id="room-template" type="text/template">
+      <tr class={{class}} id="room-{{id}}" onClick="selectRoom('{{id}}')">
+        <td>{{number}}</td>
+        <td>{{name}}</td>
+        <td>{{online}} / {{maxUserSize}}</td>
+      </tr>
     </script>
+
+    <script id="room-template-disabled" type="text/template">
+      <tr id="room-disabled">
+        <td>{{number}}</td>
+        <td>{{name}}</td>
+        <td>{{online}} / {{maxUserSize}}</td>
+      </tr>
+    </script>
+
+    <script src="socket.io/socket.io.js"></script>
+    <script src='js/libs/jquery-3.4.1.min.js'></script>
+    <script src='js/libs/moment.js'></script>
+    <script src='js/libs/mustache.min.js'></script>
+    <script src='js/libs/deparam.js'></script>
+    <script src="js/index-functions.js"></script>
+    <script src='js/general.js'></script>
     <script src='js/index.js'></script>
   </body>
 </html>

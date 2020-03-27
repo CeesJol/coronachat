@@ -25,7 +25,7 @@
     <div class="chat__header">
       <div class="chat__header-content">
         <div class="chat__header-left">
-          <h1 id="title">Waiting for chat partner...</h1>
+          <h1 id="title">Waiting for chat...</h1>
           <p id="status"></p>
           <div id="users"></div>
         </div>
@@ -88,7 +88,20 @@
     <li class="message-container">
       <div class="message">
         <div class="message__title message__title-white">
-          <!--<h4>{{from}}</h4>-->
+          <span>{{createdAt}}</span>
+        </div>
+        <div class="message__body message__body-white">
+          <p>{{text}}</p>
+        </div>
+      </div>
+    </li>
+  </script>
+
+  <script id="message-template-username" type="text/template">
+    <h4>{{from}}</h4>
+    <li class="message-container">
+      <div class="message">
+        <div class="message__title message__title-white">
           <span>{{createdAt}}</span>
         </div>
         <div class="message__body message__body-white">
@@ -102,7 +115,6 @@
     <li class="message-container">
       <div class="message message-color">
         <div class="message__title message__title-color">
-          <!--<h4>{{from}}</h4>-->
           <span>{{createdAt}}</span>
         </div>
         <div class="message__body message__body-color">
@@ -124,6 +136,14 @@
     <li class="alert-container">
       <div class="alert">
         <p><i><a href='javascript:location.reload();'>{{text}}</a></i></p>
+      </div>
+    </li>
+  </script>
+
+  <script id="alert-leave-template" type="text/template">
+    <li class="alert-container">
+      <div class="alert">
+        <p><i><a href='javascript:window.location.href = "index.html";'>{{text}}</a></i></p>
       </div>
     </li>
   </script>

@@ -1,20 +1,45 @@
 const {User} = require('./user');
 const {randomId} = require('./general');
 
-const MAX_USER_SIZE = 2; // Maximum amount of users in one room
+const MAX_USER_SIZE = 5; // Maximum amount of users in one room, duplicated at index.js
+const MIN_ROOMS = 1; // Minimum number of rooms at all times
 
 class Rooms {
   constructor() {
     this.rooms = [];
-    this.userCount = 0;
+
+    for (var i = 1; i <= MIN_ROOMS; i++) {
+      this.addRoom([], "Room " + i, true);
+    }
+  }
+
+  // Create id
+  createId() {
+    if (this.getRoom(this.rooms.length + 1)) {
+      // If a room already has this ID, find a unique ID
+      var id;
+      for (var i = 0; i < this.rooms.length; i++) {
+        if (!this.getRoom(i + 1)) {
+          id = '' + (i + 1);
+          break;
+        }
+      }
+      // As fallback, return a random id
+      return id || randomId();
+    } else {
+      // Simply use the length + 1 as a new ID
+      return '' + (this.rooms.length + 1);
+    }
   }
 
   // Add a room
-  addRoom(us) {
-    var id = randomId();
-    var open = true;
+  addRoom(us, name, invincible) {
+    var id = this.createId();
     var users = us || [];
-    var room = {id, open, users};
+    var name = name || 'Room ' + id;
+    var invincible = invincible || false;
+    
+    var room = {id, users, name, invincible};
     this.rooms.push(room);
 
     return room;
@@ -41,11 +66,6 @@ class Rooms {
     return this.rooms.filter((room) => room.id === id)[0];
   }
 
-  // Get number of users
-  numberOfUsers() {
-    return this.userCount;
-  }
-
   // Get a room of a user
   getRoomOfUser(userId) {
     var room = this.rooms.filter((room) => {
@@ -70,13 +90,9 @@ class Rooms {
 
     if (!room) return undefined;
 
+    if (room.users.length >= MAX_USER_SIZE) return false;
+
     room.users.push(user);
-
-    if (room.users.length >= MAX_USER_SIZE) {
-      room.open = false;
-    }
-
-    this.userCount++;
 
     return user;
   }
@@ -101,13 +117,6 @@ class Rooms {
         if (user.id == userId) {
           room.users.splice(j, 1);
 
-          // If the room is now empty, close it
-          if (room.users.length == 0) {
-            room.open = false;
-          }
-
-          this.userCount--;
-
           return user;
         }
       }
@@ -115,27 +124,42 @@ class Rooms {
   }
 
   // Find the best room for a user to join
+  // Note that in the server, the rooms are sorted on number of users every interval.
   findBestRoom() {
     var bestRoom;
 
     for (var room of this.rooms) {
-      if (room.open && room.users.length < MAX_USER_SIZE && room.users.length > 0) {
+      if (room.users.length < MAX_USER_SIZE) {
         bestRoom = room;
         break;
       }
     }
 
     if (bestRoom) {
-      return bestRoom;        // We found a room, return it
+      return bestRoom;         // We found a room, return it
     } else {
       return this.addRoom();   // All rooms are full/closed, make a new room
     }
   }
 
   // Clean rooms
+  // Aim to always have one empty room (excluding the invincible rooms)
   clean() {
-    this.rooms = this.rooms.filter((room) => room.users.length > 0);
+    var emptyRoom = 0;
+    this.rooms = this.rooms.filter((room) => {
+      if (room.users.length > 0 || room.invincible == true) {
+        return true;
+      } else if (emptyRoom < 1) {
+        emptyRoom++;
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    // If there is no empty room, add one
+    if (emptyRoom === 0) this.addRoom();
   }
 };
 
-module.exports = {Rooms};
+module.exports = {Rooms, MAX_USER_SIZE, MIN_ROOMS};

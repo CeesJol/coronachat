@@ -26,14 +26,20 @@ var audio = {
 
 // Connection variables
 var connected = false;
+var sendingMessage = false;
 var joined = false;
 var chatUsers = [];
 var username = 'unknown';
 var userID = -1;
+var roomName = "Room";
+var lastMessageId = -1; // userid of last message sent
 
 socket.on('userInfo', function(data) {
   userID = data.id;
   username = data.username;
+  roomName = data.roomName;
+  jQuery('#title').html(roomName);
+  document.title = roomName + ' | CoronaChat';
   socket.emit('requestUserList', userID);
 });
 
@@ -42,36 +48,34 @@ socket.on('responseUserAmount', function(data) {
 });
 
 socket.on('connect', function() {
-  if (!connected) {
-    var params = jQuery.deparam(window.location.search);
-    username = params.name;
-    socket.emit('join', params, function(err) {
-      if (err) {
-        alert(err);
-        window.location.href = '/';
-      }
-    });
+  console.log('Connected to server');
 
-    connected = true;
+  var params = jQuery.deparam(window.location.search);
+  username = params.name;
+  socket.emit('join', params, function(err) {
+    if (err) {
+      alert(err);
+      window.location.href = '/';
+    }
+  });
 
-    setButton('Send');
-  }
+  connected = true;
+
+  updateFooter();
 });
 
 socket.on('disconnect', function() {
   createAlert('Lost connection to server :(');
 
-  setButton('Offline');
-  setStatus('Offline');
-  disableSendButton();
-  disableInput();
+  connected = false;
+  
+  updateFooter();
 
   setTimeout(function() { 
-    createRefreshAlert('Reconnect'); 
+    if (!connected) {
+      createRefreshAlert('Reconnect'); 
+    }
   }, 1000);
-
-  // Don't reconnect anymore
-  socket.disconnect();
 });
 
 socket.on('newMessage', function (message) {
@@ -80,17 +84,24 @@ socket.on('newMessage', function (message) {
   if (message.id === userID) {
     template = jQuery('#message-template-color').html();
     if (volume) audio.sent.play();
+  } else if (lastMessageId != message.id) {
+    template = jQuery('#message-template-username').html();
+    if (!focused) audio.notification.play();
+    else if (volume) audio.message.play();
   } else {
     template = jQuery('#message-template').html();
     if (!focused) audio.notification.play();
     else if (volume) audio.message.play();
   }
 
+  lastMessageId = message.id;
+
   var html = Mustache.render(template, {
     text: message.text,
     from: message.from, 
     createdAt: formattedTime
   });
+
   jQuery('#messages').append(html);
 
   scrollToBottom();
@@ -101,10 +112,9 @@ socket.on('newAlert', function (message) {
 });
 
 jQuery('#message-form').on('submit', function(e) {
+  sendingMessage = true;
+  updateFooter();
   e.preventDefault();
-  disableSendButton();
-  sendStatus(userID, 'Online');
-  setButton('Sending...');
   createMessage(username, userID, inputField.val());
 
   inputField.focus();   
@@ -113,49 +123,42 @@ jQuery('#message-form').on('submit', function(e) {
 
 // Detect input changes in textfield, and set send-button to disabled or not
 inputField.on('input', function(e) {
-  if (sendEnabled && !isRealString(inputField.val())) {
-    disableSendButton();
-    sendStatus(userID, 'Online');
-  } else if (!sendEnabled && isRealString(inputField.val())) {
-    enableSendButton();
-    sendStatus(userID, username + ' is typing...');
-  }
+  updateFooter();
 });
 
 socket.on('updateUserList', function(users) {
   chatUsers = users;
 
   if (userID != -1) {
-    var title = jQuery('#title');
-
-    users.forEach(function (user) {
-      if (user.id != userID) {
-        title.html(user.name); // .html xss danger?
-        createAlert('Now chatting with ' + user.name);
-        audio.join.play();    
-        jQuery('#options').css("visibility", "visible");
-        document.title = user.name + ' | CoronaChat';
-      }
-    });
+    createUserList(users);
 
     if (users.length > 1) {
       joined = true;
       overlay.hide();
       jQuery('#pop_waiting').hide();
-      inputField.focus();      
+      inputField.focus();  
+      
+      if (volume) audio.join.play();    
+      jQuery('#options').css("visibility", "visible");
     }
   }
 });
 
 socket.on('newStatus', function(status) {
-  setStatus(status);
+  if (status == 'Online') {
+    setStatus(createUserList(chatUsers));
+  } else {
+    setStatus(status);
+  }
 });
 
 socket.on('userLeft', function(username) {
   createAlert(username + ' has left the chat.');
 
-  setTimeout(function() { 
-    createRefreshAlert('Search for another stranger'); 
+  setTimeout(function() {
+    if (chatUsers.length <= 1) {
+      createLeaveAlert('Go back to main page'); 
+    }
   }, 1000);
 });
 

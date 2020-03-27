@@ -1,6 +1,6 @@
 const expect = require('expect');
 
-const {Rooms} = require('./rooms');
+const {Rooms, MAX_USER_SIZE, MIN_ROOMS} = require('./rooms');
 const {User} = require('./user');
 
 describe('Rooms', () => {
@@ -15,11 +15,9 @@ describe('Rooms', () => {
 
     rooms.rooms = [{
       id: roomId,
-      open: true,
-      users: []
+      users: [],
     }, {
       id: roomId + 1,
-      open: true,
       users: [mike, john],
     }];
 
@@ -33,13 +31,13 @@ describe('Rooms', () => {
     };
     var resRoom = rooms.addRoom(room.users);
 
-    expect(rooms.rooms[0].users).toEqual(room.users);
+    expect(resRoom.users).toEqual(room.users);
   });
   it('should add a room without users', () => {
     var rooms = new Rooms();
     var resRoom = rooms.addRoom();
 
-    expect(rooms.rooms[0].users).toEqual([]);
+    expect(resRoom.users).toEqual([]);
   });
 
   it('should remove a room', () => {
@@ -152,36 +150,47 @@ describe('Rooms', () => {
     expect(room.id).toEqual(roomId + 1);
   });
 
-  it('should clean the rooms', () => {
+  it('should clean some rooms', () => {
+    var rooms = new Rooms();
+    
+    for (var i = 0; i < 5; i++) {
+      rooms.addRoom();
+    }
+
     rooms.clean();
 
-    expect(rooms.rooms.length).toEqual(1);
+    expect(rooms.rooms.length).toEqual(MIN_ROOMS + 1);
   });
 
-  it('should count the users (1)', () => {
+  it('should clean no rooms, because there are users', () => {
     var rooms = new Rooms();
+    
+    for (var i = 0; i < 5; i++) {
+      rooms.addRoom([mike]);
+    }
 
-    rooms.rooms = [{
-      id: roomId,
-      users: []
-    }, {
-      id: roomId + 1,
-      users: [],
-    }];
+    rooms.clean();
 
-    var user = new User(3, 'Cees', roomId);
+    expect(rooms.rooms.length).toEqual(5 + MIN_ROOMS + 1);
+  });
 
-    rooms.addUser(roomId, user);
+  it('should clean no rooms, because they are invincible', () => {
+    var rooms = new Rooms();
+    
+    for (var i = 0; i < 5; i++) {
+      rooms.addRoom([], 'some name', true);
+    }
 
-    expect(rooms.numberOfUsers()).toEqual(1);
+    rooms.clean();
+
+    expect(rooms.rooms.length).toEqual(5 + MIN_ROOMS + 1);
   });
 
   // Complicated test!
   // - findBestRoom
   // - addUser
   // - removeUser
-  // - numberOfUsers
-  it('should count the users (2) (complicated test)', () => {
+  it('complicated test', () => {
     var rooms = new Rooms();
 
     var res1 = rooms.findBestRoom();
@@ -200,6 +209,11 @@ describe('Rooms', () => {
     rooms.removeUser(user2.id);
     rooms.removeUser(unassignedUser.id);
 
-    expect(rooms.numberOfUsers()).toEqual(2);
+    var nUsers = 0;
+    for (var room of rooms.rooms) {
+      nUsers += room.users.length;
+    }
+
+    expect(nUsers).toEqual(2);
   });
 });

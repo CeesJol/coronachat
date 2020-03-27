@@ -69,12 +69,13 @@ h1, h3, h6, p {
   height: 100vh; /* Use vh as a fallback for browsers that do not support Custom Properties */
   height: calc(var(--vh, 1vh) * 100);
   top: 0; left: 0; bottom: 0; right: 0;
+  background: white;
 }
 
 .content {
   background-color: white;
-  width: 800px;
-  height: 500px;
+  width: 100%;
+  height: 100%;
   margin: auto;
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
@@ -82,22 +83,40 @@ h1, h3, h6, p {
 
 .left {
   position: relative;
-  width: calc(45% - 80px);
-  height: calc(100% - 80px);
   background-image: linear-gradient(rgb(30, 40, 70), rgb(10, 20, 40));
   color: white;
+  width: calc(100% - 50px);
+  height: auto;
+  padding: 25px;
+  margin: 0;
 }
 
 .right {
   position: relative;
-  width: calc(55% - 80px);
-  height: calc(100% - 80px);
   background-color: white;
+  width: calc(100% - 50px);
+  height: calc(100% - 15rem);
+  padding: 25px;
+  margin: 0;
+}
+
+.left-content {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 400px;
+}
+
+.right-content {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 400px;
+  height: 100%;
 }
 
 .title {
   font-size: 4rem;
   font-weight: bold;
+  display: inline;
 }
 
 .title-1 {
@@ -118,6 +137,33 @@ h3 {
   font-weight: 600;
 }
 
+.rooms {
+  border-collapse: collapse;
+  width: 100%;
+}
+.rooms th {
+  text-align: left;
+  border-bottom: 2px solid rgb(240, 240, 240);
+  color: rgb(80, 85, 90);
+}
+.rooms tr {
+  height: 2rem;
+}
+.rooms td, .rooms th {
+  border: 1px solid rgb(240, 240, 240);
+  border-collapse: collapse;
+  padding-left: 1rem;
+}
+.rooms td:focus {
+  background-color: red;
+}
+.selected {
+  background-color: green;
+}
+#room-disabled {
+  color: rgb(200, 200, 200);
+}
+
 input {
   font-size: 1rem;
   font-family: inherit;
@@ -132,7 +178,6 @@ input {
 }
 #chat-name {
   width: 90%;
-  margin-top: .5rem;
 }
 #chat-message {
   width: calc(100% - 11.5rem);
@@ -153,9 +198,11 @@ input:focus {
 }
 
 label {
+  display:inline-block;
   font-size: 1rem;
   color: rgb(105, 120, 170);
   font-weight: 600;
+  margin-bottom: .5rem;
 }
 
 button {
@@ -178,7 +225,6 @@ button {
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
   border-radius: 2px;
   margin-left: 10px;
-  padding: .7rem 3rem;
   width: 8.5rem;
   padding: .75rem 0;
 }
@@ -225,6 +271,10 @@ button:active {
 }
 .popup-button:not(:last-child) {
   margin-right: 10px;
+}
+
+#join-button {
+  margin: 0;
 }
 
 .chat__header {
@@ -301,18 +351,10 @@ button:active {
   float: right;
 }
 
-.message__title-white h4, .message__title-white span {
-  color: rgb(130, 130, 140);
-}
-
-.message__title-color h4, .message__body-color {
-  color: white;
-}
-
-.message__title h4 {
+h4 {
   font-size: 1.2rem;
   font-weight: 400;
-  /* display: inline; */
+  margin-left: .3rem;
 }
 
 .message__title span {
@@ -392,66 +434,9 @@ button:active {
   display: none;
 }
 
-@media only screen and (min-width: 800px) {
-  .container {
-    background-image: linear-gradient(rgb(90, 90, 110), rgb(60, 60, 80));
-  }
-
-  .centered-form__form {
-    float: left;
-    margin: 0px;
-  }
-
-  .right {
-    padding-right: 100px;
-    width: calc(55% - 140px);
-    text-align: justify;
-  }
-}
-
 @media only screen and (max-width: 799px) {
-  .container {
-    background-color: white;
-  }
-  
   html, body {
     font-size: 13px;
-  }
-
-  .left {
-    width: calc(100% - 50px);
-    height: auto;
-    padding: 25px;
-    margin: 0;
-    
-  }
-
-  .left-content {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 400px;
-  }
-
-  .right {
-    width: calc(100% - 50px);
-    height: auto;
-    padding: 25px;
-    margin: 0;
-  }
-
-  .right-content {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 400px;
-  }
-
-  .content {
-    width: 100%;
-    height: 100%;
-  }
-
-  .title {
-    display: inline;
   }
 
   #join-button {
