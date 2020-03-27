@@ -37,7 +37,7 @@ class Rooms {
     var id = this.createId();
     var open = true;
     var users = us || [];
-    var name = name || "A cool room";
+    var name = name || 'Room ' + id;
     var invincible = invincible || false;
     
     var room = {id, open, users, name, invincible};

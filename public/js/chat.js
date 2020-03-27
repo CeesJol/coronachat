@@ -26,6 +26,7 @@ var audio = {
 
 // Connection variables
 var connected = false;
+var sendingMessage = false;
 var joined = false;
 var chatUsers = [];
 var username = 'unknown';
@@ -60,21 +61,15 @@ socket.on('connect', function() {
 
   connected = true;
 
-  setButton('Send');
-  enableSendButton();
-  enableInput();
+  updateFooter();
 });
 
 socket.on('disconnect', function() {
   createAlert('Lost connection to server :(');
 
   connected = false;
-
   
-  setButton('Offline');
-  setStatus('Offline');
-  disableSendButton();
-  disableInput();
+  updateFooter();
 
   setTimeout(function() { 
     if (!connected) {
@@ -117,10 +112,9 @@ socket.on('newAlert', function (message) {
 });
 
 jQuery('#message-form').on('submit', function(e) {
+  sendingMessage = true;
+  updateFooter();
   e.preventDefault();
-  disableSendButton();
-  // sendStatus(userID, 'Online');
-  setButton('Sending...');
   createMessage(username, userID, inputField.val());
 
   inputField.focus();   
@@ -129,31 +123,14 @@ jQuery('#message-form').on('submit', function(e) {
 
 // Detect input changes in textfield, and set send-button to disabled or not
 inputField.on('input', function(e) {
-  if (sendEnabled && !isRealString(inputField.val())) {
-    disableSendButton();
-    // sendStatus(userID, 'Online');
-  } else if (!sendEnabled && isRealString(inputField.val())) {
-    enableSendButton();
-    // sendStatus(userID, username + ' is typing...');
-  }
+  updateFooter();
 });
 
 socket.on('updateUserList', function(users) {
   chatUsers = users;
 
   if (userID != -1) {
-    var status = jQuery('#status');
-
-    status.html("");
-
-    users.forEach(function (user, index, array) {
-      // .html xss danger?
-      if (user.id != userID) {
-        status.html(status.html() + user.name + ', '); 
-      }
-    });
-
-    status.html(status.html() + 'You');
+    createUserList(users);
 
     if (users.length > 1) {
       joined = true;
@@ -168,7 +145,11 @@ socket.on('updateUserList', function(users) {
 });
 
 socket.on('newStatus', function(status) {
-  setStatus(status);
+  if (status == 'Online') {
+    setStatus(createUserList(chatUsers));
+  } else {
+    setStatus(status);
+  }
 });
 
 socket.on('userLeft', function(username) {

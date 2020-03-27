@@ -50,7 +50,8 @@ function createMessage(from, id, messageText) {
     fromID: id,
     text: messageText
   }, function() {
-    setButton('Send');
+    sendingMessage = false;
+    updateFooter();
   });  
 }
 
@@ -73,6 +74,32 @@ function scrollToBottom() {
   // if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
     messages.scrollTop(scrollHeight);
   // }
+}
+
+/**
+ * Update the send button: enabled/disabled
+ */
+function updateFooter() {
+  if (connected == false) {
+    disableSendButton();
+    setButton('Offline');
+    setStatus('Offline');
+    disableInput();
+  } else if (sendingMessage) {
+    disableSendButton();
+    sendStatus(userID, 'Online');
+    setButton('Sending...');
+  } else {
+    setButton('Send');
+    enableInput();
+    if (sendEnabled && !isRealString(inputField.val())) {
+      disableSendButton();
+      sendStatus(userID, 'Online');
+    } else if (!sendEnabled && isRealString(inputField.val())) {
+      enableSendButton();
+      sendStatus(userID, username + ' is typing...');
+    }
+  }
 }
 
 /**
@@ -146,3 +173,21 @@ jQuery('#volume-option-toggle').click(function(){
     volume = true;
   }
 });
+
+/**
+ * Create a list of users in the header
+ * @param {*} users the array of users
+ */
+function createUserList(users) {
+  var status = jQuery('#status');
+
+  status.html("");
+
+  users.forEach(function (user) {
+    if (user.id != userID) {
+      status.append(user.name + ', '); 
+    }
+  });
+
+  status.append('You');
+}

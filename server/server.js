@@ -96,6 +96,8 @@ io.on('connection', (socket) => {
       params.fromID = xss(params.fromID);
       params.text = xss(params.text);
 
+      console.log("WHAT?");
+
       var room = rooms.getRoomOfUser(params.fromID);
       socket.broadcast.to(room.id).emit('newStatus', params.text); 
     } catch(e) {
