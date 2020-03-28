@@ -6,8 +6,8 @@ class Rooms {
   constructor() {
     this.rooms = [];
 
-    // Add a Dutch, General and Development room
-    this.addRoom("General 👩‍💻", true, 3);
+    // Add a General, Dutch and Development room
+    this.addRoom("General 👩‍💻", true);
     this.addRoom("Dutch Room 🇳🇱", true,);
     this.addRoom("Development 🏗", true);
   }

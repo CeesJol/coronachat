@@ -377,6 +377,7 @@ h4 {
   padding-bottom: .7rem;
   padding-right: 50px;
   padding-top: .7rem;
+  word-wrap: break-word
 }
 
 .alert-container {
