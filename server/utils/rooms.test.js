@@ -26,12 +26,10 @@ describe('Rooms', () => {
 
   it('should add a room with users', () => {
     var rooms = new Rooms();
-    var room = {
-      users: [user]
-    };
-    var resRoom = rooms.addRoom(room.users);
+    var resRoom = rooms.addRoom();
+    rooms.addUser(resRoom.id, user);
 
-    expect(resRoom.users).toEqual(room.users);
+    expect(resRoom.users).toEqual([user]);
   });
   it('should add a room without users', () => {
     var rooms = new Rooms();
@@ -152,6 +150,8 @@ describe('Rooms', () => {
 
   it('should clean some rooms', () => {
     var rooms = new Rooms();
+
+    var startLength = rooms.rooms.length;
     
     for (var i = 0; i < 5; i++) {
       rooms.addRoom();
@@ -159,31 +159,36 @@ describe('Rooms', () => {
 
     rooms.clean();
 
-    expect(rooms.rooms.length).toEqual(MIN_ROOMS + 1);
+    expect(rooms.rooms.length).toEqual(MIN_ROOMS + startLength);
   });
 
   it('should clean no rooms, because there are users', () => {
     var rooms = new Rooms();
+
+    var startLength = rooms.rooms.length;
     
     for (var i = 0; i < 5; i++) {
-      rooms.addRoom([mike]);
+      var newRoom = rooms.addRoom();
+      rooms.addUser(newRoom.id, mike);
     }
 
     rooms.clean();
 
-    expect(rooms.rooms.length).toEqual(5 + MIN_ROOMS + 1);
+    expect(rooms.rooms.length).toEqual(5 + MIN_ROOMS + startLength);
   });
 
   it('should clean no rooms, because they are invincible', () => {
     var rooms = new Rooms();
+
+    var startLength = rooms.rooms.length;
     
     for (var i = 0; i < 5; i++) {
-      rooms.addRoom([], 'some name', true);
+      rooms.addRoom('some name', true);
     }
 
     rooms.clean();
 
-    expect(rooms.rooms.length).toEqual(5 + MIN_ROOMS + 1);
+    expect(rooms.rooms.length).toEqual(5 + MIN_ROOMS + startLength);
   });
 
   // Complicated test!

@@ -145,7 +145,7 @@ server.listen(port, () => {
   
   setInterval(() => {
     if (rooms.rooms) {
-      // Delete empty rooms
+      // Delete or create rooms
       rooms.clean();
 
       // Emit sorted rooms
@@ -153,7 +153,11 @@ server.listen(port, () => {
       io.emit('responseRoomInfo', rooms.rooms);
 
       // Emit number of users
-      io.emit('responseUserAmount', io.engine.clientsCount);
+      io.emit('responseUserAmount', numberOfUsers());
     }
   }, 1000);
 });
+
+function numberOfUsers() {
+  return io.engine.clientsCount;
+}
