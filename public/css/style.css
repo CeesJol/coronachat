@@ -105,7 +105,7 @@ h1, h3, h6, p {
   position: relative;
   background-color: white;
   width: calc(100% - 50px);
-  height: calc(100% - 15rem);
+  height: calc(100% - 10rem);
   padding: 25px;
   margin: 0;
 }
@@ -347,7 +347,7 @@ button:active {
   position: relative;
   background-color: white;
   width: auto;
-  max-width: calc(100% - 200px);
+  max-width: calc(100% - 15rem);
   border-radius: .5rem;
   padding-left: 10px;
   padding-right: 10px;
@@ -392,7 +392,7 @@ h4 {
   padding: 5px 15px;
   display: inline-block;
   border-radius: .25rem;
-  max-width: calc(100% - 50px);
+  max-width: calc(100% - 3.125);
 }
 
 .overlay {
@@ -428,7 +428,9 @@ h4 {
   top: 0;
   position: relative;
   height: calc(100% - 50px);
-  display:flex;justify-content:center;align-items:center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .pop-body-full-height {
   height: 100%;
@@ -452,5 +454,19 @@ h4 {
 
   #join-button {
     font-size: 1.2rem;
+  }
+
+  .message {
+    max-width: calc(100% - 5rem);
+  }
+}
+
+@media only screen and (min-width: 1199px) {
+  html, body {
+    font-size: 18px;
+  }
+  
+  .message {
+    max-width: calc(100% - 20rem);
   }
 }
