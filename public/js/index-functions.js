@@ -14,8 +14,13 @@ function unselectAll() {
 }
 
 function selectRoom(roomId) {
-   document.getElementById('room-name').value = roomId;
-   unselectAll(); 
-   document.getElementById('room-' + roomId).className += ' selected'; 
-   selectedRoom = roomId;
+  unselectAll();
+  if (roomId == selectedRoom) {
+    document.getElementById('room-name').value = '';
+    selectedRoom = -1;
+  } else {
+    document.getElementById('room-name').value = roomId;
+    document.getElementById('room-' + roomId).className += ' selected'; 
+    selectedRoom = roomId;
+  }
 }

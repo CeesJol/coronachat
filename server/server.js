@@ -96,8 +96,6 @@ io.on('connection', (socket) => {
       params.fromID = xss(params.fromID);
       params.text = xss(params.text);
 
-      console.log("WHAT?");
-
       var room = rooms.getRoomOfUser(params.fromID);
       socket.broadcast.to(room.id).emit('newStatus', params.text); 
     } catch(e) {
@@ -149,7 +147,7 @@ server.listen(port, () => {
       rooms.clean();
 
       // Emit sorted rooms
-      rooms.rooms.sort((room1, room2) => room2.users.length - room1.users.length);
+      rooms.sort();
       io.emit('responseRoomInfo', rooms.rooms);
 
       // Emit number of users

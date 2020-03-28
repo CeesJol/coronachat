@@ -1,6 +1,6 @@
 const expect = require('expect');
 
-const {Rooms, MAX_USER_SIZE, MIN_ROOMS} = require('./rooms');
+const {Rooms, MAX_USER_SIZE} = require('./rooms');
 const {User} = require('./user');
 
 describe('Rooms', () => {
@@ -159,7 +159,7 @@ describe('Rooms', () => {
 
     rooms.clean();
 
-    expect(rooms.rooms.length).toEqual(MIN_ROOMS + startLength);
+    expect(rooms.rooms.length).toEqual(startLength);
   });
 
   it('should clean no rooms, because there are users', () => {
@@ -174,7 +174,7 @@ describe('Rooms', () => {
 
     rooms.clean();
 
-    expect(rooms.rooms.length).toEqual(5 + MIN_ROOMS + startLength);
+    expect(rooms.rooms.length).toEqual(5 + startLength);
   });
 
   it('should clean no rooms, because they are invincible', () => {
@@ -188,7 +188,7 @@ describe('Rooms', () => {
 
     rooms.clean();
 
-    expect(rooms.rooms.length).toEqual(5 + MIN_ROOMS + startLength);
+    expect(rooms.rooms.length).toEqual(5 + startLength);
   });
 
   // Complicated test!
@@ -220,5 +220,11 @@ describe('Rooms', () => {
     }
 
     expect(nUsers).toEqual(2);
+  });
+
+  it('should sort the rooms based on number of users', () => {
+    rooms.sort();
+
+    expect(rooms.rooms[0].users.length).toEqual(2);
   });
 });

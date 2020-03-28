@@ -1,15 +1,14 @@
 const {randomId} = require('./general');
 
 const MAX_USER_SIZE = 5; // Maximum amount of users in one room, duplicated at index.js
-const MIN_ROOMS = 0; // Minimum number of rooms at all times
 
 class Rooms {
   constructor() {
     this.rooms = [];
 
     // Add a Dutch, General and Development room
-    this.addRoom("Dutch Room 🇳🇱", true);
     this.addRoom("General 👩‍💻", true);
+    this.addRoom("Dutch Room 🇳🇱", true);
     this.addRoom("Development 🏗", true);
   }
 
@@ -162,6 +161,18 @@ class Rooms {
     // If there is no available room, add one
     if (fullRooms == this.rooms.length) this.addRoom();
   }
+
+  // Sort the rooms based on number of users, or otherwise their id
+  sort() {
+    this.rooms.sort((room1, room2) => {
+      var userDiff = room2.users.length - room1.users.length;
+      if (userDiff !== 0) {
+        return userDiff;
+      } else {
+        return room1.id - room2.id;
+      }
+    });
+  }
 };
 
-module.exports = {Rooms, MAX_USER_SIZE, MIN_ROOMS};
+module.exports = {Rooms, MAX_USER_SIZE};
