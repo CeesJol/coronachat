@@ -161,6 +161,18 @@ class Rooms {
     // If there is no available room, add one
     if (fullRooms == this.rooms.length) this.addRoom();
   }
+
+  // Sort the rooms based on number of users, or otherwise their id
+  sort() {
+    this.rooms.sort((room1, room2) => {
+      var userDiff = room2.users.length - room1.users.length;
+      if (userDiff !== 0) {
+        return userDiff;
+      } else {
+        return room1.id - room2.id;
+      }
+    });
+  }
 };
 
 module.exports = {Rooms, MAX_USER_SIZE};

@@ -221,4 +221,10 @@ describe('Rooms', () => {
 
     expect(nUsers).toEqual(2);
   });
+
+  it('should sort the rooms based on number of users', () => {
+    rooms.sort();
+
+    expect(rooms.rooms[0].users.length).toEqual(2);
+  });
 });

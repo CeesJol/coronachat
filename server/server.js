@@ -147,14 +147,7 @@ server.listen(port, () => {
       rooms.clean();
 
       // Emit sorted rooms
-      rooms.rooms.sort((room1, room2) => {
-        var userDiff = room2.users.length - room1.users.length;
-        if (userDiff !== 0) {
-          return userDiff;
-        } else {
-          return room1.id - room2.id;
-        }
-      });
+      rooms.sort();
       io.emit('responseRoomInfo', rooms.rooms);
 
       // Emit number of users
