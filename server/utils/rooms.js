@@ -1,15 +1,14 @@
 const {randomId} = require('./general');
 
 const MAX_USER_SIZE = 5; // Maximum amount of users in one room, duplicated at index.js
-const MIN_ROOMS = 0; // Minimum number of rooms at all times
 
 class Rooms {
   constructor() {
     this.rooms = [];
 
     // Add a Dutch, General and Development room
-    this.addRoom("Dutch Room 🇳🇱", true);
     this.addRoom("General 👩‍💻", true);
+    this.addRoom("Dutch Room 🇳🇱", true);
     this.addRoom("Development 🏗", true);
   }
 
@@ -164,4 +163,4 @@ class Rooms {
   }
 };
 
-module.exports = {Rooms, MAX_USER_SIZE, MIN_ROOMS};
+module.exports = {Rooms, MAX_USER_SIZE};
