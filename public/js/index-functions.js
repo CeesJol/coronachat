@@ -14,12 +14,12 @@ function unselectAll() {
 }
 
 function selectRoom(roomId) {
+  unselectAll();
   if (roomId == selectedRoom) {
-    unselectAll();
+    document.getElementById('room-name').value = '';
     selectedRoom = -1;
   } else {
     document.getElementById('room-name').value = roomId;
-    unselectAll(); 
     document.getElementById('room-' + roomId).className += ' selected'; 
     selectedRoom = roomId;
   }
