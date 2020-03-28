@@ -1,16 +1,16 @@
-const {User} = require('./user');
 const {randomId} = require('./general');
 
 const MAX_USER_SIZE = 5; // Maximum amount of users in one room, duplicated at index.js
-const MIN_ROOMS = 1; // Minimum number of rooms at all times
+const MIN_ROOMS = 0; // Minimum number of rooms at all times
 
 class Rooms {
   constructor() {
     this.rooms = [];
 
-    for (var i = 1; i <= MIN_ROOMS; i++) {
-      this.addRoom([], "Room " + i, true);
-    }
+    // Add a Dutch, General and Development room
+    this.addRoom("Dutch Room 🇳🇱", true);
+    this.addRoom("General 👩‍💻", true);
+    this.addRoom("Development 🏗", true);
   }
 
   // Create id
@@ -33,9 +33,9 @@ class Rooms {
   }
 
   // Add a room
-  addRoom(us, name, invincible) {
+  addRoom(name, invincible) {
     var id = this.createId();
-    var users = us || [];
+    var users = [];
     var name = name || 'Room ' + id;
     var invincible = invincible || false;
     
@@ -143,22 +143,24 @@ class Rooms {
   }
 
   // Clean rooms
-  // Aim to always have one empty room (excluding the invincible rooms)
+  // Aim to always have one empty room
   clean() {
-    var emptyRoom = 0;
+    if (this.rooms.length == 0) return;
+
+    var fullRooms = 0;
+    var emptyRooms = 0;
+
     this.rooms = this.rooms.filter((room) => {
       if (room.users.length > 0 || room.invincible == true) {
-        return true;
-      } else if (emptyRoom < 1) {
-        emptyRoom++;
+        if (room.users.length >= MAX_USER_SIZE - 1) fullRooms++;
         return true;
       } else {
-        return false;
+        if (emptyRooms++ > 0) return false;
       }
     });
 
-    // If there is no empty room, add one
-    if (emptyRoom === 0) this.addRoom();
+    // If there is no available room, add one
+    if (fullRooms == this.rooms.length) this.addRoom();
   }
 };
 
