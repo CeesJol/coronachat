@@ -1,6 +1,6 @@
 const expect = require('expect');
 
-const {Rooms, MAX_USER_SIZE} = require('./rooms');
+const {Rooms} = require('./rooms');
 const {User} = require('./user');
 
 describe('Rooms', () => {
@@ -16,9 +16,11 @@ describe('Rooms', () => {
     rooms.rooms = [{
       id: roomId,
       users: [],
+      maxSize: 42
     }, {
       id: roomId + 1,
       users: [mike, john],
+      maxSize: 42
     }];
 
     user = new User(2, 'Katie', roomId);

@@ -4,7 +4,7 @@ const express = require('express');
 const socketIO = require('socket.io');
 var xss = require("xss");
 
-const {Rooms, MAX_USER_SIZE} = require('./utils/rooms');
+const {Rooms} = require('./utils/rooms');
 const {User} = require('./utils/user');
 const {generateMessage, generateAlert} = require('./utils/message');
 const {isRealString} = require('./utils/validation');
@@ -60,7 +60,8 @@ io.on('connection', (socket) => {
         var id = socket.id;
         var username = params.name;
         var roomName = room.name;
-        io.to(socket.id).emit('userInfo', {id, username, roomName, MAX_USER_SIZE} );
+        var roomMaxSize = room.maxSize;
+        io.to(socket.id).emit('userInfo', {id, username, roomName, roomMaxSize} );
 
         // Send room info
         // Necessary?
