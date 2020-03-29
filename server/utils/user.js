@@ -4,6 +4,7 @@ class User {
     this.id = id;
     this.name = name;
     this.roomId = roomId;
+    this.admin = false;
   }
 };
 

@@ -121,6 +121,27 @@ io.on('connection', (socket) => {
     }
   });
 
+  socket.on('requestAdmin', (data, callback) => {
+    var user = rooms.getUser(socket.id);
+    if (!user) {
+      callback('You don\'t seem to exist on our server.');
+      return;
+    } else if (user.admin) {
+      callback('You are already admin');
+      return;
+    }
+
+    console.log('Admin request:');
+    console.log(data.password);
+
+    if (data.password == '123') {
+      callback();
+      user.admin = true;
+    } else {
+      callback('Password is incorrect');
+    }
+  });
+
   socket.on('disconnect', () => {
     var user = rooms.getUser(socket.id);
     if (!user) return;

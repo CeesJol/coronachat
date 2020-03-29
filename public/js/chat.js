@@ -107,6 +107,18 @@ socket.on('newMessage', function (message) {
   scrollToBottom();
 });
 
+function requestAdmin(password) {
+  socket.emit('requestAdmin', {
+    password: password,
+  }, function(err) {
+    if (err) {
+      console.log('Admin request denied:\n' + err);
+    } else {
+      console.log('You are now admin');
+    }
+  });  
+}
+
 socket.on('newAlert', function (message) {
   createAlert(message.text);
 });
