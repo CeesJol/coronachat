@@ -24,5 +24,5 @@ The development version is hosted at [a different Heroku url](https://coronachat
 ## Getting started
 
 1. Install [Node](https://nodejs.org/en/download/)
-2. Run `npm start`
+2. Run `npm install` and `npm start`
 3. Use the app by visiting `localhost:3000` (or whatever port is used)
