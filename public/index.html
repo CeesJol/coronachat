@@ -24,7 +24,7 @@
           <div class="left-content">
             <p class="title title-1">Corona</p>
             <p class="title title-2">Chat</p>
-            <p class="subtitle">Anonymous chatting</p>
+            <p class="subtitle" id="subtitle">Anonymous chatting</p>
           </div>
         </div>
 
@@ -32,21 +32,21 @@
           <div class="right-content">
           <form onsubmit="if (!isRealString(document.getElementById('chat-name').value)) { alert('Invalid username'); return false }" action='/chat.html'>
               <div class="form-field">
-                <h3>JOIN A CHAT</h3>
+                <h3 id="join-a-chat">JOIN A CHAT</h3>
                 <br>
-                <p>
+                <p id="slogan">
                   Talk to other people who have been socially isolated, anonymously.
                 </p>
                 <br>
               </div>
               <div class="form-field">
-                <label>Display name</label>
+                <label id="chat-name-label">Display name</label>
                 <br>
                 <input type="text" name="name" placeholder="Chat name" id="chat-name" required maxlength="20" />
               </div>
               <br>
               <div class="form-field">
-                <label>Rooms</label>
+                <label id="rooms-label">Rooms</label>
                 <br>
                 <table class="rooms">
                   <thead>
@@ -90,6 +90,7 @@
       </tr>
     </script>
 
+    <script src="js/index-language.js"></script>
     <script src="socket.io/socket.io.js"></script>
     <script src='js/libs/jquery-3.4.1.min.js'></script>
     <script src='js/libs/moment.js'></script>
