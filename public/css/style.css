@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap');
 
-.noselect, button, table, input, .left, .chat__header, .message-from, .message__title, .alert {
+.noselect, button, table, .left, .chat__header, .message-from, .message__title, .alert {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
@@ -96,7 +96,7 @@ h1, h3, h6, p {
   background-image: linear-gradient(rgb(30, 40, 70), rgb(10, 20, 40));
   color: white;
   width: calc(100% - 50px);
-  height: auto;
+  height: calc(10rem - 50px);
   padding: 25px;
   margin: 0;
 }
@@ -105,7 +105,7 @@ h1, h3, h6, p {
   position: relative;
   background-color: white;
   width: calc(100% - 50px);
-  height: calc(100% - 15rem);
+  height: calc(100vh - 10rem - 50px);
   padding: 25px;
   margin: 0;
 }
@@ -113,13 +113,13 @@ h1, h3, h6, p {
 .left-content {
   margin-left: auto;
   margin-right: auto;
-  max-width: 400px;
+  max-width: 30rem;
 }
 
 .right-content {
   margin-left: auto;
   margin-right: auto;
-  max-width: 400px;
+  max-width: 30rem;
   height: 100%;
 }
 
@@ -347,7 +347,7 @@ button:active {
   position: relative;
   background-color: white;
   width: auto;
-  max-width: calc(100% - 200px);
+  max-width: calc(100% - 15rem);
   border-radius: .5rem;
   padding-left: 10px;
   padding-right: 10px;
@@ -377,6 +377,7 @@ h4 {
   padding-bottom: .7rem;
   padding-right: 50px;
   padding-top: .7rem;
+  word-wrap: break-word
 }
 
 .alert-container {
@@ -391,7 +392,7 @@ h4 {
   padding: 5px 15px;
   display: inline-block;
   border-radius: .25rem;
-  max-width: calc(100% - 50px);
+  max-width: calc(100% - 3.125);
 }
 
 .overlay {
@@ -427,7 +428,9 @@ h4 {
   top: 0;
   position: relative;
   height: calc(100% - 50px);
-  display:flex;justify-content:center;align-items:center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .pop-body-full-height {
   height: 100%;
@@ -451,5 +454,29 @@ h4 {
 
   #join-button {
     font-size: 1.2rem;
+  }
+
+  .message {
+    max-width: calc(100% - 5rem);
+  }
+}
+
+@media only screen and (max-width: 499px) {
+  html, body {
+    font-size: 12px;
+  }
+
+  .title {
+    font-size: 3rem;
+  }
+}
+
+@media only screen and (min-width: 1199px) {
+  html, body {
+    font-size: 18px;
+  }
+  
+  .message {
+    max-width: calc(100% - 20rem);
   }
 }

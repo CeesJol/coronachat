@@ -1,14 +1,14 @@
 const {randomId} = require('./general');
 
-const MAX_USER_SIZE = 5; // Maximum amount of users in one room, duplicated at index.js
+const MAX_USER_SIZE = 5; // The default maximum amount of users in one room
 
 class Rooms {
   constructor() {
     this.rooms = [];
 
-    // Add a Dutch, General and Development room
+    // Add a General, Dutch and Development room
     this.addRoom("General 👩‍💻", true);
-    this.addRoom("Dutch Room 🇳🇱", true);
+    this.addRoom("Dutch Room 🇳🇱", true,);
     this.addRoom("Development 🏗", true);
   }
 
@@ -32,13 +32,14 @@ class Rooms {
   }
 
   // Add a room
-  addRoom(name, invincible) {
+  addRoom(name, invincible, maxSize) {
     var id = this.createId();
     var users = [];
     var name = name || 'Room ' + id;
     var invincible = invincible || false;
+    var maxSize = maxSize || MAX_USER_SIZE;
     
-    var room = {id, users, name, invincible};
+    var room = {id, users, name, invincible, maxSize};
     this.rooms.push(room);
 
     return room;
@@ -89,7 +90,7 @@ class Rooms {
 
     if (!room) return undefined;
 
-    if (room.users.length >= MAX_USER_SIZE) return false;
+    if (room.users.length >= room.maxSize) return false;
 
     room.users.push(user);
 
@@ -128,7 +129,7 @@ class Rooms {
     var bestRoom;
 
     for (var room of this.rooms) {
-      if (room.users.length < MAX_USER_SIZE) {
+      if (room.users.length < room.maxSize) {
         bestRoom = room;
         break;
       }
@@ -151,7 +152,7 @@ class Rooms {
 
     this.rooms = this.rooms.filter((room) => {
       if (room.users.length > 0 || room.invincible == true) {
-        if (room.users.length >= MAX_USER_SIZE - 1) fullRooms++;
+        if (room.users.length >= room.maxSize - 1) fullRooms++;
         return true;
       } else {
         if (emptyRooms++ > 0) return false;
@@ -175,4 +176,4 @@ class Rooms {
   }
 };
 
-module.exports = {Rooms, MAX_USER_SIZE};
+module.exports = {Rooms};
