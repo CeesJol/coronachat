@@ -17,6 +17,17 @@ var io = socketIO(server);
 
 var rooms = new Rooms();
 
+// The password hash to become admin, generated using the function below.
+hashedPassword = '$2b$10$KH55P06Snrugd8nxsxLHr.nuIXyy8wGbbE1qs9hc79LcLCQ7VsIhG';
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+function hashPassword(password, saltRounds) {
+  bcrypt.hash(password, saltRounds, function(err, hash) {
+    if (err) console.log(err);
+    return hash;
+  });
+}
+
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
@@ -119,6 +130,30 @@ io.on('connection', (socket) => {
     } catch(e) {
       console.log('createMessage ERROR: ' + e);
     }
+  });
+
+  socket.on('requestAdmin', (data, callback) => {
+    var user = rooms.getUser(socket.id);
+    if (!user) {
+      callback('You don\'t seem to exist on our server.');
+      return;
+    } else if (user.admin) {
+      callback('You are already admin');
+      return;
+    }
+
+    bcrypt.compare(data.password, hashedPassword, function(err, result) {
+      if (err) {
+        callback('Hash error: ' + err);
+      } else {
+        if (result) {
+          user.admin = true;
+          callback();
+        } else {
+          callback('Wrong admin password');
+        }
+      }
+    });
   });
 
   socket.on('disconnect', () => {

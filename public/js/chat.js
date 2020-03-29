@@ -33,6 +33,7 @@ var username = 'unknown';
 var userID = -1;
 var roomName = "Room";
 var lastMessageId = -1; // userid of last message sent
+var admin = false;
 
 socket.on('userInfo', function(data) {
   userID = data.id;
@@ -106,6 +107,19 @@ socket.on('newMessage', function (message) {
 
   scrollToBottom();
 });
+
+function requestAdmin(password) {
+  socket.emit('requestAdmin', {
+    password: password,
+  }, function(err) {
+    if (err) {
+      console.log('Admin request denied:\n' + err);
+    } else {
+      console.log('You are now admin');
+      admin = true;
+    }
+  });  
+}
 
 socket.on('newAlert', function (message) {
   createAlert(message.text);
