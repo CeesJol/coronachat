@@ -4,7 +4,7 @@ var languages = {
   'nl-NL': {
     'subtitle': 'Anoniem chatten',
     'join-a-chat': 'Begin met chatten',
-    'slogan': 'Begin een gesprek met andere mensen die afstand moeten houden, volledig anoniem.', 
+    'slogan': 'Begin een gesprek met andere mensen die zich eenzaam voelen vanwege de corona-maatregelen. Je blijft anoniem.', 
     'chat-name-label': 'Naam',
     'chat-name': 'Chat naam',
     'join-button': 'Meedoen',
