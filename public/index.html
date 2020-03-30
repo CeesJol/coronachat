@@ -1,36 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>CoronaChat</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="shortcut icon" type="image/png" href="/img/cc icon zoomed.png"/>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-129727291-2"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
 
-      gtag('config', 'UA-129727291-2');
-    </script>
-  </head>
+<head>
+  <meta charset="utf-8">
+  <title>CoronaChat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="shortcut icon" type="image/png" href="/img/cc icon zoomed.png" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-129727291-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  <body class="centered-form">
-    <div class="container">
-      <div class="content">
-        <div class="centered-form__form left">
-          <div class="left-content">
-            <p class="title title-1">Corona</p>
-            <p class="title title-2">Chat</p>
-            <p class="subtitle" id="subtitle">Anonymous chatting</p>
-          </div>
+    gtag('config', 'UA-129727291-2');
+  </script>
+</head>
+
+<body class="centered-form">
+  <div class="container">
+    <div class="content">
+      <div class="centered-form__form left">
+        <div class="left-content">
+          <p class="title title-1">Corona</p>
+          <p class="title title-2">Chat</p>
+          <p class="subtitle" id="subtitle">Anonymous chatting</p>
         </div>
-
+      </div>
+      <div class="chat-container">
         <div class="centered-form__form right">
           <div class="right-content">
-          <form onsubmit="if (!isRealString(document.getElementById('chat-name').value)) { alert('Invalid username'); return false }" action='/chat.html'>
+            <form
+              onsubmit="if (!isRealString(document.getElementById('chat-name').value)) { alert('Invalid username'); return false }"
+              action='/chat.html'>
               <div class="form-field">
                 <h3 id="join-a-chat">Join a chat</h3>
                 <br>
@@ -57,7 +60,7 @@
                     </tr>
                   </thead>
                   <tbody id="rooms">
-  
+
                   </tbody>
                 </table>
                 <input type="text" name="room" id="room-name" style="display: none" />
@@ -73,8 +76,9 @@
         </div>
       </div>
     </div>
+  </div>
 
-    <script id="room-template" type="text/template">
+  <script id="room-template" type="text/template">
       <tr class={{class}} id="room-{{id}}" onClick="selectRoom('{{id}}')">
         <td>{{number}}</td>
         <td>{{name}}</td>
@@ -82,7 +86,7 @@
       </tr>
     </script>
 
-    <script id="room-template-disabled" type="text/template">
+  <script id="room-template-disabled" type="text/template">
       <tr id="room-disabled">
         <td>{{number}}</td>
         <td>{{name}}</td>
@@ -90,14 +94,15 @@
       </tr>
     </script>
 
-    <script src="js/index-language.js"></script>
-    <script src="socket.io/socket.io.js"></script>
-    <script src='js/libs/jquery-3.4.1.min.js'></script>
-    <script src='js/libs/moment.js'></script>
-    <script src='js/libs/mustache.min.js'></script>
-    <script src='js/libs/deparam.js'></script>
-    <script src="js/index-functions.js"></script>
-    <script src='js/general.js'></script>
-    <script src='js/index.js'></script>
-  </body>
+  <script src="js/index-language.js"></script>
+  <script src="socket.io/socket.io.js"></script>
+  <script src='js/libs/jquery-3.4.1.min.js'></script>
+  <script src='js/libs/moment.js'></script>
+  <script src='js/libs/mustache.min.js'></script>
+  <script src='js/libs/deparam.js'></script>
+  <script src="js/index-functions.js"></script>
+  <script src='js/general.js'></script>
+  <script src='js/index.js'></script>
+</body>
+
 </html>
