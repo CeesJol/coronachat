@@ -84,13 +84,13 @@ h1, h3, h6, p {
   margin: 0;
   padding: 0;
 }
+
 /* Newly added container to hold on objects after the header*/
 .chat-container{
-
   width: 50%;
+  min-width: 30rem;
   margin: auto;
 }
-
 
 .centered-form__form {
   position: relative;
