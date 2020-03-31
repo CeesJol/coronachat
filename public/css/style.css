@@ -12,7 +12,6 @@
 
 * {
   margin: 0;
-
 }
 
 html, body {
@@ -213,8 +212,7 @@ input {
   padding: 0.5rem 1rem;
   border-radius: 2px;
   background-color: rgb(245, 245, 250);
-  border: 1px solid rgb(240, 240, 250);
-  
+  border: 1px solid rgb(240, 240, 250); 
   display: block;
   transition: all .3s;
 }
@@ -247,7 +245,6 @@ label {
   margin-bottom: .5rem;
 }
 button {
-
   display: inline-block;
   border: none;
   padding: .75rem 3rem;
