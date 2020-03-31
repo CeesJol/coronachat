@@ -12,7 +12,7 @@ var languages = {
   }
 }
 
-if (languages[myLanguage]) {
+if (myLanguage && languages[myLanguage]) {
   for (const property in languages[myLanguage]) {
     document.getElementById(property).innerHTML = languages[myLanguage][property];
   }
