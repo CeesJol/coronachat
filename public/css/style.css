@@ -87,7 +87,9 @@ h1, h3, h6, p {
 
 /* Newly added container to hold on objects after the header*/
 .chat-container{
-  width: 50%;
+  width: 55%;
+  background-color: red;
+  max-width: 50rem;
   min-width: 30rem;
   margin: auto;
 }
