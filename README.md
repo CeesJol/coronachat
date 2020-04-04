@@ -12,7 +12,12 @@ An [XSS sanitizer](https://www.npmjs.com/package/xss) is used to sanitize all in
 ### bcrypt admin
 A user can login to become an admin by opening the console and using the requestAdmin(password) function. The password is stored as hash in the server. It is hashed by [bcrypt](https://www.npmjs.com/package/bcrypt).
 
-### Privacy
+#### Admin priviliges
+And admin can use the `adm` object in the console for admin functionality. `adm.kickUser(id)` will a kick a user and `adm.shadowBan(id)` will shadow ban a user. When shadow banned, the shadow banned user still sees all messages, but all other users no longer see the messages from the shadow banned users.
+
+The id (socketid) of a user can be found using the `chatUsers` variable.
+
+## Privacy
 The server does not store any data, neither does it (read: should it) log any data. However, google analytics are enabled, and the username and room name are stored in the url. So through analytics, the username and room name may still be visible to the host. The conversations in the chat, however, are in no way stored.
 
 ## Development
