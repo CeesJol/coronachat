@@ -134,8 +134,11 @@ io.on('connection', (socket) => {
       message.text = xss(message.text);
 
       var room = rooms.getRoomOfUser(message.fromID);
-      if (room && isRealString(message.text)) {
-        io.to(room.id).emit('newMessage', generateMessage(message.from, message.fromID, message.text));
+
+      var user = rooms.getUser(message.fromID);
+
+      if (room && user && !user.shadowBanned && isRealString(message.text)) {
+        socket.to(room.id).emit('newMessage', generateMessage(message.from, message.fromID, message.text));
       }
       
       callback(); 
@@ -175,6 +178,43 @@ io.on('connection', (socket) => {
       });
     } catch(e) {
       console.log('requestAdmin ERROR: ' + e);
+    }
+  });
+
+  socket.on('adminKickUser', (socketId, callback) => {
+    try {
+      var user = rooms.getUser(socket.id); // this is the admin
+      if (!user.admin) {
+        callback('You are not an admin');
+        return;
+      }
+
+      if (io.sockets.sockets[socketId]) {
+        io.sockets.sockets[socketId].disconnect();
+        callback();
+      } else {
+        callback('That user does not exist');
+      }
+    } catch (e) {
+      console.log('adminKickUser ERROR: ' + e);
+    }
+  });
+
+  socket.on('adminShadowBanUser', (socketId, callback) => {
+    try {
+      var user = rooms.getUser(socket.id); // this is the admin
+      if (!user.admin) {
+        callback('You are not an admin');
+        return;
+      }
+
+      if (rooms.shadowBanUser(socketId)) {
+        callback();
+      } else {
+        callback('That user does not exist')
+      }
+    } catch (e) {
+      console.log('adminShadowBanUser ERROR: ' + e);
     }
   });
 

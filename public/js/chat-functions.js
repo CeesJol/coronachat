@@ -53,6 +53,38 @@ function createMessage(from, id, messageText) {
     sendingMessage = false;
     updateFooter();
   });  
+  drawMessageFromMe(id, from, messageText);
+}
+
+function drawMessageFromMe(from, id, text) {
+  var formattedTime = moment(moment().valueOf()).format('HH:mm');
+  var template = jQuery('#message-template-color').html();
+  if (volume) audio.sent.play();
+  
+  actuallyDrawMessage(from, id, text, formattedTime, template);
+}
+
+function drawMessage(from, id, text, createdAt) {
+  var formattedTime = moment(createdAt).format('HH:mm');
+  var template = jQuery((lastMessageId == id) ? '#message-template' : '#message-template-username').html();
+  if (!focused) audio.notification.play();
+  else if (volume) audio.message.play();
+  
+  actuallyDrawMessage(from, id, text, formattedTime, template);
+}
+
+function actuallyDrawMessage(from, id, text, formattedTime, template) {
+  lastMessageId = id;
+
+  var html = Mustache.render(template, {
+    text: text,
+    from: from, 
+    createdAt: formattedTime
+  });
+
+  jQuery('#messages').append(html);
+
+  scrollToBottom();
 }
 
 /**

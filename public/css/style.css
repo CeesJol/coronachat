@@ -187,7 +187,7 @@ input {
   transition: all .3s;
 }
 #chat-name {
-  width: 90%;
+  width: calc(100% - 2rem - 2px);
 }
 #chat-message {
   width: calc(100% - 11.5rem);
