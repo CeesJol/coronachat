@@ -45,7 +45,7 @@ socket.on('userInfo', function(data) {
 });
 
 socket.on('responseUserAmount', function(data) {
-  if (data != null) numberOfUsers.text(data + ' mensen' + ((data == 1)?'':'s') + ' online');
+  if (data != null) numberOfUsers.text(data + ((data == 1)?' iemand':' mensen') + ' online');
 });
 
 socket.on('connect', function() {

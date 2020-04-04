@@ -211,11 +211,10 @@ server.listen(port, () => {
       // Emit sorted rooms
       rooms.sort();
       io.emit('responseRoomInfo', rooms.rooms);
-
-      // Emit number of users
-      io.emit('responseUserAmount', numberOfUsers());
     }
   }, 5000);
+
+  setInterval(() => io.emit('responseUserAmount', numberOfUsers()), 1000);
 });
 
 function numberOfUsers() {
