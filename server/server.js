@@ -215,7 +215,7 @@ server.listen(port, () => {
       // Emit number of users
       io.emit('responseUserAmount', numberOfUsers());
     }
-  }, 1000);
+  }, 5000);
 });
 
 function numberOfUsers() {
