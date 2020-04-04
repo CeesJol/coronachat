@@ -33,12 +33,13 @@ class Rooms {
   // Add a room
   addRoom(name, invincible, maxSize) {
     var id = this.createId();
-    var users = [];
-    var name = name || 'Room ' + id;
-    var invincible = invincible || false;
-    var maxSize = maxSize || MAX_USER_SIZE;
-    
-    var room = {id, users, name, invincible, maxSize};
+    var room = {
+      id: id, 
+      users: [],
+      name: name || 'Room ' + id,
+      invincible: invincible || false,
+      maxSize: maxSize || MAX_USER_SIZE
+    };
     this.rooms.push(room);
 
     return room;
@@ -67,11 +68,27 @@ class Rooms {
 
   // Get a room of a user
   getRoomOfUser(userId) {
-    var room = this.rooms.filter((room) => {
-      return room.users.filter((user) => user.id === userId)[0];
-    })[0];
+    for (var room of this.rooms) {
+      for (var user of room.users) {
+        if (user.id === userId) {
+          return room;
+        }
+      }
+    }
 
-    return room;
+    return undefined;
+  }
+
+  getRoomAndUser(userId) {
+    for (var room of this.rooms) {
+      for (var user of room.users) {
+        if (user.id === userId) {
+          return {room, user};
+        }
+      }
+    }
+
+    return {undefined, undefined};
   }
 
   // Get a list of users of a room

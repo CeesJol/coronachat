@@ -197,13 +197,8 @@ var volume = true;
  */
 jQuery('#volume-option-toggle').click(function(){
   var img = jQuery("#volume-option-img");
-  if (volume) {
-    img.attr("src", "/./img/volume_mute.png");
-    volume = false;
-  } else {
-    img.attr("src", "/./img/volume.png");
-    volume = true;
-  }
+  volume = !volume;
+  img.attr("src", "/./img/" + ((volume) ? "volume_mute.png" : "volume.png"));
 });
 
 /**

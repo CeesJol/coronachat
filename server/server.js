@@ -42,52 +42,45 @@ io.on('connection', (socket) => {
       } else if (params.name.length > 20) {
         callback('Chat naam is te lang (maximaal 20 karakters)');
       } else {
-        var room;
-        if (params.room) {
-          room = rooms.getRoom(params.room);
-        } else {
-          // If user specified no room, find best room
-          room = rooms.findBestRoom();
-        }
+        var room = (params.room) ? rooms.getRoom(params.room) : rooms.findBestRoom();
 
         if (!room) {
           callback('Die kamer bestaat niet (meer). Dit is een fout van ons - excuses!');
-        } else {
-          // Create user
-          var me = new User(socket.id, params.name, room.id);
-
-          // Add user to a room
-          if (!rooms.addUser(room.id, me)) {
-            callback('Die kamer is helaas vol...');
-            return false;
-          }
-
-          // Join user to a room
-          socket.join(room.id);
-
-          // Join user to itself
-          socket.join(socket.id);
-
-          // Send user info
-          var id = socket.id;
-          var username = params.name;
-          var roomName = room.name;
-          var roomMaxSize = room.maxSize;
-          io.to(socket.id).emit('userInfo', {id, username, roomName, roomMaxSize} );
-
-          // Send room info
-          // Necessary?
-          io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
-
-          socket.emit('newAlert', generateAlert(`Welkom in de chatkamer, ${params.name}`));
-          if (rooms.getUsers(room.id).length > 1) {
-            socket.broadcast.to(room.id).emit('newAlert', generateAlert(`${params.name} doet nu mee`));
-          } else {
-            socket.emit('newAlert', generateAlert('Wacht alstublieft totdat iemand meedoet'));
-          }
-
-          callback();
+          return;
         }
+        // Create user
+        var me = new User(socket.id, params.name, room.id);
+
+        // Add user to a room
+        if (!rooms.addUser(room.id, me)) {
+          callback('Die kamer is helaas vol...');
+          return false;
+        }
+
+        // Join user to a room
+        socket.join(room.id);
+
+        // Send user info
+        io.to(`${socket.id}`).emit('userInfo', {
+          id: socket.id, 
+          username: params.name,
+          roomName: room.name, 
+          roomMaxSize: room.maxSize
+        });
+
+        var users = rooms.getUsers(room.id);
+
+        // Send room info
+        io.to(room.id).emit('updateUserList', users);
+
+        socket.emit('newAlert', generateAlert(`Welkom in de chatkamer, ${params.name}`));
+        if (users.length > 1) {
+          socket.broadcast.to(room.id).emit('newAlert', generateAlert(`${params.name} doet nu mee`));
+        } else {
+          socket.emit('newAlert', generateAlert('Wacht alstublieft totdat iemand meedoet'));
+        }
+
+        callback();
       }
     } catch(e) {
       console.log('join ERROR: ' + e)
@@ -100,7 +93,7 @@ io.on('connection', (socket) => {
       userID = xss(userID);
 
       var room = rooms.getRoomOfUser(userID);
-      io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
+      if (room) io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
     } catch(e) {
       console.log('requestUserList ERROR: ' + e);
     }
@@ -108,7 +101,7 @@ io.on('connection', (socket) => {
 
   socket.on('requestRoomInfo', () => {
     try {
-      io.to(socket.id).emit('responseRoomInfo', rooms.rooms);
+      io.to(`${socket.id}`).emit('responseRoomInfo', rooms.rooms);
     } catch(e) {
       console.log('requestRoomInfo ERROR: ' + e);
     }
@@ -121,7 +114,7 @@ io.on('connection', (socket) => {
       params.text = xss(params.text);
 
       var room = rooms.getRoomOfUser(params.fromID);
-      socket.broadcast.to(room.id).emit('newStatus', params.text); 
+      if (room) socket.to(room.id).emit('newStatus', params.text); 
     } catch(e) {
       console.log('sendStatus ERROR: ' + e);
     }
@@ -133,9 +126,7 @@ io.on('connection', (socket) => {
       message.fromID = xss(message.fromID);
       message.text = xss(message.text);
 
-      var room = rooms.getRoomOfUser(message.fromID);
-
-      var user = rooms.getUser(message.fromID);
+      var {room, user} = rooms.getRoomAndUser(message.fromID);
 
       if (room && user && !user.shadowBanned && isRealString(message.text)) {
         socket.to(room.id).emit('newMessage', generateMessage(message.from, message.fromID, message.text));
@@ -183,7 +174,7 @@ io.on('connection', (socket) => {
 
   socket.on('adminKickUser', (socketId, callback) => {
     try {
-      var user = rooms.getUser(socket.id); // this is the admin
+      var user = rooms.getUser(socket.id);
       if (!user.admin) {
         callback('You are not an admin');
         return;
@@ -202,7 +193,7 @@ io.on('connection', (socket) => {
 
   socket.on('adminShadowBanUser', (socketId, callback) => {
     try {
-      var user = rooms.getUser(socket.id); // this is the admin
+      var user = rooms.getUser(socket.id); 
       if (!user.admin) {
         callback('You are not an admin');
         return;
@@ -220,15 +211,14 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     try {
-      var user = rooms.getUser(socket.id);
-      if (!user) return;
+      var {room, user} = rooms.getRoomAndUser(socket.id);
+      if (!room || !user) return;
 
-      var room = rooms.getRoomOfUser(socket.id);
       rooms.removeUser(socket.id);
 
-      if (rooms.getUsers(room.id).length > 0) {
+      if (room.users.length > 0) {
         // Send room info
-        io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
+        io.to(room.id).emit('updateUserList', room.users);
       
         // Send user left info
         var username = user.name;
@@ -252,7 +242,7 @@ server.listen(port, () => {
       rooms.sort();
       io.emit('responseRoomInfo', rooms.rooms);
     }
-  }, 5000);
+  }, 2500);
 
   setInterval(() => io.emit('responseUserAmount', numberOfUsers()), 1000);
 });

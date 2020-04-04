@@ -229,4 +229,11 @@ describe('Rooms', () => {
 
     expect(rooms.rooms[0].users.length).toEqual(2);
   });
+
+  it('should get room and user', () => {
+    var {room, user} = rooms.getRoomAndUser(2);
+
+    expect(user).toEqual(john);
+    expect(room).toEqual(rooms.rooms[1]);
+  });
 });
