@@ -38,9 +38,9 @@ io.on('connection', (socket) => {
 
       // Validate data
       if (!isRealString(params.name)) {
-        callback('Invalid name');
+        callback('Onjuiste chat naam');
       } else if (params.name.length > 20) {
-        callback('Name is too long (max: 20 characters)');
+        callback('Chat naam is te lang (maximaal 20 karakters)');
       } else {
         var room;
         if (params.room) {
@@ -51,14 +51,14 @@ io.on('connection', (socket) => {
         }
 
         if (!room) {
-          callback('That room does not exist (anymore).');
+          callback('Die kamer bestaat niet (meer). Dit is een fout van ons - excuses!');
         } else {
           // Create user
           var me = new User(socket.id, params.name, room.id);
 
           // Add user to a room
           if (!rooms.addUser(room.id, me)) {
-            callback('That room is full...');
+            callback('Die kamer is helaas vol...');
             return false;
           }
 
@@ -79,11 +79,11 @@ io.on('connection', (socket) => {
           // Necessary?
           io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
 
-          socket.emit('newAlert', generateAlert(`Welcome to the chat app, ${params.name}`));
+          socket.emit('newAlert', generateAlert(`Welkom in de chatkamer, ${params.name}`));
           if (rooms.getUsers(room.id).length > 1) {
-            socket.broadcast.to(room.id).emit('newAlert', generateAlert(`${params.name} joined the chat`));
+            socket.broadcast.to(room.id).emit('newAlert', generateAlert(`${params.name} doet nu mee`));
           } else {
-            socket.emit('newAlert', generateAlert('Please wait for someone to join'));
+            socket.emit('newAlert', generateAlert('Wacht alstublieft totdat iemand meedoet'));
           }
 
           callback();
@@ -211,11 +211,10 @@ server.listen(port, () => {
       // Emit sorted rooms
       rooms.sort();
       io.emit('responseRoomInfo', rooms.rooms);
-
-      // Emit number of users
-      io.emit('responseUserAmount', numberOfUsers());
     }
-  }, 1000);
+  }, 5000);
+
+  setInterval(() => io.emit('responseUserAmount', numberOfUsers()), 1000);
 });
 
 function numberOfUsers() {

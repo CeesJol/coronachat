@@ -29,9 +29,9 @@ var connected = false;
 var sendingMessage = false;
 var joined = false;
 var chatUsers = [];
-var username = 'unknown';
+var username = 'onbekend';
 var userID = -1;
-var roomName = "Room";
+var roomName = "Kamer";
 var lastMessageId = -1; // userid of last message sent
 var admin = false;
 
@@ -40,12 +40,12 @@ socket.on('userInfo', function(data) {
   username = data.username;
   roomName = data.roomName;
   jQuery('#title').html(roomName);
-  document.title = roomName + ' | CoronaChat';
+  document.title = roomName + ' | SeniorenChat';
   socket.emit('requestUserList', userID);
 });
 
 socket.on('responseUserAmount', function(data) {
-  if (data != null) numberOfUsers.text(data + ' user' + ((data == 1)?'':'s') + ' online');
+  if (data != null) numberOfUsers.text(data + ((data == 1)?' iemand':' mensen') + ' online');
 });
 
 socket.on('connect', function() {
@@ -66,7 +66,7 @@ socket.on('connect', function() {
 });
 
 socket.on('disconnect', function() {
-  createAlert('Lost connection to server :(');
+  createAlert('Verbinding verloren :(');
 
   connected = false;
   
@@ -74,7 +74,7 @@ socket.on('disconnect', function() {
 
   setTimeout(function() { 
     if (!connected) {
-      createRefreshAlert('Reconnect'); 
+      createRefreshAlert('Opnieuw verbinden'); 
     }
   }, 1000);
 });
@@ -167,11 +167,11 @@ socket.on('newStatus', function(status) {
 });
 
 socket.on('userLeft', function(username) {
-  createAlert(username + ' has left the chat.');
+  createAlert(username + ' heeft de chat verlaten');
 
   setTimeout(function() {
     if (chatUsers.length <= 1) {
-      createLeaveAlert('Go back to main page'); 
+      createLeaveAlert('Ga terug naar de hoofdpagina'); 
     }
   }, 1000);
 });

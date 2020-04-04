@@ -88,16 +88,16 @@ function updateFooter() {
   } else if (sendingMessage) {
     disableSendButton();
     sendStatus(userID, 'Online');
-    setButton('Sending...');
+    setButton('Versturen...');
   } else {
-    setButton('Send');
+    setButton('Verstuur');
     enableInput();
     if (sendEnabled && !isRealString(inputField.val())) {
       disableSendButton();
       sendStatus(userID, 'Online');
     } else if (!sendEnabled && isRealString(inputField.val())) {
       enableSendButton();
-      sendStatus(userID, username + ' is typing...');
+      sendStatus(userID, username + ' is aan het typen...');
     }
   }
 }
@@ -189,5 +189,5 @@ function createUserList(users) {
     }
   });
 
-  status.append('You');
+  status.append('U');
 }
