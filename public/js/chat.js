@@ -80,32 +80,7 @@ socket.on('disconnect', function() {
 });
 
 socket.on('newMessage', function (message) {
-  var formattedTime = moment(message.createdAt).format('HH:mm');
-  var template;
-  if (message.id === userID) {
-    template = jQuery('#message-template-color').html();
-    if (volume) audio.sent.play();
-  } else if (lastMessageId != message.id) {
-    template = jQuery('#message-template-username').html();
-    if (!focused) audio.notification.play();
-    else if (volume) audio.message.play();
-  } else {
-    template = jQuery('#message-template').html();
-    if (!focused) audio.notification.play();
-    else if (volume) audio.message.play();
-  }
-
-  lastMessageId = message.id;
-
-  var html = Mustache.render(template, {
-    text: message.text,
-    from: message.from, 
-    createdAt: formattedTime
-  });
-
-  jQuery('#messages').append(html);
-
-  scrollToBottom();
+  drawMessage(message.from, message.id, message.text, message.createdAt);
 });
 
 function requestAdmin(password) {
@@ -117,8 +92,31 @@ function requestAdmin(password) {
     } else {
       console.log('You are now admin');
       admin = true;
+      jQuery('#header').css('background', 'red');
     }
   });  
+}
+var adm = {
+  kickUser: function(socketId) {
+    socket.emit('adminKickUser', socketId, function(err) {
+      if (err) {
+        console.log('User kick denied:\n' + err);
+      } else {
+        console.log('User is kicked');
+        admin = true;
+      }
+    });
+  },
+  shadowBan: function(socketId) {
+    socket.emit('adminShadowBanUser', socketId, function(err) {
+      if (err) {
+        console.log('User shadow ban denied:\n' + err);
+      } else {
+        console.log('User is now shadow banned');
+        admin = true;
+      }
+    });
+  }
 }
 
 socket.on('newAlert', function (message) {

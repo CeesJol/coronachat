@@ -5,6 +5,7 @@ class User {
     this.name = name;
     this.roomId = roomId;
     this.admin = false;
+    this.shadowBanned = false;
   }
 };
 

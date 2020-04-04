@@ -122,6 +122,20 @@ class Rooms {
     }
   }
 
+  shadowBanUser(userId) {
+    for (var i = 0; i < this.rooms.length; i++) {
+      var room = this.rooms[i];
+      for (var j = 0; j < room.users.length; j++) {
+        var user = room.users[j];
+        if (user.id == userId) {
+          user.shadowBanned = true;
+
+          return user;
+        }
+      }
+    }
+  }
+
   // Find the best room for a user to join
   // Note that in the server, the rooms are sorted on number of users every interval.
   findBestRoom() {
