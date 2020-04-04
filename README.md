@@ -1,6 +1,6 @@
 # CoronaChat
 
-A chat app for people in quarantine, or who feel lonely otherwise, to talk to each other, anonymously.
+A chat app for seniors who feel lonely during corona time to talk to each other, anonymously.
 
 ## Overview
 ### General functionality
@@ -17,9 +17,9 @@ The server does not store any data, neither does it (read: should it) log any da
 
 ## Development
 ### Automatic deploys
-The main chat app is hosted at [Heroku](https://coronachat-app.herokuapp.com/). Automatic deployment is enabled from the master branch.
+The main chat app is hosted at [Heroku](https://seniorenchat.herokuapp.com/). Automatic deployment is enabled from the master branch.
 
-The development version is hosted at [a different Heroku url](https://coronachat-dev.herokuapp.com/), which has automatic deployment from the dev branch.
+The development version is hosted at [a different Heroku url](https://coronachat-dev.herokuapp.com/), which has automatic deployment from the staging branch.
 
 ## Getting started
 
