@@ -32,74 +32,86 @@ app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
   socket.on('join', (params, callback) => {
-    params.name = xss(params.name);
-    params.room = xss(params.room);
+    try {
+      params.name = xss(params.name);
+      params.room = xss(params.room);
 
-    // Validate data
-    if (!isRealString(params.name)) {
-      callback('Invalid name');
-    } else if (params.name.length > 20) {
-      callback('Name is too long (max: 20 characters)');
-    } else {
-      var room;
-      if (params.room) {
-        room = rooms.getRoom(params.room);
+      // Validate data
+      if (!isRealString(params.name)) {
+        callback('Invalid name');
+      } else if (params.name.length > 20) {
+        callback('Name is too long (max: 20 characters)');
       } else {
-        // If user specified no room, find best room
-        room = rooms.findBestRoom();
-      }
-
-      if (!room) {
-        callback('That room does not exist (anymore).');
-      } else {
-        // Create user
-        var me = new User(socket.id, params.name, room.id);
-
-        // Add user to a room
-        if (!rooms.addUser(room.id, me)) {
-          callback('That room is full...');
-          return false;
-        }
-
-        // Join user to a room
-        socket.join(room.id);
-
-        // Join user to itself
-        socket.join(socket.id);
-
-        // Send user info
-        var id = socket.id;
-        var username = params.name;
-        var roomName = room.name;
-        var roomMaxSize = room.maxSize;
-        io.to(socket.id).emit('userInfo', {id, username, roomName, roomMaxSize} );
-
-        // Send room info
-        // Necessary?
-        io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
-
-        socket.emit('newAlert', generateAlert(`Welcome to the chat app, ${params.name}`));
-        if (rooms.getUsers(room.id).length > 1) {
-          socket.broadcast.to(room.id).emit('newAlert', generateAlert(`${params.name} joined the chat`));
+        var room;
+        if (params.room) {
+          room = rooms.getRoom(params.room);
         } else {
-          socket.emit('newAlert', generateAlert('Please wait for someone to join'));
+          // If user specified no room, find best room
+          room = rooms.findBestRoom();
         }
 
-        callback();
+        if (!room) {
+          callback('That room does not exist (anymore).');
+        } else {
+          // Create user
+          var me = new User(socket.id, params.name, room.id);
+
+          // Add user to a room
+          if (!rooms.addUser(room.id, me)) {
+            callback('That room is full...');
+            return false;
+          }
+
+          // Join user to a room
+          socket.join(room.id);
+
+          // Join user to itself
+          socket.join(socket.id);
+
+          // Send user info
+          var id = socket.id;
+          var username = params.name;
+          var roomName = room.name;
+          var roomMaxSize = room.maxSize;
+          io.to(socket.id).emit('userInfo', {id, username, roomName, roomMaxSize} );
+
+          // Send room info
+          // Necessary?
+          io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
+
+          socket.emit('newAlert', generateAlert(`Welcome to the chat app, ${params.name}`));
+          if (rooms.getUsers(room.id).length > 1) {
+            socket.broadcast.to(room.id).emit('newAlert', generateAlert(`${params.name} joined the chat`));
+          } else {
+            socket.emit('newAlert', generateAlert('Please wait for someone to join'));
+          }
+
+          callback();
+        }
       }
+    } catch(e) {
+      console.log('join ERROR: ' + e)
     }
   });
 
   socket.on('requestUserList', (userID) => {
-    // Send room info
-    userID = xss(userID);
+    try {
+      // Send room info
+      userID = xss(userID);
 
-    var room = rooms.getRoomOfUser(userID);
-    io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
+      var room = rooms.getRoomOfUser(userID);
+      io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
+    } catch(e) {
+      console.log('requestUserList ERROR: ' + e);
+    }
   });
 
   socket.on('requestRoomInfo', () => {
-    io.to(socket.id).emit('responseRoomInfo', rooms.rooms);
+    try {
+      io.to(socket.id).emit('responseRoomInfo', rooms.rooms);
+    } catch(e) {
+      console.log('requestRoomInfo ERROR: ' + e);
+    }
   });
 
   socket.on('sendStatus', (params) => {
@@ -133,43 +145,57 @@ io.on('connection', (socket) => {
   });
 
   socket.on('requestAdmin', (data, callback) => {
-    var user = rooms.getUser(socket.id);
-    if (!user) {
-      callback('You don\'t seem to exist on our server.');
-      return;
-    } else if (user.admin) {
-      callback('You are already admin');
-      return;
-    }
-
-    bcrypt.compare(data.password, hashedPassword, function(err, result) {
-      if (err) {
-        callback('Hash error: ' + err);
-      } else {
-        if (result) {
-          user.admin = true;
-          callback();
-        } else {
-          callback('Wrong admin password');
-        }
+    try {
+      var user = rooms.getUser(socket.id);
+      if (!user) {
+        callback('You don\'t seem to exist on our server.');
+        return;
+      } else if (user.admin) {
+        callback('You are already admin');
+        return;
       }
-    });
+
+      data.password = xss(data.password);
+
+      bcrypt.compare(data.password, hashedPassword, function(err, result) {
+        try {
+          if (err) {
+            callback('Hash error: ' + err);
+          } else {
+            if (result) {
+              user.admin = true;
+              callback();
+            } else {
+              callback('Wrong admin password');
+            }
+          }
+        } catch(e) {
+          console.log('requestAdmin BCRYPT ERROR: ' + e);
+        }
+      });
+    } catch(e) {
+      console.log('requestAdmin ERROR: ' + e);
+    }
   });
 
   socket.on('disconnect', () => {
-    var user = rooms.getUser(socket.id);
-    if (!user) return;
+    try {
+      var user = rooms.getUser(socket.id);
+      if (!user) return;
 
-    var room = rooms.getRoomOfUser(socket.id);
-    rooms.removeUser(socket.id);
+      var room = rooms.getRoomOfUser(socket.id);
+      rooms.removeUser(socket.id);
 
-    if (rooms.getUsers(room.id).length > 0) {
-      // Send room info
-      io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
-    
-      // Send user left info
-      var username = user.name;
-      io.to(room.id).emit('userLeft', username);
+      if (rooms.getUsers(room.id).length > 0) {
+        // Send room info
+        io.to(room.id).emit('updateUserList', rooms.getUsers(room.id));
+      
+        // Send user left info
+        var username = user.name;
+        io.to(room.id).emit('userLeft', username);
+      }
+    } catch(e) {
+      console.log('disconnect ERROR: ' + e);
     }
   });
 });
