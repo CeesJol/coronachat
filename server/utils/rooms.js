@@ -36,7 +36,7 @@ class Rooms {
     var room = {
       id: id, 
       users: [],
-      name: name || 'Room ' + id,
+      name: name || 'Kamer ' + id,
       invincible: invincible || false,
       maxSize: maxSize || MAX_USER_SIZE
     };
@@ -156,20 +156,13 @@ class Rooms {
   // Find the best room for a user to join
   // Note that in the server, the rooms are sorted on number of users every interval.
   findBestRoom() {
-    var bestRoom;
-
     for (var room of this.rooms) {
       if (room.users.length < room.maxSize) {
-        bestRoom = room;
-        break;
+        return room;
       }
     }
 
-    if (bestRoom) {
-      return bestRoom;         // We found a room, return it
-    } else {
-      return this.addRoom();   // All rooms are full/closed, make a new room
-    }
+    return this.addRoom();   // All rooms are full/closed, make a new room
   }
 
   // Clean rooms

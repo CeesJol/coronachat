@@ -14,6 +14,7 @@ function unselectAll() {
 }
 
 function selectRoom(roomId) {
+  console.log(jQuery('#rooms').html);
   unselectAll();
   if (roomId == selectedRoom) {
     document.getElementById('room-name').value = '';
@@ -24,3 +25,14 @@ function selectRoom(roomId) {
     selectedRoom = roomId;
   }
 }
+
+jQuery('#form').submit(function() {
+  if (selectedRoom == -1) {
+    for (var room of rooms) {
+      if (room.users.length < room.maxSize) {
+        selectRoom(room.id);
+        return;
+      }
+    }
+  }
+});

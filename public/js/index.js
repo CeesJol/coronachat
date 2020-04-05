@@ -2,10 +2,13 @@ var socket = io({transports: ['websocket'], upgrade: false});
 
 socket.emit('requestRoomInfo');
 
+var rooms;
+
 socket.on('responseRoomInfo', function(data) {
   // Reset table list
   jQuery('#rooms').html("");
   var index = 0;
+  rooms = data;
   for (var room of data) {
     var template = jQuery('#room-template').html();
     if (room.users.length >= room.maxSize) template = jQuery('#room-template-disabled').html();
