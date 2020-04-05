@@ -14,7 +14,6 @@ function unselectAll() {
 }
 
 function selectRoom(roomId) {
-  console.log(jQuery('#rooms').html);
   unselectAll();
   if (roomId == selectedRoom) {
     document.getElementById('room-name').value = '';

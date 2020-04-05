@@ -10,8 +10,7 @@ socket.on('responseRoomInfo', function(data) {
   var index = 0;
   rooms = data;
   for (var room of data) {
-    var template = jQuery('#room-template').html();
-    if (room.users.length >= room.maxSize) template = jQuery('#room-template-disabled').html();
+    var template = jQuery((room.users.length >= room.maxSize) ? '#room-template-disabled' : '#room-template').html();
     var html = Mustache.render(template, {
       id: room.id,
       name: room.name,
