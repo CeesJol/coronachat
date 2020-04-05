@@ -6,9 +6,9 @@ class Rooms {
   constructor() {
     this.rooms = [];
 
-    // Add a General and Development room
+    // Create default rooms
     this.addRoom("Algemeen 👩‍💻", true);
-    this.addRoom("App Ontwikkeling 🏗", true);
+    this.addRoom("Algemeen 2 💻", true);
   }
 
   // Create id

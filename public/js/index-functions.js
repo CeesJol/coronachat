@@ -35,3 +35,12 @@ jQuery('#form').submit(function() {
     }
   }
 });
+
+jQuery('#chat-name').on('input',function(e){
+  localStorage.setItem('name', jQuery('#chat-name').val());
+});
+
+jQuery(document).ready(function() {
+  var name = localStorage.getItem('name');
+  if (name) jQuery('#chat-name').val(name);
+});
