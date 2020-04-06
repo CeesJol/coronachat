@@ -24,3 +24,23 @@ function selectRoom(roomId) {
     selectedRoom = roomId;
   }
 }
+
+jQuery('#form').submit(function() {
+  if (selectedRoom == -1) {
+    for (var room of rooms) {
+      if (room.users.length < room.maxSize) {
+        selectRoom(room.id);
+        return;
+      }
+    }
+  }
+});
+
+jQuery('#chat-name').on('input',function(e){
+  localStorage.setItem('name', jQuery('#chat-name').val());
+});
+
+jQuery(document).ready(function() {
+  var name = localStorage.getItem('name');
+  if (name) jQuery('#chat-name').val(name);
+});

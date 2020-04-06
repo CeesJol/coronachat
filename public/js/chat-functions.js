@@ -195,15 +195,9 @@ var volume = true;
 /**
  * Set volume and the corresponding icon toggle
  */
-jQuery('#volume-option-toggle').click(function(){
-  var img = jQuery("#volume-option-img");
-  if (volume) {
-    img.attr("src", "/./img/volume_mute.png");
-    volume = false;
-  } else {
-    img.attr("src", "/./img/volume.png");
-    volume = true;
-  }
+jQuery('#volume-option-toggle').click(function() {
+  jQuery("#volume-option-img").attr("src", "/./img/" + ((volume) ? "volume_mute.png" : "volume.png"));
+  volume = !volume;
 });
 
 /**
